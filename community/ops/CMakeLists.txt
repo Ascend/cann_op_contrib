@@ -146,3 +146,60 @@ cann_install(
     FILES       $<TARGET_FILE:op_tiling>
     DESTINATION "${TILING_PATH}"
 )
+
+
+# -----------------------------------------------------------------------
+
+file(GLOB TILING_SRC ./**/ai_cpu/impl/kernels/*.cc)
+
+set(TILING_LINK_LIB
+    -Wl,--no-as-needed
+    #graph
+    #exe_graph
+    #register
+    #alog
+    #error_manager
+    #ascend_protobuf
+    -Wl,--as-needed
+    #c_sec
+)
+
+set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel)
+set(AICPU_INCLUDE ${AICPU_OPP_ENV}/inc)
+
+set(TILING_INC
+    ${METADEF_DIR}/inc
+    ${METADEF_DIR}/inc/external
+    ${METADEF_DIR}/third_party/graphengine/inc
+    ${METADEF_DIR}/third_party/graphengine/inc/external
+    ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${AICPU_INCLUDE}
+    ${C_SEC_INCLUDE}
+    #${Protobuf_INCLUDE}
+)
+
+add_library(cpu_kernels SHARED
+    ${TILING_SRC}
+)
+
+target_include_directories(cpu_kernels PRIVATE
+    ${TILING_INC}
+)
+
+target_link_libraries(cpu_kernels PRIVATE
+    ${TILING_LINK_LIB}
+)
+
+target_compile_options(cpu_kernels PRIVATE
+    ${compile_opt_mode}
+    -Dgoogle=ascend_private
+    "-fno-strict-aliasing"
+    "-fno-common"
+)
+
+set(TILING_PATH "${INSTALL_DIR}/community/cpu_kernels")
+cann_install(
+    TARGET      cpu_kernels
+    FILES       $<TARGET_FILE:cpu_kernels>
+    DESTINATION "${TILING_PATH}"
+)
