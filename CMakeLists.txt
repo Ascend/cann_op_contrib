@@ -57,7 +57,7 @@ include(cmake/external/secure_c.cmake)
 #include(cmake/external/nlohmann_json.cmake)
 include(cmake/external/protobuf.cmake)
 include(cmake/external/gtest.cmake)
-#include(cmake/external/eigen.cmake)
+include(cmake/external/eigen.cmake)
 #include(cmake/external/protobuf_static.cmake)
 
 if(BUILD_MODE)

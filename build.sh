@@ -27,6 +27,10 @@ mk_dir() {
 # create build path
 build_cann() {
   echo "Create build directory and build CANN"
+
+  mk_dir "${BUILD_PATH}/install/community/aicpu/cfg" > /dev/null
+  python scripts/parser_ini.py *.ini ${BUILD_PATH}/install/community/aicpu/cfg/aicpu_kernel.json
+
   mk_dir "${CMAKE_HOST_PATH}"
   cd "${CMAKE_HOST_PATH}" && cmake  ../..
   make ${VERBOSE} -j${THREAD_NUM}

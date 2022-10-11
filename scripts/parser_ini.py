@@ -151,7 +151,7 @@ class IniParser(object):
         Write all the data into op json
         """
         def _write(info, file):
-            with open(file, "w") as f:
+            with open(file, "a+") as f:
                 # Only the owner and group have rights
                 os.chmod(file, stat.S_IWGRP + stat.S_IWUSR + stat.S_IRGRP + stat.S_IRUSR)
                 json.dump(info, f, sort_keys=True, indent=4, separators=(',', ':'))
@@ -160,13 +160,13 @@ class IniParser(object):
         _write(self.aicpu_ops_info, json_file_real_path)
         print(">>>> Found %s AICPU ops, write into: %s" % (len(self.aicpu_ops_info), json_file_real_path))
 
-        if not self.custom_flag:
-            file_path, file_name = os.path.split(json_file_real_path)
-            custom_file_path = os.path.join(file_path, "%s_custom%s" % os.path.splitext(file_name))
-            _write(self.custom_ops_info, custom_file_path)
-            print(">>>> Found %s custom AICPU ops, write into: %s" % (len(self.custom_ops_info), custom_file_path))
-        else:
-            print("### Custom flag is set, all custom ops have been integrated into: %s" % json_file_real_path)
+        # if not self.custom_flag:
+        #     file_path, file_name = os.path.split(json_file_real_path)
+        #     custom_file_path = os.path.join(file_path, "%s_custom%s" % os.path.splitext(file_name))
+        #     _write(self.custom_ops_info, custom_file_path)
+        #     print(">>>> Found %s custom AICPU ops, write into: %s" % (len(self.custom_ops_info), custom_file_path))
+        # else:
+        #     print("### Custom flag is set, all custom ops have been integrated into: %s" % json_file_real_path)
 
     def parse(self, ini_paths: list, out_file_path, custom=False):
         """
@@ -193,6 +193,16 @@ class IniParser(object):
             print("parse try except normal")
 
 
+def replace_file_char(file_path, obj_str, new_str):
+    search_text = obj_str
+    replace_text = new_str
+    with open(file_path, 'r', encoding='UTF-8') as file:
+        data = file.read()
+        data = data.replace(search_text, replace_text)
+    with open(file_path, 'w', encoding='UTF-8') as file:
+        file.write(data)
+
+
 def main():
     """ A Parser function for ini file. """
     parser = argparse.ArgumentParser(
@@ -210,7 +220,7 @@ def main():
         help=argparse.SUPPRESS
     )
     args = parser.parse_args()
-    outfile_path = "tf_kernel.json"
+    outfile_path = "aicpu_kernel.json"
     ini_file_paths = []
 
     for arg in args.FILES:
@@ -219,11 +229,19 @@ def main():
         elif arg.endswith("json"):
             outfile_path = arg
 
-    if len(ini_file_paths) == 0:
-        ini_file_paths.append("tf_kernel.ini")
+    # if len(ini_file_paths) == 0:
+    #     ini_file_paths.append("tf_kernel.ini")
+    print("outfile_path=======",outfile_path)
+    if (os.path.exists(outfile_path)):
+        os.remove(outfile_path)
+    for (dirname, subs, files) in os.walk('.'):
+        for fname in files:
+            file_path = os.path.join(dirname, fname)
+            if file_path.endswith(".ini") and "cpu" in file_path:
+                ini_parser = IniParser()
+                ini_parser.parse([file_path], outfile_path, custom=args.custom)
 
-    ini_parser = IniParser()
-    ini_parser.parse(ini_file_paths, outfile_path, custom=args.custom)
+    replace_file_char(outfile_path,"}{",",")
 
 
 if __name__ == '__main__':

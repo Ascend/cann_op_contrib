@@ -19,13 +19,16 @@ file(GLOB PROTO_SRC ./**/op_proto/*.cc)
 
 set(PROTO_INC
     ${METADEF_DIR}/inc
+    ${METADEF_DIR}/inc/exe_graph
     ${METADEF_DIR}/inc/external
     ${METADEF_DIR}/third_party/graphengine/inc
     ${METADEF_DIR}/third_party/graphengine/inc/external
     ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${METADEF_DIR}/third_party/fwkacllib/inc/toolchain
+    ${CANN_ROOT_DIR}/community/common
+    ${CANN_ROOT_DIR}/community/common/inc
     #${Protobuf_INCLUDE}
     ${C_SEC_INCLUDE}
-    ./add/op_proto/inc
 )
 
 set(PROTO_LINK_LIB
@@ -150,9 +153,9 @@ cann_install(
 
 # -----------------------------------------------------------------------
 
-file(GLOB TILING_SRC ./**/ai_cpu/impl/kernels/*.cc)
+file(GLOB AICPU_SRC ./**/aicpu/impl/*.cc)
 
-set(TILING_LINK_LIB
+set(AICPU_LINK_LIB
     -Wl,--no-as-needed
     #graph
     #exe_graph
@@ -167,27 +170,30 @@ set(TILING_LINK_LIB
 set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel)
 set(AICPU_INCLUDE ${AICPU_OPP_ENV}/inc)
 
-set(TILING_INC
+set(AICPU_INC
     ${METADEF_DIR}/inc
     ${METADEF_DIR}/inc/external
     ${METADEF_DIR}/third_party/graphengine/inc
     ${METADEF_DIR}/third_party/graphengine/inc/external
     ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${CANN_ROOT_DIR}/community/common
+    ${CANN_ROOT_DIR}/community/common/inc
     ${AICPU_INCLUDE}
+    ${EIGEN_INCLUDE}
     ${C_SEC_INCLUDE}
     #${Protobuf_INCLUDE}
 )
 
 add_library(cpu_kernels SHARED
-    ${TILING_SRC}
+    ${AICPU_SRC}
 )
 
 target_include_directories(cpu_kernels PRIVATE
-    ${TILING_INC}
+    ${AICPU_INC}
 )
 
 target_link_libraries(cpu_kernels PRIVATE
-    ${TILING_LINK_LIB}
+    ${AICPU_LINK_LIB}
 )
 
 target_compile_options(cpu_kernels PRIVATE
@@ -197,9 +203,10 @@ target_compile_options(cpu_kernels PRIVATE
     "-fno-common"
 )
 
-set(TILING_PATH "${INSTALL_DIR}/community/cpu_kernels")
+
+set(AICPU_PATH "${INSTALL_DIR}/community/aicpu/lib")
 cann_install(
     TARGET      cpu_kernels
     FILES       $<TARGET_FILE:cpu_kernels>
-    DESTINATION "${TILING_PATH}"
+    DESTINATION "${AICPU_PATH}"
 )
