@@ -64,18 +64,20 @@ target_compile_options(op_proto PRIVATE
     -Dgoogle=ascend_private
 )
 
-set(PROTO_PATH "${INSTALL_DIR}/community/op_proto/")
+set(PROTO_INSTALL_PATH "${INSTALL_DIR}/community/op_proto/")
 cann_install(
     TARGET      op_proto
     FILES       $<TARGET_FILE:op_proto>
-    DESTINATION "${PROTO_PATH}"
+    DESTINATION "${PROTO_INSTALL_PATH}"
 )
 
+file(GLOB PROTO_INC_FILES ./**/op_proto/inc/*.h)
+set(PROTO_INC_INSTALL_PATH "${INSTALL_DIR}/community/op_proto/inc")
 add_custom_target(copy_proto_inc ALL)
 cann_install(
     TARGET      copy_proto_inc
-    DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}/add/op_proto/inc
-    DESTINATION "${PROTO_PATH}"
+    FILES       ${PROTO_INC_FILES}
+    DESTINATION "${PROTO_INC_INSTALL_PATH}"
 )
 
 if(ALL_UT OR PROTO_UT)
@@ -149,11 +151,11 @@ target_compile_options(op_tiling PRIVATE
     "-fno-common"
 )
 
-set(TILING_PATH "${INSTALL_DIR}/community/op_tiling")
+set(TILING_INSTALL_PATH "${INSTALL_DIR}/community/op_tiling")
 cann_install(
     TARGET      op_tiling
     FILES       $<TARGET_FILE:op_tiling>
-    DESTINATION "${TILING_PATH}"
+    DESTINATION "${TILING_INSTALL_PATH}"
 )
 
 if(ALL_UT OR TILING_UT)
@@ -182,7 +184,14 @@ if(ALL_UT OR TILING_UT)
 endif()
 
 # -----------------------------------------------------------------------
-
+file(GLOB OP_IMPL_FILES ./**/ai_core/cust_impl/*.py)
+set(OP_IMPL_INSTALL_PATH "${INSTALL_DIR}/community/op_impl")
+add_custom_target(copy_op_impl ALL)
+cann_install(
+    TARGET      copy_op_impl
+    FILES       ${OP_IMPL_FILES}
+    DESTINATION "${OP_IMPL_INSTALL_PATH}"
+)
 # --------------------------------aicpu---------------------------------------
 
 file(GLOB AICPU_SRC ./**/aicpu/impl/*.cc)
@@ -234,12 +243,4 @@ target_compile_options(cpu_kernels PRIVATE
     -Dgoogle=ascend_private
     "-fno-strict-aliasing"
     "-fno-common"
-)
-
-
-set(AICPU_PATH "${INSTALL_DIR}/community/aicpu/lib")
-cann_install(
-    TARGET      cpu_kernels
-    FILES       $<TARGET_FILE:cpu_kernels>
-    DESTINATION "${AICPU_PATH}"
 )
