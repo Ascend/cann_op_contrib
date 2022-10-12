@@ -27,6 +27,7 @@ set(PROTO_INC
     ${METADEF_DIR}/third_party/fwkacllib/inc/toolchain
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
+    ${CANN_ROOT_DIR}/community/common/src
     #${Protobuf_INCLUDE}
     ${C_SEC_INCLUDE}
 )
@@ -209,6 +210,7 @@ set(AICPU_INC
     ${METADEF_DIR}/third_party/fwkacllib/inc
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
+    ${CANN_ROOT_DIR}/community/common/src
     ${AICPU_INCLUDE}
     ${EIGEN_INCLUDE}
     ${C_SEC_INCLUDE}
