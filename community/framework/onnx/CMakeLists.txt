@@ -41,11 +41,11 @@ add_library(onnx_plugin SHARED
     ${_proto_h}
 )
 
+add_dependencies(onnx_plugin secure_c external_protobuf external_gtest)
+
 target_include_directories(onnx_plugin PRIVATE
     ${ONNX_PLUGIN_INC}
 )
-
-#(onnx_plugin PRIVATE "/home/cjl/Ascend/latest/compiler/lib64")
 
 target_link_libraries(onnx_plugin PRIVATE
     ${ONNX_PLUGIN_LINK_LIB}

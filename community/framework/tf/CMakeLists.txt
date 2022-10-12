@@ -54,11 +54,11 @@ add_library(tf_plugin SHARED
     ${_proto_h}
 )
 
+add_dependencies(tf_plugin secure_c external_protobuf external_gtest)
+
 target_include_directories(tf_plugin PRIVATE
     ${TF_PLUGIN_INC}
 )
-
-#target_link_directories(tf_plugin PRIVATE "/home/cjl/Ascend/latest/compiler/lib64")
 
 target_link_libraries(tf_plugin PRIVATE
     ${TF_PLUGIN_LINK_LIB}

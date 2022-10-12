@@ -34,8 +34,8 @@ set(PROTO_INC
 set(PROTO_LINK_LIB
     -Wl,--no-as-needed
     #exe_graph
-    #graph
-    #register
+    graph
+    register
     #alog
     #error_manager
     #ascend_protobuf
@@ -47,6 +47,8 @@ add_library(op_proto SHARED
     ${PROTO_SRC}
     ${_proto_h}
 )
+
+add_dependencies(op_proto secure_c external_protobuf external_gtest)
 
 target_include_directories(op_proto PRIVATE
     ${PROTO_INC}
@@ -80,6 +82,7 @@ if(ALL_UT OR PROTO_UT)
         ${PROTO_SRC}
         ${_proto_h}
     )
+    add_dependencies(op_proto_llt secure_c external_protobuf external_gtest)
     if(NOT ${CMAKE_BUILD_MODE} STREQUAL "FALSE")
         set(compile_opt_mode ${CMAKE_BUILD_MODE})
     else()
@@ -104,9 +107,9 @@ file(GLOB TILING_SRC ./**/ai_core/op_tiling/*.cc)
 
 set(TILING_LINK_LIB
     -Wl,--no-as-needed
-    #graph
+    graph
     #exe_graph
-    #register
+    register
     #alog
     #error_manager
     #ascend_protobuf
@@ -127,6 +130,8 @@ set(TILING_INC
 add_library(op_tiling SHARED
     ${TILING_SRC}
 )
+
+add_dependencies(op_tiling secure_c external_protobuf external_gtest)
 
 target_include_directories(op_tiling PRIVATE
     ${TILING_INC}
@@ -150,63 +155,30 @@ cann_install(
     DESTINATION "${TILING_PATH}"
 )
 
+if(ALL_UT OR TILING_UT)
+    add_library(op_tiling_llt STATIC
+        ${TILING_SRC}
+    )
+    add_dependencies(op_tiling_llt secure_c external_protobuf external_gtest)
+    if(NOT ${CMAKE_BUILD_MODE} STREQUAL "FALSE")
+        set(compile_opt_mode ${CMAKE_BUILD_MODE})
+    else()
+        set(compile_opt_mode -O0)
+    endif()
+    target_include_directories(op_tiling_llt PUBLIC
+        ${TILING_INC}
+    )
+    target_compile_options(op_tiling_llt PUBLIC
+        ${compile_opt_mode}
+        -Dgoogle=ascend_private
+    )
+    target_link_libraries(op_tiling_llt
+        PRIVATE
+        $<BUILD_INTERFACE:intf_llt_pub>
+        PUBLIC
+        ${TILING_LINK_LIB}
+    )
+endif()
 
 # -----------------------------------------------------------------------
 
-file(GLOB AICPU_SRC ./**/aicpu/impl/*.cc)
-
-set(AICPU_LINK_LIB
-    -Wl,--no-as-needed
-    #graph
-    #exe_graph
-    #register
-    #alog
-    #error_manager
-    #ascend_protobuf
-    -Wl,--as-needed
-    #c_sec
-)
-
-set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel)
-set(AICPU_INCLUDE ${AICPU_OPP_ENV}/inc)
-
-set(AICPU_INC
-    ${METADEF_DIR}/inc
-    ${METADEF_DIR}/inc/external
-    ${METADEF_DIR}/third_party/graphengine/inc
-    ${METADEF_DIR}/third_party/graphengine/inc/external
-    ${METADEF_DIR}/third_party/fwkacllib/inc
-    ${CANN_ROOT_DIR}/community/common
-    ${CANN_ROOT_DIR}/community/common/inc
-    ${AICPU_INCLUDE}
-    ${EIGEN_INCLUDE}
-    ${C_SEC_INCLUDE}
-    #${Protobuf_INCLUDE}
-)
-
-add_library(cpu_kernels SHARED
-    ${AICPU_SRC}
-)
-
-target_include_directories(cpu_kernels PRIVATE
-    ${AICPU_INC}
-)
-
-target_link_libraries(cpu_kernels PRIVATE
-    ${AICPU_LINK_LIB}
-)
-
-target_compile_options(cpu_kernels PRIVATE
-    ${compile_opt_mode}
-    -Dgoogle=ascend_private
-    "-fno-strict-aliasing"
-    "-fno-common"
-)
-
-
-set(AICPU_PATH "${INSTALL_DIR}/community/aicpu/lib")
-cann_install(
-    TARGET      cpu_kernels
-    FILES       $<TARGET_FILE:cpu_kernels>
-    DESTINATION "${AICPU_PATH}"
-)
