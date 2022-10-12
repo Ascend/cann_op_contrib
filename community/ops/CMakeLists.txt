@@ -182,3 +182,62 @@ endif()
 
 # -----------------------------------------------------------------------
 
+# --------------------------------aicpu---------------------------------------
+
+file(GLOB AICPU_SRC ./**/aicpu/impl/*.cc)
+
+set(AICPU_LINK_LIB
+    -Wl,--no-as-needed
+    #graph
+    #exe_graph
+    #register
+    #alog
+    #error_manager
+    #ascend_protobuf
+    -Wl,--as-needed
+    #c_sec
+)
+
+set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/built-in/op_impl/aicpu/aicpu_kernel)
+set(AICPU_INCLUDE ${AICPU_OPP_ENV}/inc)
+
+set(AICPU_INC
+    ${METADEF_DIR}/inc
+    ${METADEF_DIR}/inc/external
+    ${METADEF_DIR}/third_party/graphengine/inc
+    ${METADEF_DIR}/third_party/graphengine/inc/external
+    ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${CANN_ROOT_DIR}/community/common
+    ${CANN_ROOT_DIR}/community/common/inc
+    ${AICPU_INCLUDE}
+    ${EIGEN_INCLUDE}
+    ${C_SEC_INCLUDE}
+    #${Protobuf_INCLUDE}
+)
+
+add_library(cpu_kernels SHARED
+    ${AICPU_SRC}
+)
+
+target_include_directories(cpu_kernels PRIVATE
+    ${AICPU_INC}
+)
+
+target_link_libraries(cpu_kernels PRIVATE
+    ${AICPU_LINK_LIB}
+)
+
+target_compile_options(cpu_kernels PRIVATE
+    ${compile_opt_mode}
+    -Dgoogle=ascend_private
+    "-fno-strict-aliasing"
+    "-fno-common"
+)
+
+
+set(AICPU_PATH "${INSTALL_DIR}/community/aicpu/lib")
+cann_install(
+    TARGET      cpu_kernels
+    FILES       $<TARGET_FILE:cpu_kernels>
+    DESTINATION "${AICPU_PATH}"
+)
