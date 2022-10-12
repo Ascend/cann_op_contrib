@@ -194,15 +194,38 @@ cann_install(
 )
 # ----------------------------------------------------------------------------
 set(INI_PARSER ${CANN_ROOT_DIR}/scripts/ai_core_parse_ini.py)
-file(GLOB OP_INI_FILES ./**/ai_core/op_info_cfg/*.ini)
-file(MAKE_DIRECTORY ${INSTALL_DIR}/community/op_config)
-set(OP_INI_INSTALL_PATH ${INSTALL_DIR}/community/op_config/aic_ops_info.json)
-add_custom_command(OUTPUT ${OP_INI_INSTALL_PATH}
-    COMMAND python3 ${INI_PARSER} ${OP_INI_FILES} ${OP_INI_INSTALL_PATH} 1>/dev/null
-    COMMENT "Parsing ini file ${OP_INI_FILES}"
+
+file(GLOB OP_310P_INI_FILES ./**/ai_core/op_info_cfg/ascend310p/*.ini)
+file(MAKE_DIRECTORY ${INSTALL_DIR}/community/op_config/ascend310p)
+set(OP_310P_INI_INSTALL_PATH ${INSTALL_DIR}/community/op_config/ascend310p/aic_ops_info.json)
+add_custom_command(OUTPUT ${OP_310P_INI_INSTALL_PATH}
+    COMMAND python3 ${INI_PARSER} ${OP_310P_INI_FILES} ${OP_310P_INI_INSTALL_PATH} 1>/dev/null
+    COMMENT "Parsing ini file ${OP_310P_INI_FILES}"
 )
-add_custom_target(aic_ops_info ALL
-    DEPENDS ${OP_INI_INSTALL_PATH}
+add_custom_target(aic_310p_ops_info ALL
+    DEPENDS ${OP_310P_INI_INSTALL_PATH}
+)
+
+file(GLOB OP_910_INI_FILES ./**/ai_core/op_info_cfg/ascend910/*.ini)
+file(MAKE_DIRECTORY ${INSTALL_DIR}/community/op_config/ascend910)
+set(OP_910_INI_INSTALL_PATH ${INSTALL_DIR}/community/op_config/ascend910/aic_ops_info.json)
+add_custom_command(OUTPUT ${OP_910_INI_INSTALL_PATH}
+    COMMAND python3 ${INI_PARSER} ${OP_910_INI_FILES} ${OP_910_INI_INSTALL_PATH} 1>/dev/null
+    COMMENT "Parsing ini file ${OP_910_INI_FILES}"
+)
+add_custom_target(aic_910_ops_info ALL
+    DEPENDS ${OP_910_INI_INSTALL_PATH}
+)
+
+file(GLOB OP_910B_INI_FILES ./**/ai_core/op_info_cfg/ascend910b/*.ini)
+file(MAKE_DIRECTORY ${INSTALL_DIR}/community/op_config/ascend910b)
+set(OP_910B_INI_INSTALL_PATH ${INSTALL_DIR}/community/op_config/ascend910b/aic_ops_info.json)
+add_custom_command(OUTPUT ${OP_910B_INI_INSTALL_PATH}
+    COMMAND python3 ${INI_PARSER} ${OP_910B_INI_FILES} ${OP_910B_INI_INSTALL_PATH} 1>/dev/null
+    COMMENT "Parsing ini file ${OP_910B_INI_FILES}"
+)
+add_custom_target(aic_910b_ops_info ALL
+    DEPENDS ${OP_910B_INI_INSTALL_PATH}
 )
 # --------------------------------aicpu---------------------------------------
 
