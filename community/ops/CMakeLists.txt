@@ -134,21 +134,21 @@ set(TILING_INC
     #${Protobuf_INCLUDE}
 )
 
-add_library(op_tiling SHARED
+add_library(optiling SHARED
     ${TILING_SRC}
 )
 
-add_dependencies(op_tiling secure_c external_protobuf external_gtest)
+add_dependencies(optiling secure_c external_protobuf external_gtest)
 
-target_include_directories(op_tiling PRIVATE
+target_include_directories(optiling PRIVATE
     ${TILING_INC}
 )
 
-target_link_libraries(op_tiling PRIVATE
+target_link_libraries(optiling PRIVATE
     ${TILING_LINK_LIB}
 )
 
-target_compile_options(op_tiling PRIVATE
+target_compile_options(optiling PRIVATE
     ${compile_opt_mode}
     -Dgoogle=ascend_private
     "-fno-strict-aliasing"
@@ -157,8 +157,8 @@ target_compile_options(op_tiling PRIVATE
 
 set(TILING_INSTALL_PATH "${INSTALL_DIR}/community/op_tiling")
 cann_install(
-    TARGET      op_tiling
-    FILES       $<TARGET_FILE:op_tiling>
+    TARGET      optiling
+    FILES       $<TARGET_FILE:optiling>
     DESTINATION "${TILING_INSTALL_PATH}"
 )
 
