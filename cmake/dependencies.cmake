@@ -21,12 +21,15 @@ else()
 endif()
 message("Search libs under install path ${ASCEND_DIR}")
 
-#set(ASCEND_ATC_DIR ${ASCEND_DIR}/compiler/lib64)
+set(ASCEND_ATC_DIR ${ASCEND_DIR}/compiler/lib64)
 #set(ASCEND_OPENSDK_LIB ${ASCEND_DIR}/opensdk/opensdk/lib)
-set(CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/cmake)
+#set(CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/cmake)
+
+find_module(graph libgraph.so ${ASCEND_ATC_DIR})
+find_module(register libregister.so ${ASCEND_ATC_DIR})
 
 #find_package(slog CONFIG REQUIRED)
-find_package(metadef CONFIG REQUIRED)
+#find_package(metadef CONFIG REQUIRED)
 #find_module(ascend_protobuf libascend_protobuf.so.3.13.0.0 ${ASCEND_ATC_DIR})
 #find_package(mmpa CONFIG REQUIRED)
 #find_package(parser CONFIG REQUIRED)
