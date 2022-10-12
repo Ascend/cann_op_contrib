@@ -67,7 +67,7 @@ int64_t GetByteLenByString(const std::string& op_type) {
   if (find_it != STR_TO_DATATYPE.end()) {
     return GetSizeByDataType(find_it->second);
   }
-  OP_LOGW("GetByteLen", "con not get the dtype[%s] in ge::DataType list. will return 0", op_type.c_str());
+  //OP_LOGW("GetByteLen", "con not get the dtype[%s] in ge::DataType list. will return 0", op_type.c_str());
   return 0;
 }
 
@@ -76,7 +76,7 @@ ge::DataType GetGeTypeFromStr(const std::string& dtype_str) {
   if (find_it != STR_TO_DATATYPE.end()) {
     return find_it->second;
   }
-  OP_LOGW("GetGeTypeFromStr", "con not get the dtype[%s] in ge::DataType list. will return DT_MAX", dtype_str.c_str());
+  //OP_LOGW("GetGeTypeFromStr", "con not get the dtype[%s] in ge::DataType list. will return DT_MAX", dtype_str.c_str());
   return DT_MAX;
 }
 
@@ -119,19 +119,22 @@ static bool TransJsonToVector(const ge::Operator& op, const nlohmann::json& comp
   for (size_t i = 0; i < compile_info_key.size(); i++) {
     auto it = optional_key.find(compile_info_key[i]);
     if (it == optional_key.end()) {
-      OP_TILING_CHECK(!GetCompileValue(all_vars, compile_info_key[i], compile_info_vec[i]),
-                      VECTOR_INNER_ERR_REPORT_TILIING(TbeGetOpType(op).c_str(), "GetCompileParams, get %s error",
-                                                      compile_info_key[i].c_str()),
-                      return false);
+      //OP_TILING_CHECK(!GetCompileValue(all_vars, compile_info_key[i], compile_info_vec[i]),
+        //              VECTOR_INNER_ERR_REPORT_TILIING(TbeGetOpType(op).c_str(), "GetCompileParams, get %s error",
+          //                                            compile_info_key[i].c_str()),
+            //          return false);
+      if (!GetCompileValue(all_vars, compile_info_key[i], compile_info_vec[i])) {
+        return false;
+      }
     } else {
       const int64_t default_value = it->second;
       GetCompileValue(all_vars, compile_info_key[i], compile_info_vec[i], default_value);
     }
-    OP_LOGD(TbeGetOpType(op).c_str(), "TransJsonToVector key:value = %s:%ld", compile_info_key[i].c_str(),
-            compile_info_vec[i]);
+    //OP_LOGD(TbeGetOpType(op).c_str(), "TransJsonToVector key:value = %s:%ld", compile_info_key[i].c_str(),
+      //      compile_info_vec[i]);
   }
 
-  OP_LOGD(TbeGetOpType(op).c_str(), "TransJsonToVector end");
+  //OP_LOGD(TbeGetOpType(op).c_str(), "TransJsonToVector end");
   return true;
 }
 
@@ -141,7 +144,10 @@ void* ParseCompileToInt64Vec(const ge::Operator& op, const ge::AscendString comp
   auto json_object = std::make_shared<nlohmann::json>(nlohmann::json::parse(compile_info.GetString()));
   std::vector<int64_t>* parsed_vector_ptr = new std::vector<int64_t>(compile_info_key.size(), 0);
   bool bsucc = TransJsonToVector(op, *json_object, compile_info_key, optional_key, *parsed_vector_ptr);
-  OP_TILING_CHECK(!bsucc, delete parsed_vector_ptr, return nullptr);
+  //OP_TILING_CHECK(!bsucc, delete parsed_vector_ptr, return nullptr);
+  if (!bsucc) {
+    return nullptr;
+  }
   return static_cast<void*>(parsed_vector_ptr);
 }
 
@@ -150,8 +156,11 @@ bool ParseCompileToInt64Vec(const ge::Operator& op, const ge::AscendString compi
                             const std::map<std::string, int64_t>& optional_key, std::vector<int64_t>& compile_vec) {
   std::shared_ptr<nlohmann::json> json_object =
       ops::make_shared_nothrow<nlohmann::json>(nlohmann::json::parse(compile_info.GetString()));
-  OP_TILING_CHECK(json_object == nullptr, OP_LOGW(TbeGetOpType(op), "Parse the compile info failed, will return false"),
-                  return false);
+  //OP_TILING_CHECK(json_object == nullptr, OP_LOGW(TbeGetOpType(op), "Parse the compile info failed, will return false"),
+    //              return false);
+  if (json_object == nullptr) {
+    return false;
+  }
   return TransJsonToVector(op, *json_object, compile_info_key, optional_key, compile_vec);
 }
 
@@ -167,18 +176,24 @@ bool AddReducMeanCof(const GeShape &input_shape, const DataType input_dtype,
       single_reduce_axis += dim_len;
     }
     // check reduce axis value
-    OP_TILING_CHECK((single_reduce_axis < 0) && (single_reduce_axis >= static_cast<int32_t>(dim_len)),
-                    VECTOR_INNER_ERR_REPORT_TILIING("AddReducMeanCof", "value of reduce axis %d is illegel",
-                                                    single_reduce_axis),
-                    return false);
+    //OP_TILING_CHECK((single_reduce_axis < 0) && (single_reduce_axis >= static_cast<int32_t>(dim_len)),
+      //              VECTOR_INNER_ERR_REPORT_TILIING("AddReducMeanCof", "value of reduce axis %d is illegel",
+        //                                            single_reduce_axis),
+          //          return false);
+    if ((single_reduce_axis < 0) && (single_reduce_axis >= static_cast<int32_t>(dim_len))) {
+      return false;
+    }
     int64_t reduce_dim = input_shape.GetDim(single_reduce_axis);
-    OP_TILING_CHECK(reduce_dim == 0,
-                    OP_LOGW("AddReducMeanCof", "the reduce dim is 0, will not use reduce_mean_cof"),
-                    return true);
+    //OP_TILING_CHECK(reduce_dim == 0,
+      //              OP_LOGW("AddReducMeanCof", "the reduce dim is 0, will not use reduce_mean_cof"),
+        //            return true);
+    if (reduce_dim == 0) {
+      return true;
+    }
     reduce_mean_cof = reduce_mean_cof / reduce_dim;
   }
-  OP_LOGD("AddReducMeanCof", "AddReducMeanCof dtype is %s", to_string(input_dtype).c_str());
-  OP_LOGD("AddReducMeanCof", "AddReducMeanCof  cof  is %1f", reduce_mean_cof);
+  //OP_LOGD("AddReducMeanCof", "AddReducMeanCof dtype is %s", to_string(input_dtype).c_str());
+  //OP_LOGD("AddReducMeanCof", "AddReducMeanCof  cof  is %1f", reduce_mean_cof);
   switch (input_dtype) {
     case DT_FLOAT:
       run_info.AddTilingData((float)reduce_mean_cof);
@@ -188,7 +203,7 @@ bool AddReducMeanCof(const GeShape &input_shape, const DataType input_dtype,
       run_info.AddTilingData((uint16_t)0);
       return true;
     default:
-      OP_LOGW("AddReducMeanCof", "AddReducMeanCof of dtype[%s] has not implement.", to_string(input_dtype).c_str());
+      //OP_LOGW("AddReducMeanCof", "AddReducMeanCof of dtype[%s] has not implement.", to_string(input_dtype).c_str());
       return false;
   }
 }

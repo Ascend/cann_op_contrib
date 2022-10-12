@@ -36,8 +36,9 @@
 #define REGISTER_OP_TILING_V3_WITH_VECTOR(optype, opfunc, vector_key, optional_key)                                \
   bool Tbe##optype##TilingV3WithVec(const ge::Operator& para, const void* op_info_void,                            \
                                     optiling::utils::OpRunInfo& rinfo) {                                           \
-    OP_TILING_CHECK(op_info_void == nullptr, VECTOR_INNER_ERR_REPORT_TILIING(#optype, "op_info_void is nullptr."), \
-                    return false);                                                                                 \
+    if (op_info_void == nullptr) {                                                                                 \
+      return false;                                                                                                 \
+    }                                                                                                               \
     return opfunc(#optype, para, *(const std::vector<int64_t>*)op_info_void, rinfo);                               \
   }                                                                                                                \
   void* Tbe##optype##TilingV3WithVecParsefunc(const ge::Operator& para, const ge::AscendString& compile_info) {    \

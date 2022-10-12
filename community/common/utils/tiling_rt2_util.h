@@ -53,21 +53,28 @@ bool CalcReduceMeanCof(const gert::Shape& input_shape, const std::vector<T>& red
   // init reduce_mean_cof is 1.0
   reduce_mean_cof = 1.0;
   for (size_t i = 0; i < ori_reduce_axis_len; i++) {
-    OP_TILING_CHECK(
-        !ops::IsDimValid(dim_len, reduce_axis[i]),
-        VECTOR_INNER_ERR_REPORT_TILIING("CalcReduceMeanCof", "%s",
-                                        ops::GenInvalidDimMsg("reduce_axis", i, dim_len, reduce_axis[i]).c_str()),
-        return false);
+    //OP_TILING_CHECK(
+      //  !ops::IsDimValid(dim_len, reduce_axis[i]),
+       // VECTOR_INNER_ERR_REPORT_TILIING("CalcReduceMeanCof", "%s",
+         //                               ops::GenInvalidDimMsg("reduce_axis", i, dim_len, reduce_axis[i]).c_str()),
+        //return false);
+
+    if (!ops::IsDimValid(dim_len, reduce_axis[i])) {
+      return false;
+    }
 
     // convert reduce axis (like: -1 -> (dim_len - 1))
     T single_reduce_axis = reduce_axis[i] < 0 ? reduce_axis[i] + dim_len : reduce_axis[i];
 
     int64_t reduce_dim = input_shape.GetDim(single_reduce_axis);
-    OP_TILING_CHECK(reduce_dim == 0, OP_LOGI("CalcReduceMeanCof", "the reduce dim is 0, will ignore reduce_mean_cof"),
-                    return true);
+    //OP_TILING_CHECK(reduce_dim == 0, OP_LOGI("CalcReduceMeanCof", "the reduce dim is 0, will ignore reduce_mean_cof"),
+      //              return true);
+    if (reduce_dim == 0) {
+      return true;
+    }
     reduce_mean_cof = reduce_mean_cof / reduce_dim;
   }
-  OP_LOGD("CalcReduceMeanCof", "CalcReduceMeanCof cof is %1f", reduce_mean_cof);
+  //OP_LOGD("CalcReduceMeanCof", "CalcReduceMeanCof cof is %1f", reduce_mean_cof);
 
   return true;
 }
@@ -85,7 +92,7 @@ bool AddReduceMeanCof(const gert::Shape& input_shape, const ge::DataType input_d
                       const std::vector<T>& reduce_axis, gert::TilingData* tiling_data) {
   float reduce_mean_cof = 1.0;
   bool calcu_flag = CalcReduceMeanCof(input_shape, reduce_axis, reduce_mean_cof);
-  OP_LOGD("AddReduceMeanCof", "AddReduceMeanCof dtype is %s", ops::ToString(input_dtype).c_str());
+  //OP_LOGD("AddReduceMeanCof", "AddReduceMeanCof dtype is %s", ops::ToString(input_dtype).c_str());
   switch (input_dtype) {
     case ge::DT_FLOAT:
       tiling_data->Append((float)reduce_mean_cof);
@@ -95,8 +102,8 @@ bool AddReduceMeanCof(const gert::Shape& input_shape, const ge::DataType input_d
       tiling_data->Append((uint16_t)0);
       return calcu_flag;
     default:
-      OP_LOGW("AddReduceMeanCof", "Only support [DT_FLOAT, DT_FLOAT16], but is [%s]",
-              ops::ToString(input_dtype).c_str());
+      //OP_LOGW("AddReduceMeanCof", "Only support [DT_FLOAT, DT_FLOAT16], but is [%s]",
+        //      ops::ToString(input_dtype).c_str());
       return false;
   }
 }
@@ -108,7 +115,7 @@ bool AddReduceMeanCof(const gert::Shape& input_shape, const ge::DataType input_d
  */
 inline std::unique_ptr<nlohmann::json> GetCompileInfoJson(gert::TilingParseContext* context) {
   auto json_str = context->GetCompiledJson();
-  OPS_CHECK_NULL_WITH_CONTEXT_RET(context, json_str, nullptr);
+  //OPS_CHECK_NULL_WITH_CONTEXT_RET(context, json_str, nullptr);
   std::unique_ptr<nlohmann::json> parsed_object_cinfo(new nlohmann::json(nlohmann::json::parse(json_str)));
   return parsed_object_cinfo;
 }

@@ -27,6 +27,7 @@ set(ASCEND_ATC_DIR ${ASCEND_DIR}/compiler/lib64)
 
 find_module(graph libgraph.so ${ASCEND_ATC_DIR})
 find_module(register libregister.so ${ASCEND_ATC_DIR})
+find_module(exe_graph libexe_graph.so ${ASCEND_ATC_DIR})
 
 #find_package(slog CONFIG REQUIRED)
 #find_package(metadef CONFIG REQUIRED)

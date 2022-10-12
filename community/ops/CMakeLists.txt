@@ -15,7 +15,11 @@
 set(PROTO "${METADEF_DIR}/proto/insert_op.proto")
 protobuf_generate(opp _proto_cc _proto_h ${PROTO})
 
-file(GLOB PROTO_SRC ./**/op_proto/*.cc)
+file(GLOB PROTO_SRC
+    ./**/op_proto/*.cc
+    #${CANN_ROOT_DIR}/community/common/src/*.cc
+    #${CANN_ROOT_DIR}/community/common/utils/*.cc
+)
 
 set(PROTO_INC
     ${METADEF_DIR}/inc
@@ -25,16 +29,16 @@ set(PROTO_INC
     ${METADEF_DIR}/third_party/graphengine/inc/external
     ${METADEF_DIR}/third_party/fwkacllib/inc
     ${METADEF_DIR}/third_party/fwkacllib/inc/toolchain
-    ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
-    ${CANN_ROOT_DIR}/community/common/src
+    ${CANN_ROOT_DIR}/community/common
+    #${CANN_ROOT_DIR}/community/common/src
     #${Protobuf_INCLUDE}
     ${C_SEC_INCLUDE}
 )
 
 set(PROTO_LINK_LIB
     -Wl,--no-as-needed
-    #exe_graph
+    exe_graph
     graph
     register
     #alog
@@ -107,7 +111,11 @@ if(ALL_UT OR PROTO_UT)
     )
 endif()
 # -----------------------------------------------------------------------
-file(GLOB TILING_SRC ./**/ai_core/op_tiling/*.cc)
+file(GLOB TILING_SRC
+    ./**/ai_core/op_tiling/*.cc
+    ${CANN_ROOT_DIR}/community/common/utils/tiling_util.cc
+    ${CANN_ROOT_DIR}/community/common/utils/fp16_t.cc
+)
 
 set(TILING_LINK_LIB
     -Wl,--no-as-needed
@@ -125,6 +133,7 @@ set(TILING_INC
     ${METADEF_DIR}/inc
     ${METADEF_DIR}/inc/exe_graph
     ${METADEF_DIR}/inc/external
+    ${METADEF_DIR}/inc/external/graph
     ${METADEF_DIR}/third_party/graphengine/inc
     ${METADEF_DIR}/third_party/graphengine/inc/external
     ${METADEF_DIR}/third_party/fwkacllib/inc
@@ -139,7 +148,7 @@ add_library(optiling SHARED
     ${TILING_SRC}
 )
 
-add_dependencies(optiling secure_c external_protobuf external_gtest)
+add_dependencies(optiling secure_c external_protobuf external_gtest nlohmann_json)
 
 target_include_directories(optiling PRIVATE
     ${TILING_INC}

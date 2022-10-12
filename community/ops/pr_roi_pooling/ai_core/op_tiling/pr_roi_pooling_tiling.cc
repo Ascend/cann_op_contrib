@@ -19,7 +19,7 @@
  * \brief tiling function of op
  */
 #include "utils/tiling_util.h"
-#include "op_util.h"
+//#include "op_util.h"
 // #include "register/op_compile_info_base.h"
 
 
@@ -69,6 +69,7 @@ void SetPrRoIPoolingParams(const PrRoIPoolingTilingParams& Params, utils::OpRunI
   runInfo.AddTilingData(Params.num_tail_core);
 }
 
+/*
 void PrintPrRoIPoolingParams(const PrRoIPoolingTilingParams& params) {
   OP_LOGD("[PrRoIPoolingTiling]", "tiling_mode=%d.", params.tiling_mode);
   OP_LOGD("[PrRoIPoolingTiling]", "rois_n=%d.", params.rois_n);
@@ -79,17 +80,18 @@ void PrintPrRoIPoolingParams(const PrRoIPoolingTilingParams& params) {
   OP_LOGD("[PrRoIPoolingTiling]", "used_core_num=%d.", params.used_core_num);
   OP_LOGD("[PrRoIPoolingTiling]", "num_tail_core=%d.", params.num_tail_core);
 }
+*/
 
 static bool CheckTensorShape(const std::string& opType, GeShape& x_diff_shape, GeShape& rois_shape) {
   int64_t x_diff_shape_dims = x_diff_shape.GetDimNum();
   int64_t rois_shape_dims = rois_shape.GetDimNum();
   if (x_diff_shape_dims != ROI_ROW_LEN) {
-    VECTOR_INNER_ERR_REPORT_TILIING(opType,
-                                    "op [PrRoIPoolingTiling] : CheckTensorShape, shape of features check failed.");
+    //VECTOR_INNER_ERR_REPORT_TILIING(opType,
+    //                                "op [PrRoIPoolingTiling] : CheckTensorShape, shape of features check failed.");
     return false;
   }
   if (rois_shape_dims != ROI_DIMS) {
-    VECTOR_INNER_ERR_REPORT_TILIING(opType, "op [PrRoIPoolingTiling] : CheckTensorShape, dims of rois must be 2.");
+    //VECTOR_INNER_ERR_REPORT_TILIING(opType, "op [PrRoIPoolingTiling] : CheckTensorShape, dims of rois must be 2.");
     return false;
   }
 
@@ -107,32 +109,39 @@ static void CalcBlockNum(const int64_t& core_num, const int64_t& rois_n, int64_t
 
 bool PrRoIPoolingTiling(const std::string& opType, const ge::Operator& opParas, const std::vector<int64_t>& op_info,
                         utils::OpRunInfo& runInfo) {
-  OP_LOGD("op[%s] PrRoIPoolingTiling running.", opType.c_str());
+  //OP_LOGD("op[%s] PrRoIPoolingTiling running.", opType.c_str());
   auto operator_info = ge::OpDescUtils::GetOpDescFromOperator(opParas);
-  OP_TILING_CHECK(operator_info == nullptr, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get op_info failed."),
-                  return false);
+  //OP_TILING_CHECK(operator_info == nullptr, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get op_info failed."),
+  //                return false);
 
   auto features_desc = operator_info->MutableInputDesc(0);
-  OP_TILING_CHECK(features_desc == nullptr, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get features_desc failed."),
-                  return false);
+  //OP_TILING_CHECK(features_desc == nullptr, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get features_desc failed."),
+  //                return false);
   GeShape& feature_map_shape = features_desc->MutableShape();
 
   auto rois_desc = operator_info->MutableInputDesc(1);
-  OP_TILING_CHECK(rois_desc == nullptr, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get rois_desc failed."),
-                  return false);
+  //OP_TILING_CHECK(rois_desc == nullptr, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get rois_desc failed."),
+  //                return false);
   GeShape& rois_shape = rois_desc->MutableShape();
 
   // get compile info
-  OP_TILING_CHECK(COMPILE_INFO_KEY.size() != op_info.size(),
-                  VECTOR_INNER_ERR_REPORT_TILIING(opType, "parse op_info failed."), return false);
+  //OP_TILING_CHECK(COMPILE_INFO_KEY.size() != op_info.size(),
+  //                VECTOR_INNER_ERR_REPORT_TILIING(opType, "parse op_info failed."), return false);
+  if (COMPILE_INFO_KEY.size() != op_info.size()) {
+    return false;
+  }
+
   int64_t core_num = op_info[0];
-  OP_TILING_CHECK(core_num <= 0,
-                  VECTOR_INNER_ERR_REPORT_TILIING(opType, "get invalid core_num."), return false);
+  //OP_TILING_CHECK(core_num <= 0,
+  //                VECTOR_INNER_ERR_REPORT_TILIING(opType, "get invalid core_num."), return false);
+  if (core_num <= 0) {
+    return false;
+  }
 
   bool flag = true;
   flag = CheckTensorShape(opType, feature_map_shape, rois_shape);
   if (!flag) {
-    VECTOR_INNER_ERR_REPORT_TILIING(opType, "PrRoIPoolingTiling: params check failed.");
+    //VECTOR_INNER_ERR_REPORT_TILIING(opType, "PrRoIPoolingTiling: params check failed.");
     return false;
   }
 
@@ -140,7 +149,10 @@ bool PrRoIPoolingTiling(const std::string& opType, const ge::Operator& opParas, 
   InitPrRoIPoolingParams(runParams);
 
   int64_t rois_n = rois_shape.GetDim(0);
-  OP_TILING_CHECK(rois_n <= 0, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get invalid rois_n."), return false);
+  //OP_TILING_CHECK(rois_n <= 0, VECTOR_INNER_ERR_REPORT_TILIING(opType, "get invalid rois_n."), return false);
+  if (rois_n <= 0) {
+    return false;
+  }
   int64_t c1_num = feature_map_shape.GetDim(1);
   int64_t x_width = feature_map_shape.GetDim(WIDTH_INDEX);
   runParams.rois_n = rois_n;
@@ -159,11 +171,11 @@ bool PrRoIPoolingTiling(const std::string& opType, const ge::Operator& opParas, 
 
 
   SetPrRoIPoolingParams(runParams, runInfo);
-  PrintPrRoIPoolingParams(runParams);
+  //PrintPrRoIPoolingParams(runParams);
 
   // block_dim, core num used in tik op
   runInfo.SetBlockDim(runParams.used_core_num);
-  OP_LOGI("op[%s] tiling run success.", opType.c_str());
+  //OP_LOGI("op[%s] tiling run success.", opType.c_str());
 
   return true;
 }

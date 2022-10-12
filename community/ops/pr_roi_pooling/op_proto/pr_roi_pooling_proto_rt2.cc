@@ -42,19 +42,19 @@ static constexpr size_t OUTPUT_XDIFF_IDX = 0;
 
 ge::graphStatus RoiInferSahpe(gert::InferShapeContext* context, size_t pooled_h_attr_idx, size_t pooled_w_attr_idx) {
   const gert::Shape* input_features_shape = context->GetInputShape(INPUT_FEATURES_IDX);
-  OPS_CHECK_NULL_WITH_CONTEXT(context, input_features_shape);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, input_features_shape);
   const gert::Shape* input_rois_shape = context->GetInputShape(INPUT_ROIS_IDX);
-  OPS_CHECK_NULL_WITH_CONTEXT(context, input_rois_shape);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, input_rois_shape);
 
   const gert::RuntimeAttrs* attrs = context->GetAttrs();
-  OPS_CHECK_NULL_WITH_CONTEXT(context, attrs);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, attrs);
   const int64_t* pool_h_shape = attrs->GetAttrPointer<int64_t>(pooled_h_attr_idx);
-  OPS_CHECK_NULL_WITH_CONTEXT(context, pool_h_shape);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, pool_h_shape);
   const int64_t* pool_w_shape = attrs->GetAttrPointer<int64_t>(pooled_w_attr_idx);
-  OPS_CHECK_NULL_WITH_CONTEXT(context, pool_w_shape);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, pool_w_shape);
 
   gert::Shape* output_shape = context->GetOutputShape(OUTPUT_Y_IDX);
-  OPS_CHECK_NULL_WITH_CONTEXT(context, output_shape);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, output_shape);
 
   output_shape->SetDimNum(ROIALIGN_DIM_SIZE);
   output_shape->SetDim(OUTPUT_DIM0, input_rois_shape->GetDim(0));
@@ -75,12 +75,12 @@ ge::graphStatus InferShape4PrRoIPooling(gert::InferShapeContext* context) {
 
 ge::graphStatus InferShape4ROIAlignGrad(gert::InferShapeContext* context) {
   const gert::RuntimeAttrs* attrs = context->GetAttrs();
-  OPS_CHECK_NULL_WITH_CONTEXT(context, attrs);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, attrs);
   const gert::ContinuousVector* strides_ptr = attrs->GetAttrPointer<gert::ContinuousVector>(ATT_STRIDES_IDX);
-  OPS_CHECK_NULL_WITH_CONTEXT(context, strides_ptr);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, strides_ptr);
 
   gert::Shape* output_shape = context->GetOutputShape(OUTPUT_XDIFF_IDX);
-  OPS_CHECK_NULL_WITH_CONTEXT(context, output_shape);
+  //OPS_CHECK_NULL_WITH_CONTEXT(context, output_shape);
 
   int32_t dim_size = strides_ptr->GetSize();
   output_shape->SetDimNum(dim_size);
