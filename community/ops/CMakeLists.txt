@@ -192,6 +192,18 @@ cann_install(
     FILES       ${OP_IMPL_FILES}
     DESTINATION "${OP_IMPL_INSTALL_PATH}"
 )
+# ----------------------------------------------------------------------------
+set(INI_PARSER ${CANN_ROOT_DIR}/scripts/ai_core_parse_ini.py)
+file(GLOB OP_INI_FILES ./**/ai_core/op_info_cfg/*.ini)
+file(MAKE_DIRECTORY ${INSTALL_DIR}/community/op_config)
+set(OP_INI_INSTALL_PATH ${INSTALL_DIR}/community/op_config/aic_ops_info.json)
+add_custom_command(OUTPUT ${OP_INI_INSTALL_PATH}
+    COMMAND python3 ${INI_PARSER} ${OP_INI_FILES} ${OP_INI_INSTALL_PATH} 1>/dev/null
+    COMMENT "Parsing ini file ${OP_INI_FILES}"
+)
+add_custom_target(aic_ops_info ALL
+    DEPENDS ${OP_INI_INSTALL_PATH}
+)
 # --------------------------------aicpu---------------------------------------
 
 file(GLOB AICPU_SRC ./**/aicpu/impl/*.cc)
