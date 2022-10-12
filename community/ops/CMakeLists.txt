@@ -56,6 +56,7 @@ target_include_directories(op_proto PRIVATE
 )
 
 target_link_libraries(op_proto PRIVATE
+    $<BUILD_INTERFACE:intf_pub>
     ${PROTO_LINK_LIB}
 )
 
@@ -145,6 +146,7 @@ target_include_directories(optiling PRIVATE
 )
 
 target_link_libraries(optiling PRIVATE
+    $<BUILD_INTERFACE:intf_pub>
     ${TILING_LINK_LIB}
 )
 
@@ -195,6 +197,14 @@ cann_install(
     TARGET      copy_op_impl
     FILES       ${OP_IMPL_FILES}
     DESTINATION "${OP_IMPL_INSTALL_PATH}"
+)
+file(GLOB OP_IMPL_DYNAMIC_FILES ./**/ai_core/cust_impl/dynamic/*.py)
+set(OP_IMPL_DYNAMIC_INSTALL_PATH "${INSTALL_DIR}/community/op_impl/dynamic")
+add_custom_target(copy_op_impl_dynamic ALL)
+cann_install(
+        TARGET      copy_op_impl_dynamic
+        FILES       ${OP_IMPL_DYNAMIC_FILES}
+        DESTINATION "${OP_IMPL_DYNAMIC_INSTALL_PATH}"
 )
 # ----------------------------------------------------------------------------
 set(INI_PARSER ${CANN_ROOT_DIR}/scripts/ai_core_parse_ini.py)

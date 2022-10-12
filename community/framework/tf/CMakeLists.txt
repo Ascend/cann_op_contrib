@@ -61,6 +61,7 @@ target_include_directories(tf_plugin PRIVATE
 )
 
 target_link_libraries(tf_plugin PRIVATE
+    $<BUILD_INTERFACE:intf_pub>
     ${TF_PLUGIN_LINK_LIB}
 )
 

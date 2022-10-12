@@ -48,6 +48,7 @@ target_include_directories(onnx_plugin PRIVATE
 )
 
 target_link_libraries(onnx_plugin PRIVATE
+    $<BUILD_INTERFACE:intf_pub>
     ${ONNX_PLUGIN_LINK_LIB}
 )
 
