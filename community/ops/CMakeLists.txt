@@ -208,7 +208,12 @@ set(AICPU_LINK_LIB
     #c_sec
 )
 
-set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/built-in/op_impl/aicpu/aicpu_kernel)
+if(EXISTS $ENV{ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel)
+    set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel)
+else()
+    set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/built-in/op_impl/aicpu/aicpu_kernel)
+endif()
+
 set(AICPU_INCLUDE ${AICPU_OPP_ENV}/inc)
 
 set(AICPU_INC
@@ -243,4 +248,11 @@ target_compile_options(cpu_kernels PRIVATE
     -Dgoogle=ascend_private
     "-fno-strict-aliasing"
     "-fno-common"
+)
+
+set(AICPU_PATH "${INSTALL_DIR}/community/aicpu/lib")
+cann_install(
+    TARGET      cpu_kernels
+    FILES       $<TARGET_FILE:cpu_kernels>
+    DESTINATION "${AICPU_PATH}"
 )
