@@ -18,6 +18,7 @@
 #define COMMUNITY_OPS_PRROIPOOLING_OP_PROTO_INC_PRROIPOOLING_OP_H
 
 #include "graph/operator_reg.h"
+#include "graph/operator.h"
 
 namespace ge {
 

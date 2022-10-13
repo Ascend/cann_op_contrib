@@ -152,6 +152,10 @@ std::string TbeGetOpType(const T& op) {
 #define FUSION_PASS_LOGD(...)
 #endif
 
+enum {
+  OP=63
+};
+
 #if !defined( __ANDROID__) && !defined(ANDROID)
 #define AICPU_D_OP_LOGI(opname, fmt, ...) DlogSub(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
 #define AICPU_D_OP_LOGW(opname, fmt, ...) DlogSub(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_WARN, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
