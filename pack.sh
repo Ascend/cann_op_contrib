@@ -37,6 +37,8 @@ if [ $? -ne 0 ];then
     exit
 fi
 
+kerner=`arch`
+
 # 将脚本拷贝到编译后目录
 mkdir -p ./CANN_OP_CONTRIB/scripts
 cp ./scripts/install_run.sh ./CANN_OP_CONTRIB/scripts
@@ -62,8 +64,8 @@ sed -i "s/md5_value/$md5/g" ./CANN_OP_CONTRIB/scripts/install_run.sh
 
 # 打run包
 sed 's/^[ \t]*//g' ./CANN_OP_CONTRIB/scripts/install_run.sh > soft_install.sh
-cat ./soft_install.sh ./CANN_OP_CONTRIB.tar.gz > ./CANN_OP_CONTRIB_linux${targetkerner}.run
-chmod +x ./CANN_OP_CONTRIB_linux${targetkerner}.run
+cat ./soft_install.sh ./CANN_OP_CONTRIB.tar.gz > ./CANN_OP_CONTRIB_linux${targetkerner}-${kerner}.run
+chmod +x ./CANN_OP_CONTRIB_linux${targetkerner}-${kerner}.run
 
 # 删除临时文件
 rm -rf ./soft_install.sh ./CANN_OP_CONTRIB.tar.gz ./package.tar.gz ./CANN_OP_CONTRIB
