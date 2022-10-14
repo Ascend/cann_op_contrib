@@ -1,19 +1,26 @@
 # cann_op_contrib
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+算子开源仓
 
 #### 软件架构
 软件架构说明
 
 
-#### 安装教程
+#### 打包
+命令行下执行打包脚本。    
+**注1：首次编译可能会出现报错，重新再执行一次打包脚本即可。**    
+**注2：环境需要配置ASCEND_AICPU_PATH环境变量，否则aicpu算子会编译失败。**
+```
+bash pack.sh
+```
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 安装教程
+执行安装命令进行安装。   
+**注：安装前需保证环境存在ASCEND_OPP_PATH环境变量，否则会安装失败。**
+```
+./CANN_OP_CONTRIB_linux-x86_64.run --install
+```
 
 #### 使用说明
 
