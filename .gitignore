@@ -1,2 +1,83 @@
-/build/
-/.idea/
+# binary files
+*.so
+*.so.*
+*.dylib
+
+# Static libraries
+*.la
+*.lai
+*.a
+*.lib
+
+# Object files
+*.o
+
+cmake-build-debugindocker/
+.DS_Store
+# distribution and packaging
+build/
+output/
+dist/
+.idea/
+*.egg-info/
+*.egg
+*.whl
+
+# vim cache
+*.swp
+
+# python cache
+*.pyc
+__pycache__
+MANIFEST.in
+
+# python ut/st
+cov_report/
+report/
+data/
+*.dump
+
+# protobuf
+*.pb.h
+*.pb.c
+
+# cann tmp
+lib/
+kernel_meta/
+
+# Jetbrain
+.idea
+
+# Visual Studio
+.vs
+
+# Visual Studio Code
+.vscode
+
+# Test results
+test_temp_summary_event_file/
+*.dot
+*.dat
+*.perf
+*.info
+*.ckpt
+*.shp
+*.pkl
+*.pb
+*.om
+*.prototxt
+*.caffemodel
+
+# UT report file
+ut_report.txt
+
+# ascend package download dir
+ascend_download
+
+# file
+*.mp4
+*.yuv
+*.log
+*.h264
+*.h265
+*.bin
