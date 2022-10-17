@@ -94,6 +94,23 @@
     REPORT_CALL_ERROR("E59999", "op[%s], " err_msg, get_cstr(op_name), ##__VA_ARGS__); \
   } while (0)
 
+namespace optiling {
+
+#define VECTOR_INNER_ERR_REPORT_TILIING(op_name, err_msg, ...) \
+  do { \
+      OP_LOGE_WITHOUT_REPORT(op_name, err_msg, ##__VA_ARGS__); \
+      REPORT_INNER_ERROR("E89999", "op[%s], " err_msg, get_cstr(op_name), ##__VA_ARGS__); \
+  } while(0)
+
+#define OP_TILING_CHECK(cond, log_func, expr)   \
+  do {                                                 \
+    if (cond) {                                        \
+      log_func;                                        \
+      expr;                                     \
+    }                                                  \
+  } while (0)
+}  // namespace optiling
+
 namespace ge {
 
 /*

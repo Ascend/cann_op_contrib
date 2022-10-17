@@ -122,11 +122,15 @@ set(TILING_LINK_LIB
 
 set(TILING_INC
     ${METADEF_DIR}/inc
+    ${METADEF_DIR}/inc/exe_graph
     ${METADEF_DIR}/inc/external
     ${METADEF_DIR}/third_party/graphengine/inc
     ${METADEF_DIR}/third_party/graphengine/inc/external
     ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${CANN_ROOT_DIR}/community/common
+    ${CANN_ROOT_DIR}/community/common/inc
     ${C_SEC_INCLUDE}
+    ${JSON_INCLUDE}
     #${Protobuf_INCLUDE}
 )
 
