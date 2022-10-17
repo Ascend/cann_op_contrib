@@ -1,0 +1,64 @@
+[
+  {
+    "case_name": "PrRoIPooling_static_shape_case1",
+    "op": "PrRoIPooling",
+    "fuzz_impl": "./fuzz_roi.py",
+    "fuzz_case_num": 1,
+    "calc_expect_func_file": "test_pr_roi_pooling_golden.py:calc_expect_func",
+    "input_desc": [
+      {
+        "format": "NCHW",
+        "shape": [
+          8,
+          1024,
+          16,
+          16
+        ],
+        "data_distribute": [
+          "uniform"
+        ],
+        "value_range": [
+          [
+            0.1,
+            1.0
+          ]
+        ],
+        "name": "features",
+        "type": "float32"
+      },
+      {
+        "format": "ND",
+        "shape": "fuzz",
+        "value": "fuzz",
+        "name": "rois",
+        "type": "float32"
+      }
+    ],
+    "output_desc": [
+      {
+        "format": "NCHW",
+        "shape": "fuzz",
+        "name": "y",
+        "type": "float32"
+      }
+    ],
+    "attr": [
+      {
+        "name": "pooled_height",
+        "type": "int",
+        "value": 8
+      },
+      {
+        "name": "pooled_width",
+        "type": "int",
+        "value": 8
+      },
+      {
+        "name": "spatial_scale",
+        "type": "float",
+        "value": 0.5
+      }
+    ]
+
+  }
+]
