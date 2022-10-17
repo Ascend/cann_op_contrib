@@ -70,14 +70,14 @@ void SetPrRoIPoolingParams(const PrRoIPoolingTilingParams& Params, utils::OpRunI
 }
 
 void PrintPrRoIPoolingParams(const PrRoIPoolingTilingParams& params) {
-  OP_LOGD("[PrRoIPoolingTiling]", "tiling_mode=%d.", params.tiling_mode);
-  OP_LOGD("[PrRoIPoolingTiling]", "rois_n=%d.", params.rois_n);
-  OP_LOGD("[PrRoIPoolingTiling]", "c1_num=%d.", params.c1_num);
-  OP_LOGD("[PrRoIPoolingTiling]", "in_height=%d.", params.in_height);
-  OP_LOGD("[PrRoIPoolingTiling]", "in_width=%d.", params.in_width);
-  OP_LOGD("[PrRoIPoolingTiling]", "num_per_core=%d.", params.num_per_core);
-  OP_LOGD("[PrRoIPoolingTiling]", "used_core_num=%d.", params.used_core_num);
-  OP_LOGD("[PrRoIPoolingTiling]", "num_tail_core=%d.", params.num_tail_core);
+  OP_LOGD("[PrRoIPoolingTiling]", "tiling_mode=%ld.", params.tiling_mode);
+  OP_LOGD("[PrRoIPoolingTiling]", "rois_n=%ld.", params.rois_n);
+  OP_LOGD("[PrRoIPoolingTiling]", "c1_num=%ld.", params.c1_num);
+  OP_LOGD("[PrRoIPoolingTiling]", "in_height=%ld.", params.in_height);
+  OP_LOGD("[PrRoIPoolingTiling]", "in_width=%ld.", params.in_width);
+  OP_LOGD("[PrRoIPoolingTiling]", "num_per_core=%ld.", params.num_per_core);
+  OP_LOGD("[PrRoIPoolingTiling]", "used_core_num=%ld.", params.used_core_num);
+  OP_LOGD("[PrRoIPoolingTiling]", "num_tail_core=%ld.", params.num_tail_core);
 }
 
 static bool CheckTensorShape(const std::string& opType, GeShape& x_diff_shape, GeShape& rois_shape) {
@@ -170,3 +170,4 @@ bool PrRoIPoolingTiling(const std::string& opType, const ge::Operator& opParas, 
 // register tiling interface of the PrRoIPooling op.
 REGISTER_OP_TILING_V3_WITH_VECTOR(PrRoIPooling, PrRoIPoolingTiling, COMPILE_INFO_KEY, NO_OPTIONAL_VALUE);
 }  // namespace optiling
+
