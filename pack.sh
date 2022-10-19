@@ -45,8 +45,8 @@ cp ./scripts/install_run.sh ./CANN_OP_CONTRIB/scripts
 cp ./scripts/CANN_OP_CONTRIB_install.sh ./CANN_OP_CONTRIB/scripts
 
 # 判断编译后文件夹是否存在
-if [ ! -d ./CANN_OP_CONTRIB/framework/vendor ] || [ ! -d ./CANN_OP_CONTRIB/op_proto/vendor ] || [ ! -d ./CANN_OP_CONTRIB/op_impl/vendor ];then
-    echo "[ERROR] After compilation, the framework, op_proto and op_impl folders must exist in the ./CANN_OP_CONTRIB directory"
+if [ ! -d ./CANN_OP_CONTRIB/vendors ] ;then
+    echo "[ERROR] After compilation, the vendors folders must exist in the ./CANN_OP_CONTRIB directory"
     exit
 fi
 

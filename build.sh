@@ -43,29 +43,27 @@ build_cann() {
 
 change_dir() 
 {
-  mk_dir "${TAR_DIR_PATH}/framework/vendor/community" > /dev/null
-  mk_dir "${TAR_DIR_PATH}/op_proto/vendor/community" > /dev/null
-  mk_dir "${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe" > /dev/null
+  mk_dir "${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe" > /dev/null
 
   if [ -d ${BUILD_PATH}/install/community/framework ];then
-    cp -r ${BUILD_PATH}/install/community/framework ${TAR_DIR_PATH}/framework/vendor/community/ > /dev/null
+    cp -r ${BUILD_PATH}/install/community/framework ${TAR_DIR_PATH}/vendors/community/ > /dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/op_proto ];then
-    cp -r ${BUILD_PATH}/install/community/op_proto ${TAR_DIR_PATH}/op_proto/vendor/community/ > /dev/null
+    cp -r ${BUILD_PATH}/install/community/op_proto ${TAR_DIR_PATH}/vendors/community/ > /dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/op_tiling ];then
-    cp -r ${BUILD_PATH}/install/community/op_tiling ${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe > /dev/null
+    cp -r ${BUILD_PATH}/install/community/op_tiling ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/aicpu ];then
-    cp -r ${BUILD_PATH}/install/community/aicpu ${TAR_DIR_PATH}/op_impl/vendor/community/ >/dev/null
+    cp -r ${BUILD_PATH}/install/community/aicpu ${TAR_DIR_PATH}/vendors/community/op_impl >/dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
-    cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe > /dev/null
-    mv ${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe/op_impl ${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe/cust_impl
+    cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
+    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/cust_impl
   fi
   if [ -d ${BUILD_PATH}/install/community/op_config ];then
-    cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe > /dev/null
-    mv ${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe/op_config ${TAR_DIR_PATH}/op_impl/vendor/community/ai_core/tbe/config
+    cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
+    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_config ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/config
   fi
 }
 

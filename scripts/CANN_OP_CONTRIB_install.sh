@@ -174,41 +174,21 @@ function install_process() {
     print "INFO" "install start."
     print "INFO" "The installation path is ${operate_path}."
     # 检查是否已经安装，如果已经安装，则退出
-    if [ -d ${operate_path}/framework/vendor ] || [ -d ${operate_path}/op_proto/vendor ] || [ -d ${operate_path}/op_impl/vendor ]; then
+    if [ -d ${operate_path}/vendors ] ; then
         print "ERROR" "run package is already installed, install failed."
 	return 1
     fi
     # 安装
-    chmod +w ${operate_path}/framework  2>/dev/null
-    chmod +w ${operate_path}/op_proto 2>/dev/null
-    chmod +w ${operate_path}/op_impl 2>/dev/null
-    make_dir ${operate_path}/framework/vendor
+    chmod +w ${operate_path}  2>/dev/null
+    make_dir ${operate_path}/vendors
     if [ $? -ne 0 ];then
         return 1;
     fi
-    make_dir ${operate_path}/op_proto/vendor
+    copy_file ${script_path}/../vendors/* ${operate_path}/vendors
     if [ $? -ne 0 ];then
         return 1;
     fi
-    make_dir ${operate_path}/op_impl/vendor
-    if [ $? -ne 0 ];then
-        return 1;
-    fi
-    copy_file ${script_path}/../framework/vendor/* ${operate_path}/framework/vendor
-    if [ $? -ne 0 ];then
-        return 1;
-    fi
-    copy_file ${script_path}/../op_proto/vendor/* ${operate_path}/op_proto/vendor
-    if [ $? -ne 0 ];then
-        return 1;
-    fi
-    copy_file ${script_path}/../op_impl/vendor/* ${operate_path}/op_impl/vendor
-    if [ $? -ne 0 ];then
-        return 1;
-    fi
-    chmod -w ${operate_path}/framework 2>/dev/null
-    chmod -w ${operate_path}/op_proto 2>/dev/null
-    chmod -w ${operate_path}/op_impl 2>/dev/null
+    chmod -w ${operate_path} 2>/dev/null
     print "INFO" "install success."
     return 0
 }
@@ -218,32 +198,18 @@ function upgrade_process() {
     print "INFO" "upgrade start."
     print "INFO" "The upgrade path is ${operate_path}."
     # 检查是否已经安装，如果没有安装，则退出
-    if [ ! -d ${operate_path}/framework/vendor ] || [ ! -d ${operate_path}/op_proto/vendor ] || [ ! -d ${operate_path}/op_impl/vendor ]; then
+    if [ ! -d ${operate_path}/vendors ] ; then
         print "ERROR" "run package is not installed on path ${install_path}, upgrade failed !"
 	return 1
     fi
     # 升级
-    chmod +w ${operate_path}/framework  2>/dev/null
-    chmod +w ${operate_path}/op_proto 2>/dev/null
-    chmod +w ${operate_path}/op_impl 2>/dev/null
-    fn_del_dir ${operate_path}/framework/vendor 
-    fn_del_dir ${operate_path}/op_proto/vendor 
-    fn_del_dir ${operate_path}/op_impl/vendor 
-    copy_file ${script_path}/../framework/vendor ${operate_path}/framework
+    chmod +w ${operate_path} 2>/dev/null
+    fn_del_dir ${operate_path}/vendors 
+    copy_file ${script_path}/../vendors/* ${operate_path}/vendors
     if [ $? -ne 0 ];then
         return 1;
     fi
-    copy_file ${script_path}/../op_proto/vendor ${operate_path}/op_proto
-    if [ $? -ne 0 ];then
-        return 1;
-    fi
-    copy_file ${script_path}/../op_impl/vendor ${operate_path}/op_impl
-    if [ $? -ne 0 ];then
-        return 1;
-    fi
-    chmod -w ${operate_path}/framework 2>/dev/null
-    chmod -w ${operate_path}/op_proto 2>/dev/null
-    chmod -w ${operate_path}/op_impl 2>/dev/null
+    chmod -w ${operate_path} 2>/dev/null
     print "INFO" "upgrade success."
     return 0
 }
@@ -252,22 +218,14 @@ function upgrade_process() {
 function uninstall_process() {
     print "INFO" "uninstall start"
     # 卸载
-    chmod +w ${operate_path}/framework  2>/dev/null
-    chmod +w ${operate_path}/op_proto 2>/dev/null
-    chmod +w ${operate_path}/op_impl 2>/dev/null
-    if [ -d ${operate_path}/framework/vendor ];then
-        fn_del_dir ${operate_path}/framework/vendor
+    chmod +w ${operate_path} 2>/dev/null
+    if [ -d ${operate_path}/vendors ];then
+        fn_del_dir ${operate_path}/vendors
+	print "INFO" "uninstall success."
+    else
+        print "ERROR" "not installed, no need to uninstall."
     fi
-    if [ -d ${operate_path}/op_proto/vendor ];then
-        fn_del_dir ${operate_path}/op_proto/vendor
-    fi
-    if [ -d ${operate_path}/op_impl/vendor ];then
-        fn_del_dir ${operate_path}/op_impl/vendor
-    fi
-    chmod -w ${operate_path}/framework 2>/dev/null
-    chmod -w ${operate_path}/op_proto 2>/dev/null
-    chmod -w ${operate_path}/op_impl 2>/dev/null
-    print "INFO" "uninstall success."
+    chmod -w ${operate_path} 2>/dev/null
 }
 
 ###################################
