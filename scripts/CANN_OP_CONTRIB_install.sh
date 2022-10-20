@@ -193,7 +193,7 @@ function install_process() {
     if [ $? -ne 0 ];then
         return 1;
     fi
-    copy_file ${script_path}/../vendors/community/* ${operate_path}/vendors/community
+    copy_file "${script_path}/../vendors/community/*" "${operate_path}/vendors/community"
     if [ $? -ne 0 ];then
         return 1;
     fi
@@ -218,11 +218,11 @@ function upgrade_process() {
     # 升级
     chmod +w ${operate_path}/vendors 2>/dev/null
     fn_del_dir ${operate_path}/vendors/community 
-    copy_file ${script_path}/../vendors/community/* ${operate_path}/vendors/community
+    copy_file "${script_path}/../vendors/community/*" "${operate_path}/vendors/community"
     if [ $? -ne 0 ];then
         return 1;
     fi
-    chmod -w ${operate_path} 2>/dev/null
+    chmod -w ${operate_path}/vendors 2>/dev/null
     print "INFO" "upgrade success."
     return 0
 }
@@ -231,14 +231,14 @@ function upgrade_process() {
 function uninstall_process() {
     print "INFO" "uninstall start"
     # 卸载
-    chmod +w ${operate_path} 2>/dev/null
+    chmod +w ${operate_path}/vendors 2>/dev/null
     if [ -d ${operate_path}/vendors/community ];then
         fn_del_dir ${operate_path}/vendors/community
 	print "INFO" "uninstall success."
     else
         print "ERROR" "not installed, no need to uninstall."
     fi
-    chmod -w ${operate_path} 2>/dev/null
+    chmod -w ${operate_path}/vendors 2>/dev/null
 }
 
 ###################################
