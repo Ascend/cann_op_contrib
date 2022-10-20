@@ -199,21 +199,11 @@ function install_process() {
     fi
     # 设置优先级文件
     ret=`sed -i 's/"community"/""/g' ${operate_path}/vendors/config.ini`
-    if [ ${ret} -ne 0 ];then
-        return 1;
-    fi
     value_config=`cat ${operate_path}/vendors/config.ini | grep "load_priority=" | awk -F '=' '{print $2}'`
     if [ x${value_config} = x ];then
         ret=`sed -i 's/"load_priority="/"load_priority=community"/g' ${operate_path}/vendors/config.ini`
-        if [ ${ret} -ne 0 ];then
-            return 1;
-	fi
     else
-	ret=`sed -i 's/"load_priority="/"load_priority=community,"/g' ${operate_path}/vendors/config.ini`
-        if [ ${ret} -ne 0 ];then
-            return 1;
-        fi
-
+        ret=`sed -i 's/"load_priority="/"load_priority=community,"/g' ${operate_path}/vendors/config.ini`
     fi
     chmod -w ${operate_path}/vendors 2>/dev/null
     print "INFO" "install success."
