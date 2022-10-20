@@ -198,12 +198,12 @@ function install_process() {
         return 1;
     fi
     # 设置优先级文件
-    ret=`sed -i 's/"community"/""/g' ${operate_path}/vendors/config.ini`
+    ret=`sed -i 's/community//g' ${operate_path}/vendors/config.ini`
     value_config=`cat ${operate_path}/vendors/config.ini | grep "load_priority=" | awk -F '=' '{print $2}'`
     if [ x${value_config} = x ];then
-        ret=`sed -i 's/"load_priority="/"load_priority=community"/g' ${operate_path}/vendors/config.ini`
+        ret=`sed -i 's/load_priority=/load_priority=community/g' ${operate_path}/vendors/config.ini`
     else
-        ret=`sed -i 's/"load_priority="/"load_priority=community,"/g' ${operate_path}/vendors/config.ini`
+        ret=`sed -i 's/load_priority=/load_priority=community,/g' ${operate_path}/vendors/config.ini`
     fi
     chmod -w ${operate_path}/vendors 2>/dev/null
     print "INFO" "install success."
@@ -232,12 +232,12 @@ function upgrade_process() {
         return 1;
     fi
     # 设置优先级文件
-    ret=`sed -i 's/"community"/""/g' ${operate_path}/vendors/config.ini`
+    ret=`sed -i 's/community//g' ${operate_path}/vendors/config.ini`
     value_config=`cat ${operate_path}/vendors/config.ini | grep "load_priority=" | awk -F '=' '{print $2}'`
     if [ x${value_config} = x ];then
-        ret=`sed -i 's/"load_priority="/"load_priority=community"/g' ${operate_path}/vendors/config.ini`
+        ret=`sed -i 's/load_priority=/load_priority=community/g' ${operate_path}/vendors/config.ini`
     else
-        ret=`sed -i 's/"load_priority="/"load_priority=community,"/g' ${operate_path}/vendors/config.ini`
+        ret=`sed -i 's/load_priority=/load_priority=community,/g' ${operate_path}/vendors/config.ini`
     fi
     chmod -w ${operate_path}/vendors 2>/dev/null
     print "INFO" "upgrade success."
@@ -252,7 +252,7 @@ function uninstall_process() {
     if [ -d ${operate_path}/vendors/community ];then
         fn_del_dir ${operate_path}/vendors/community
 	# 设置优先级文件
-        ret=`sed -i 's/"community"/""/g' ${operate_path}/vendors/config.ini`
+        ret=`sed -i 's/community//g' ${operate_path}/vendors/config.ini`
 	print "INFO" "uninstall success."
     else
         print "ERROR" "not installed, no need to uninstall."
