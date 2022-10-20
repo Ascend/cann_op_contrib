@@ -59,7 +59,7 @@ change_dir()
   fi
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
     cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
-    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/cust_impl
+    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/impl
   fi
   if [ -d ${BUILD_PATH}/install/community/op_config ];then
     cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
