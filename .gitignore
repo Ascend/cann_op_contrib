@@ -81,3 +81,4 @@ ascend_download
 *.h264
 *.h265
 *.bin
+*.run
