@@ -197,9 +197,23 @@ function install_process() {
     if [ $? -ne 0 ];then
         return 1;
     fi
-    sed -i 's/.*load priority=.*/load priority=community/' ${operate_path}/vendors/config.ini >/dev/null
-    if [ $? -ne 0 ];then
+    # 设置优先级文件
+    ret=`sed -i 's/"community"/""/g' ${operate_path}/vendors/config.ini`
+    if [ ${ret} -ne 0 ];then
         return 1;
+    fi
+    value_config=`cat ${operate_path}/vendors/config.ini | grep "load_priority=" | awk -F '=' '{print $2}'`
+    if [ x${value_config} = x ];then
+        ret=`sed -i 's/"load_priority="/"load_priority=community"/g' ${operate_path}/vendors/config.ini`
+        if [ ${ret} -ne 0 ];then
+            return 1;
+	fi
+    else
+	ret=`sed -i 's/"load_priority="/"load_priority=community,"/g' ${operate_path}/vendors/config.ini`
+        if [ ${ret} -ne 0 ];then
+            return 1;
+        fi
+
     fi
     chmod -w ${operate_path}/vendors 2>/dev/null
     print "INFO" "install success."
@@ -215,12 +229,35 @@ function upgrade_process() {
         print "ERROR" "run package is not installed on path ${install_path}, upgrade failed !"
 	return 1
     fi
+    # 检查是否存在config.ini文件，如果不存在，则退出
+    if [ ! -f ${operate_path}/vendors/config.ini ] ; then
+        print "ERROR" "The config.ini file does not exist, install failed."
+        return 1
+    fi
     # 升级
     chmod +w ${operate_path}/vendors 2>/dev/null
     fn_del_dir ${operate_path}/vendors/community 
     copy_file "${script_path}/../vendors/community/*" "${operate_path}/vendors/community"
     if [ $? -ne 0 ];then
         return 1;
+    fi
+    # 设置优先级文件
+    ret=`sed -i 's/"community"/""/g' ${operate_path}/vendors/config.ini`
+    if [ ${ret} -ne 0 ];then
+        return 1;
+    fi
+    value_config=`cat ${operate_path}/vendors/config.ini | grep "load_priority=" | awk -F '=' '{print $2}'`
+    if [ x${value_config} = x ];then
+        ret=`sed -i 's/"load_priority="/"load_priority=community"/g' ${operate_path}/vendors/config.ini`
+        if [ ${ret} -ne 0 ];then
+            return 1;
+        fi
+    else
+        ret=`sed -i 's/"load_priority="/"load_priority=community,"/g' ${operate_path}/vendors/config.ini`
+        if [ ${ret} -ne 0 ];then
+            return 1;
+        fi
+
     fi
     chmod -w ${operate_path}/vendors 2>/dev/null
     print "INFO" "upgrade success."
@@ -234,6 +271,11 @@ function uninstall_process() {
     chmod +w ${operate_path}/vendors 2>/dev/null
     if [ -d ${operate_path}/vendors/community ];then
         fn_del_dir ${operate_path}/vendors/community
+	# 设置优先级文件
+        ret=`sed -i 's/"community"/""/g' ${operate_path}/vendors/config.ini`
+        if [ ${ret} -ne 0 ];then
+            return 1;
+        fi
 	print "INFO" "uninstall success."
     else
         print "ERROR" "not installed, no need to uninstall."
