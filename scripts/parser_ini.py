@@ -229,9 +229,6 @@ def main():
         elif arg.endswith("json"):
             outfile_path = arg
 
-    # if len(ini_file_paths) == 0:
-    #     ini_file_paths.append("tf_kernel.ini")
-    print("outfile_path=======",outfile_path)
     if (os.path.exists(outfile_path)):
         os.remove(outfile_path)
     for (dirname, subs, files) in os.walk('.'):

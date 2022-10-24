@@ -28,8 +28,8 @@ mk_dir() {
 build_cann() {
   echo "Create build directory and build CANN"
 
-  mk_dir "${BUILD_PATH}/install/community/aicpu/cfg" > /dev/null
-  python3 scripts/parser_ini.py *.ini ${BUILD_PATH}/install/community/aicpu/cfg/aicpu_kernel.json
+  mk_dir "${BUILD_PATH}/install/community/cpu/config" > /dev/null
+  python3 scripts/parser_ini.py *.ini ${BUILD_PATH}/install/community/cpu/config/cust_aicpu_kernel.json
 
   mk_dir "${CMAKE_HOST_PATH}"
   cd "${CMAKE_HOST_PATH}" && cmake  ../..
@@ -54,8 +54,8 @@ change_dir()
   if [ -d ${BUILD_PATH}/install/community/op_tiling ];then
     cp -r ${BUILD_PATH}/install/community/op_tiling ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
   fi
-  if [ -d ${BUILD_PATH}/install/community/aicpu ];then
-    cp -r ${BUILD_PATH}/install/community/aicpu ${TAR_DIR_PATH}/vendors/community/op_impl >/dev/null
+  if [ -d ${BUILD_PATH}/install/community/cpu ];then
+    cp -r ${BUILD_PATH}/install/community/cpu ${TAR_DIR_PATH}/vendors/community/op_impl >/dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
     cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null

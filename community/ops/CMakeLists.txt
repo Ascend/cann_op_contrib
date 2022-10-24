@@ -300,28 +300,28 @@ set(AICPU_INC
     #${Protobuf_INCLUDE}
 )
 
-add_library(cpu_kernels SHARED
+add_library(cust_aicpu_kernels SHARED
     ${AICPU_SRC}
 )
 
-target_include_directories(cpu_kernels PRIVATE
+target_include_directories(cust_aicpu_kernels PRIVATE
     ${AICPU_INC}
 )
 
-target_link_libraries(cpu_kernels PRIVATE
+target_link_libraries(cust_aicpu_kernels PRIVATE
     ${AICPU_LINK_LIB}
 )
 
-target_compile_options(cpu_kernels PRIVATE
+target_compile_options(cust_aicpu_kernels PRIVATE
     ${compile_opt_mode}
     -Dgoogle=ascend_private
     "-fno-strict-aliasing"
     "-fno-common"
 )
 
-set(AICPU_PATH "${INSTALL_DIR}/community/aicpu/lib")
+set(AICPU_PATH "${INSTALL_DIR}/community/cpu/aicpu_kernel/impl")
 cann_install(
-    TARGET      cpu_kernels
-    FILES       $<TARGET_FILE:cpu_kernels>
+    TARGET      cust_aicpu_kernels
+    FILES       $<TARGET_FILE:cust_aicpu_kernels>
     DESTINATION "${AICPU_PATH}"
 )
