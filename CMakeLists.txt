@@ -71,3 +71,4 @@ else()
     set(CMAKE_BUILD_MODE "-${BUILD_MODE}")
 endif()
 
+add_subdirectory(community)
