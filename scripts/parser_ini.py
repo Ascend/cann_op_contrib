@@ -72,7 +72,7 @@ class IniParser(object):
         if len(missing_keys) > 0:
             print("op: " + op_name + " opInfo missing: " + ",".join(missing_keys))
             raise KeyError("bad key value")
-        self.aicpu_ops_info.get(op_name)["opInfo"]["userDefined"] = True
+        self.aicpu_ops_info.get(op_name)["opInfo"]["userDefined"] = "True"
 
     def check_op_info(self, op_name, op_info):
         """
