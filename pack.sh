@@ -64,8 +64,8 @@ sed -i "s/md5_value/$md5/g" ./CANN_OP_CONTRIB/scripts/install_run.sh
 
 # 打run包
 sed 's/^[ \t]*//g' ./CANN_OP_CONTRIB/scripts/install_run.sh > soft_install.sh
-cat ./soft_install.sh ./CANN_OP_CONTRIB.tar.gz > ./CANN_OP_CONTRIB_linux${targetkerner}-${kerner}.run
-chmod +x ./CANN_OP_CONTRIB_linux${targetkerner}-${kerner}.run
+cat ./soft_install.sh ./CANN_OP_CONTRIB.tar.gz > ./output/CANN_OP_CONTRIB_linux${targetkerner}-${kerner}.run
+chmod +x ./output/CANN_OP_CONTRIB_linux${targetkerner}-${kerner}.run
 
 # 删除临时文件
 rm -rf ./soft_install.sh ./CANN_OP_CONTRIB.tar.gz ./package.tar.gz ./CANN_OP_CONTRIB
