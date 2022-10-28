@@ -3,7 +3,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2020-2021. All rights reserved.
  * Description: implement of Add
  */
-#include "add_kernels.h"
+#include "add.h"
 
 #include "utils/eigen_tensor.h"
 #include "utils/kernel_util.h"
