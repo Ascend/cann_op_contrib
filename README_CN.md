@@ -7,29 +7,77 @@
 仓库目录结构如下所示。
 
 <details open><summary><b> cann_op_contrib</b></summary><blockquote>
+<details><summary><b> cmake</b></summary><blockquote>
+<details><summary><b> external</b></summary><blockquote>
+<b>存放依赖的第三方库编译文件</b><br>
+</blockquote></details>
+<details><summary><b> util</b></summary><blockquote>
+<b>存放工具类编译文件</b><br>
+</blockquote></details>
+<b>dependencies.cmake</b><br>
+</blockquote></details>
 <details open><summary><b> community</b></summary><blockquote>
 <details><summary><b> common</b></summary><blockquote>
-<b> inc</b><br>
-<b> src</b><br>
-<b> utils</b><br>
+<details><summary><b> inc</b></summary><blockquote>
+<b>主要存放算子原型工具类头文件</b><br>
+</blockquote></details>
+<details><summary><b> src</b></summary><blockquote>
+<b>主要存放算子原型工具类实现</b><br>
+</blockquote></details>
+<details><summary><b> utils</b></summary><blockquote>
+<b>主要存放算子实现工具类</b><br>
+</blockquote></details>
+
 </blockquote></details>
 <details><summary><b> framework</b></summary><blockquote>
-<b> onnx</b><br>
-<b> tf</b><br>
+<details><summary><b> onnx</b></summary><blockquote>
+<b>add_plugin.cc  算子适配onnx框架插件代码</b><br>
+<b>CMakeLists.txt  算子适配插件编译文件</b><br>
+</blockquote></details>
+<details><summary><b> tf</b></summary><blockquote>
+<b>add_plugin.cc  算子适配tf框架插件代码</b><br>
+<b>CMakeLists.txt  算子适配插件编译文件</b><br>
+</blockquote></details>
 </blockquote></details>
 <details open><summary><b> ops</b></summary><blockquote>
 <details open><summary><b> add(以add算子为例)</b></summary><blockquote>
 <details><summary><b> ai_core</b></summary><blockquote>
-<b> cust_impl</b><br>
-<b> op_info_cfg</b><br>
+<details><summary><b> cust_impl</b></summary><blockquote>
+<b>add.py  算子实现代码</b><br>
+</blockquote></details>
+<details><summary><b> op_info_cfg</b></summary><blockquote>
+<details><summary><b> ascend310</b></summary><blockquote>
+<b>add.ini 算子信息配置文件</b><br>
+</blockquote></details>
+<details><summary><b> ascend310p</b></summary><blockquote>
+<b>add.ini 算子信息配置文件</b><br>
+</blockquote></details>
+<details><summary><b> ascend910</b></summary><blockquote>
+<b>add.ini 算子信息配置文件</b><br>
+</blockquote></details>
+<details><summary><b> ascend910b</b></summary><blockquote>
+<b>add.ini 算子信息配置文件</b><br>
+</blockquote></details>
+</blockquote></details>
+
 <b> op_tiling</b><br>
 </blockquote></details>
 <details><summary><b> ai_cpu</b></summary><blockquote>
-<b> impl</b><br>
-<b> op_info_cfg</b><br>
+<details><summary><b> impl</b></summary><blockquote>
+<b>add.cc  算子实现代码</b><br>
+<b>add.h  算子代码头文件</b><br>
+</blockquote></details>
+<details><summary><b> op_info_cfg</b></summary><blockquote>
+<b>add.ini 算子信息配置文件</b><br>
+</blockquote></details>
 </blockquote></details>
 <details><summary><b> op_proto</b></summary><blockquote>
-<b> inc</b><br>
+
+<details><summary><b> inc</b></summary><blockquote>
+<b>add_op.h 算子原型IR注册文件</b><br>
+</blockquote></details>
+
+<b>add_proto.cc 算子原型实现文件</b><br>
 </blockquote></details>
 </blockquote></details>
 </blockquote></details>
@@ -39,6 +87,21 @@
 </blockquote></details>
 </blockquote></details>
 </blockquote></details>
+
+<details><summary><b> scripts</b></summary><blockquote>
+<b>ai_core_parse_ini.py  tbe算子信息配置解析脚本</b><br>
+<b>CANN_OP_CONTRIB_install.sh  生态仓算子部署脚本</b><br>
+<b>install_run.sh  生态仓run包安装脚本</b><br>
+<b>parse_ini.py  AiCpu算子信息配置解析脚本</b><br>
+</blockquote></details>
+<details><summary><b> third_party</b></summary><blockquote>
+<b>metadef metadef仓代码</b><br>
+
+</blockquote></details>
+<b>CMakeLists.txt 生态仓总编译脚本</b><br>
+<b>build.sh 编译脚本，用于触发生态仓代码编译及编译出的文件路径变更</b><br>
+
+<b>pack.sh 生态仓run包打包脚本</b><br>
 </blockquote></details>
 
 #### 环境要求

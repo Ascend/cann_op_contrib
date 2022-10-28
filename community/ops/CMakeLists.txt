@@ -303,7 +303,7 @@ set(AICPU_INC
 add_library(cust_aicpu_kernels SHARED
     ${AICPU_SRC}
 )
-add_dependencies(cust_aicpu_kernels eigen)
+add_dependencies(cust_aicpu_kernels eigen external_protobuf)
 target_include_directories(cust_aicpu_kernels PRIVATE
     ${AICPU_INC}
 )
