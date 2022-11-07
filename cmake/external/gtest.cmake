@@ -15,6 +15,9 @@
 
 set(_gtest_url "")
 
+if(CANN_PKG_SERVER)
+  set(_gtest_url "${CANN_PKG_SERVER}/libs/ge_gtest/release-1.8.0.tar.gz")
+endif()
 ExternalProject_Add(external_gtest
   URL               ${_gtest_url}
                     https://github.com/google/googletest/archive/release-1.8.0.tar.gz

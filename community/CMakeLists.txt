@@ -15,7 +15,7 @@
 
 add_subdirectory(framework)
 add_subdirectory(ops)
-
+include(ops/aicpu.cmake)
 if(ALL_UT OR PROTO_UT OR TILING_UT)
     add_subdirectory(tests)
 endif()
