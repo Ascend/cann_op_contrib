@@ -18,30 +18,30 @@
 #include "op_const.h"
 #include "op_util.h"
 #include "context_util.h"
-//#include "utils/util.h"
+#include "utils/util.h"
 
 namespace ge {
 // ----------------PrRoIPooling Op Begin-------------------
-static bool IsUnknownRankShape(const GeShape& input_shape) {
-  return input_shape.IsUnknownDimNum();
-}
+// static bool IsUnknownRankShape(const GeShape& input_shape) {
+//   return input_shape.IsUnknownDimNum();
+// }
 
-void MakeUpShapeRange(const ge::GeShape& shape, std::vector<std::pair<int64_t, int64_t>>& range) {
-  if (IsUnknownRankShape(shape)) {
-    return;
-  }
+// void MakeUpShapeRange(const ge::GeShape& shape, std::vector<std::pair<int64_t, int64_t>>& range) {
+//   if (IsUnknownRankShape(shape)) {
+//     return;
+//   }
 
-  if (range.empty()) {
-    for (size_t i = 0; i < shape.GetDimNum(); i++) {
-      int64_t dim = shape.GetDim(i);
-      if (dim == -1) {
-        range.push_back(std::pair<int64_t, int64_t>(0, -1));
-      } else {
-        range.push_back(std::pair<int64_t, int64_t>(dim, dim));
-      }
-    }
-  }
-}
+//   if (range.empty()) {
+//     for (size_t i = 0; i < shape.GetDimNum(); i++) {
+//       int64_t dim = shape.GetDim(i);
+//       if (dim == -1) {
+//         range.push_back(std::pair<int64_t, int64_t>(0, -1));
+//       } else {
+//         range.push_back(std::pair<int64_t, int64_t>(dim, dim));
+//       }
+//     }
+//   }
+// }
 
 static bool IsRoiUnknownOutputShape(const GeShape& features_shape, const GeShape& rois_shape) {
   if (IsUnknownRankShape(features_shape) || IsUnknownRankShape(rois_shape)) {

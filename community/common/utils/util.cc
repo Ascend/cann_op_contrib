@@ -1736,36 +1736,6 @@ std::string AxisTypeInfoToString(const std::vector<ge::AxisTypeInfo>& axis_type_
                                [](std::string a, std::string b) {return a + "," + b;}) + "]";
 }
 
-bool OneInOneOutElewiseDynamicAxisType(const Operator& op, std::vector<AxisTypeInfo>& axis_type_info) {
-  // get input desc and input shape
-  auto op_info = OpDescUtils::GetOpDescFromOperator(op);
-  CHECK(op_info == nullptr, OP_LOGW(TbeGetName(op), "invalid op desc."), return false);
-  auto input_desc = op_info->MutableInputDesc(0);
-  CHECK(input_desc == nullptr, OP_LOGW(TbeGetName(op), "invalid input desc."), return false);
-  vector<int64_t> input_shape = input_desc->MutableShape().GetDims();
-
-  // set axis_type
-  if (IsUnknownRankShape(input_shape)) {
-    OP_LOGW(TbeGetName(op), "input shape is unknow rank shape.");
-    return true;
-  }
-  // set dims axis type one by one
-  axis_type_info.reserve(input_shape.size());
-  for (size_t i = 0; i < input_shape.size(); ++i) {
-    AxisTypeInfo axis_type;
-    axis_type.SetAxisType(AxisType::ELEMENTWISE);
-    std::pair<int64_t, std::vector<int64_t>> input_cut_info(0, {static_cast<int64_t>(i)});
-    axis_type.AddInputCutInfo(input_cut_info);
-    std::pair<int64_t, std::vector<int64_t>> output_cut_info(0, {static_cast<int64_t>(i)});
-    axis_type.AddOutputCutInfo(output_cut_info);
-    axis_type_info.push_back(axis_type);
-  }
-
-  OP_LOGD(TbeGetName(op), "OneInOneOutElewiseDynamicAxisType end. AxisTypeInfo is: %s",
-          AxisTypeInfoToString(axis_type_info).c_str());
-  return true;
-}
-
 ge::graphStatus GetAllValidInputsWithIndices(const Operator& op, map<uint32_t, ConstGeTensorDescPtr>& inputs) {
   OP_LOGD(TbeGetName(op), "Get all valid inputs desc with indices begin");
 
@@ -1810,7 +1780,7 @@ ge::graphStatus GetAllValidOutputsWithIndices(const Operator& op, map<uint32_t, 
   return GRAPH_SUCCESS;
 }
 
-ge::graphStatus GetShapesForInferAxisType(const Operator& op, 
+ge::graphStatus GetShapesForInferAxisType(const Operator& op,
                                           map<uint32_t, vector<int64_t>>& input_shapes,
                                           map<uint32_t, vector<int64_t>>& output_shapes,
                                           bool& is_unknown_dim_num, size_t& dim_num) {
@@ -1890,7 +1860,7 @@ ge::graphStatus GetDimNumForOp(const Operator& op,
 }
 
 ge::graphStatus InferAxisType4ElementwiseOp(const Operator& op, vector<AxisTypeInfo>& axis_type) {
-  OP_LOGD(TbeGetName(op), "Infer axis type for element-wise op begin");
+  OP_LOGD(TbeGetName(op), "Infer axis type for %s begin.", TbeGetOpType(op).c_str());
 
   map<uint32_t, vector<int64_t>> input_shapes;
   map<uint32_t, vector<int64_t>> output_shapes;
@@ -1973,7 +1943,7 @@ ge::graphStatus InferAxisType4BroadcastOp(const Operator& op, vector<AxisTypeInf
     }
   }
 
-  OP_LOGD(TbeGetName(op), "InferAxisType for element-wise op end. AxisTypeInfo is: %s",
+  OP_LOGD(TbeGetName(op), "InferAxisType for broadcast op end. AxisTypeInfo is: %s",
           AxisTypeInfoToString(axis_type).c_str());
   return GRAPH_SUCCESS;
 }
@@ -2048,7 +2018,8 @@ ge::graphStatus InferAxisType4ReduceOpHelper(const Operator& op, const AxisType&
   for (int64_t dim = 0; dim < rank; dim++) {
     if (find(axis.begin(), axis.end(), dim) != axis.end()) {
       if (x_dims[dim] != 1) {
-        AxisTypeInfoBuilder builder = AxisTypeInfoBuilder().AxisType(reduce_type).AddInputCutInfo({0, {dim}});
+        AxisTypeInfoBuilder builder =
+            AxisTypeInfoBuilder().AxisType(reduce_type).AddInputCutInfo({0, {dim}}).AddOutputCutInfo({0, {}});
         axis_type.emplace_back(builder.Build());
       }
       if (keep_dims) {

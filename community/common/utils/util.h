@@ -443,14 +443,6 @@ bool IsEmptyTensor(const GeShape& ge_shape);
 std::string RangeToString(const std::vector<std::pair<int64_t, int64_t>>& ranges);
 
 /**
- * @brief: do axis type infer for op
- * @param [in] op: ge Operator
- * @param [out] axis_type_info: the output of axis type
- * @return bool: the status of infershape
- */
-bool OneInOneOutElewiseDynamicAxisType(const Operator& op, std::vector<AxisTypeInfo>& axis_type_info);
-
-/**
  * @brief: Sort and unique AxisTypeInfo, then serial to string
  * @param axis_type_info: Result of infer axis type for operator
  * @return string: the serial string of AxisTypeInfos
@@ -506,6 +498,11 @@ public:
     return *this;
   }
 
+  AxisTypeInfoBuilder &AxisTypes(std::vector<ge::AxisType> axis_types) {
+    axis_type_info_.SetAxisTypes(axis_types);
+    return *this;
+  }
+
   AxisTypeInfoBuilder &AddInputCutInfo(std::pair<int64_t, std::vector<int64_t>> cut_info) {
     axis_type_info_.AddInputCutInfo(cut_info);
     return *this;
@@ -513,6 +510,16 @@ public:
 
   AxisTypeInfoBuilder &AddOutputCutInfo(std::pair<int64_t, std::vector<int64_t>> cut_info) {
     axis_type_info_.AddOutputCutInfo(cut_info);
+    return *this;
+  }
+
+  AxisTypeInfoBuilder &AddInputValueCutInfo(std::pair<int64_t, std::vector<int64_t>> cut_info) {
+    axis_type_info_.AddInputValueCutInfo(cut_info);
+    return *this;
+  }
+
+  AxisTypeInfoBuilder &AddOutputValueCutInfo(std::pair<int64_t, std::vector<int64_t>> cut_info) {
+    axis_type_info_.AddOutputValueCutInfo(cut_info);
     return *this;
   }
 

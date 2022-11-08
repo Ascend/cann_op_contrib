@@ -15,23 +15,42 @@
 set(PROTO "${METADEF_DIR}/proto/insert_op.proto")
 protobuf_generate(opp _proto_cc _proto_h ${PROTO})
 
+
+set(_op_proto_utils
+    ${CANN_ROOT_DIR}/community/common/utils/array_ops_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/axis_util.cc
+    ${CANN_ROOT_DIR}/community/common/utils/candidate_sampling_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/common_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/src/error_util.cc
+    ${CANN_ROOT_DIR}/community/common/src/op_util.cc
+    ${CANN_ROOT_DIR}/community/common/utils/images_ops_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/linalg_ops_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/lookup_ops_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/nn_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/ragged_conversion_ops_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/random_ops_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/resource_variable_ops_shape_fns.cc
+    ${CANN_ROOT_DIR}/community/common/utils/transfer_shape_according_to_format.cc
+    ${CANN_ROOT_DIR}/community/common/utils/util.cc
+    ${CANN_ROOT_DIR}/community/common/utils/reduce_infer_util.cc
+)
+
 file(GLOB PROTO_SRC
     ./**/op_proto/*.cc
-    #${CANN_ROOT_DIR}/community/common/src/*.cc
-    #${CANN_ROOT_DIR}/community/common/utils/*.cc
 )
 
 set(PROTO_INC
+    ${CANN_ROOT_DIR}/community/common/utils
+    ${METADEF_DIR}
     ${METADEF_DIR}/inc
     ${METADEF_DIR}/inc/exe_graph
     ${METADEF_DIR}/inc/external
     ${METADEF_DIR}/third_party/graphengine/inc
     ${METADEF_DIR}/third_party/graphengine/inc/external
     ${METADEF_DIR}/third_party/fwkacllib/inc
-    ${METADEF_DIR}/third_party/fwkacllib/inc/toolchain
-    ${CANN_ROOT_DIR}/community/common/inc
     ${CANN_ROOT_DIR}/community/common
-    #${CANN_ROOT_DIR}/community/common/src
+    ${CANN_ROOT_DIR}/community/common/inc
+    ${CANN_ROOT_DIR}/community/common/src
     #${Protobuf_INCLUDE}
     ${C_SEC_INCLUDE}
 )
@@ -50,6 +69,7 @@ set(PROTO_LINK_LIB
 
 add_library(op_proto SHARED
     ${PROTO_SRC}
+    ${_op_proto_utils}
     ${_proto_h}
 )
 
