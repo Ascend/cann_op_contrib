@@ -41,7 +41,7 @@ add_library(onnx_plugin SHARED
     ${_proto_h}
 )
 
-add_dependencies(onnx_plugin secure_c external_protobuf external_gtest)
+#add_dependencies(onnx_plugin secure_c external_protobuf external_gtest)
 
 target_include_directories(onnx_plugin PRIVATE
     ${ONNX_PLUGIN_INC}

@@ -50,16 +50,16 @@ add_compile_options(
     -Werror=return-type -Werror=unused-value
     -Werror=deprecated-declarations)
 
-include(ExternalProject)
+include(cmake/common_funcs.cmake)
 include(cmake/util/intf_pub_linux.cmake)
 include(cmake/util/util.cmake)
 include(cmake/dependencies.cmake)
-include(cmake/external/secure_c.cmake)
-include(cmake/external/nlohmann_json.cmake)
-include(cmake/external/protobuf.cmake)
-include(cmake/external/gtest.cmake)
-include(cmake/external/eigen.cmake)
-include(cmake/external/protobuf_static.cmake)
+
+if(BUILD_AICPU)
+    include(ExternalProject)
+    include(cmake/external/secure_c.cmake)
+endif()
+
 if(ALL_UT OR PROTO_UT OR TILING_UT)
     include(cmake/util/intf_pub_llt_gccnative.cmake)
 endif()

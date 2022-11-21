@@ -22,21 +22,51 @@ endif()
 message("Search libs under install path ${ASCEND_DIR}")
 
 set(ASCEND_ATC_DIR ${ASCEND_DIR}/compiler/lib64)
-#set(ASCEND_OPENSDK_LIB ${ASCEND_DIR}/opensdk/opensdk/lib)
-#set(CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/cmake)
+set(ASCEND_OPENSDK_LIB ${ASCEND_DIR}/opensdk/opensdk/lib)
+set(CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/cmake)
 
-find_module(graph libgraph.so ${ASCEND_ATC_DIR})
-find_module(register libregister.so ${ASCEND_ATC_DIR})
-find_module(exe_graph libexe_graph.so ${ASCEND_ATC_DIR})
 
-#find_package(slog CONFIG REQUIRED)
-#find_package(metadef CONFIG REQUIRED)
-#find_module(ascend_protobuf libascend_protobuf.so.3.13.0.0 ${ASCEND_ATC_DIR})
-#find_package(mmpa CONFIG REQUIRED)
-#find_package(parser CONFIG REQUIRED)
-#find_package(opcompiler CONFIG REQUIRED)
-#find_package(platform CONFIG REQUIRED)
-#find_package(ascend_hal CONFIG REQUIRED)
-#find_package(runtime CONFIG REQUIRED)
-#find_package(air CONFIG REQUIRED)
-#find_file(tbe_whl te-0.4.0-py3-none-any.whl ${ASCEND_ATC_DIR})
+list(APPEND CMAKE_PREFIX_PATH 
+  ${ASCEND_DIR}/opensdk/opensdk/jpeg
+  ${ASCEND_DIR}/opensdk/opensdk/gtest
+  ${ASCEND_DIR}/opensdk/opensdk/json
+  ${ASCEND_DIR}/opensdk/opensdk/eigen/share/eigen3/cmake
+)
+
+
+set(CMAKE_MODULE_PATH ${ASCEND_DIR}/opensdk/opensdk/cmake/modules)
+find_package(jpeg MODULE)
+find_package(gtest MODULE)
+find_package(json MODULE)
+
+if(NOT BUILD_AICPU)
+  list(APPEND CMAKE_PREFIX_PATH
+    ${ASCEND_DIR}/opensdk/opensdk/c_sec
+  )
+  find_package(securec MODULE)
+endif()
+
+list(APPEND CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/eigen/share/eigen3/cmake)
+find_package(Eigen3 CONFIG)
+set(protoc_ROOT ${ASCEND_DIR}/opensdk/opensdk/protoc)
+set(protobuf_grpc_ROOT ${ASCEND_DIR}/opensdk/opensdk/grpc)
+set(ascend_protobuf_shared_ROOT ${ASCEND_DIR}/opensdk/opensdk/ascend_protobuf)
+set(protobuf_static_ROOT ${ASCEND_DIR}/opensdk/opensdk/protobuf_static)
+set(ascend_protobuf_static_ROOT ${ASCEND_DIR}/opensdk/opensdk/ascend_protobuf_static)
+find_package(protoc MODULE)
+find_package(protobuf_grpc MODULE)
+find_package(protobuf_static MODULE)
+find_package(ascend_protobuf_shared MODULE)
+find_package(ascend_protobuf_static MODULE)
+set(Protobuf_PROTOC_EXECUTABLE ${ASCEND_DIR}/opensdk/opensdk/protoc/bin/protoc)
+find_package(slog CONFIG REQUIRED)
+find_package(metadef CONFIG REQUIRED)
+# find_module(ascend_protobuf libascend_protobuf.so.3.13.0.0 ${ASCEND_ATC_DIR})
+find_package(mmpa CONFIG REQUIRED)
+find_package(parser CONFIG REQUIRED)
+find_package(opcompiler CONFIG REQUIRED)
+find_package(platform CONFIG REQUIRED)
+find_package(ascend_hal CONFIG REQUIRED)
+find_package(runtime CONFIG REQUIRED)
+find_package(air CONFIG REQUIRED)
+find_file(tbe_whl te-0.4.0-py3-none-any.whl ${ASCEND_ATC_DIR})

@@ -25,19 +25,30 @@ mk_dir() {
 }
 
 # create build path
-build_cann() {
-  echo "Create build directory and build CANN"
+build_cann_tbe() {
+  echo "Create build directory and build tbe"
 
   mk_dir "${BUILD_PATH}/install/community/cpu/config" > /dev/null
   python3 scripts/parser_ini.py *.ini ${BUILD_PATH}/install/community/cpu/config/cust_aicpu_kernel.json
 
   mk_dir "${CMAKE_HOST_PATH}"
+
   cd "${CMAKE_HOST_PATH}" && cmake  ../..
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
-    echo "CANN build faild"
+    echo "CANN tbe faild"
   else
-    echo "CANN build success!"
+    echo "CANN tbe success!"
+  fi
+}
+
+build_cann_aicpu() {
+  cd "${CMAKE_HOST_PATH}" && cmake ../.. -D BUILD_AICPU=True
+  make ${VERBOSE} -j${THREAD_NUM}
+  if [ $? -ne 0 ];then
+    echo "CANN build aicpu faild"
+  else
+    echo "CANN build aicpu success!"
   fi
 }
 
@@ -54,9 +65,6 @@ change_dir()
   if [ -d ${BUILD_PATH}/install/community/op_tiling ];then
     cp -r ${BUILD_PATH}/install/community/op_tiling ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
   fi
-  if [ -d ${BUILD_PATH}/install/community/cpu ];then
-    cp -r ${BUILD_PATH}/install/community/cpu ${TAR_DIR_PATH}/vendors/community/op_impl >/dev/null
-  fi
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
     cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
     mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/impl
@@ -67,10 +75,18 @@ change_dir()
   fi
 }
 
+change_dir_aicpu()
+{
+  if [ -d ${BUILD_PATH}/install/community/cpu ];then
+    cp -r ${BUILD_PATH}/install/community/cpu ${TAR_DIR_PATH}/vendors/community/op_impl >/dev/null
+  fi
+}
 main() {
   # CANN build start
-  build_cann
+  build_cann_tbe
   # Change dir
   change_dir
+  build_cann_aicpu
+  change_dir_aicpu
 }
 main

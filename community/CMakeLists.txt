@@ -13,9 +13,12 @@
 # limitations under the License.
 # ============================================================================
 
-add_subdirectory(framework)
-add_subdirectory(ops)
-include(ops/aicpu.cmake)
+if(BUILD_AICPU)
+    include(ops/aicpu.cmake)
+else()
+    add_subdirectory(framework)
+    add_subdirectory(ops)
+endif()
 if(ALL_UT OR PROTO_UT OR TILING_UT)
     add_subdirectory(tests)
 endif()

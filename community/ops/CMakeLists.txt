@@ -73,7 +73,7 @@ add_library(op_proto SHARED
     ${_proto_h}
 )
 
-add_dependencies(op_proto secure_c external_protobuf external_gtest)
+#add_dependencies(op_proto secure_c external_protobuf external_gtest)
 
 target_include_directories(op_proto PRIVATE
     ${PROTO_INC}
@@ -110,7 +110,7 @@ if(ALL_UT OR PROTO_UT)
         ${PROTO_SRC}
         ${_proto_h}
     )
-    add_dependencies(op_proto_llt secure_c external_protobuf external_gtest)
+    #add_dependencies(op_proto_llt secure_c external_protobuf external_gtest)
     if(NOT ${CMAKE_BUILD_MODE} STREQUAL "FALSE")
         set(compile_opt_mode ${CMAKE_BUILD_MODE})
     else()
@@ -168,7 +168,7 @@ add_library(optiling SHARED
     ${TILING_SRC}
 )
 
-add_dependencies(optiling secure_c external_protobuf external_gtest nlohmann_json)
+#add_dependencies(optiling secure_c external_protobuf external_gtest nlohmann_json)
 
 target_include_directories(optiling PRIVATE
     ${TILING_INC}
@@ -197,7 +197,7 @@ if(ALL_UT OR TILING_UT)
     add_library(op_tiling_llt STATIC
         ${TILING_SRC}
     )
-    add_dependencies(op_tiling_llt secure_c external_protobuf external_gtest)
+    #add_dependencies(op_tiling_llt secure_c external_protobuf external_gtest)
     if(NOT ${CMAKE_BUILD_MODE} STREQUAL "FALSE")
         set(compile_opt_mode ${CMAKE_BUILD_MODE})
     else()

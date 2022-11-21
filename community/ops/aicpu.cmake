@@ -41,7 +41,6 @@ set(AICPU_INC
     ${CANN_ROOT_DIR}/community/common/inc
     ${CANN_ROOT_DIR}/community/common/src
     ${AICPU_INCLUDE}
-    ${EIGEN_INCLUDE}
     ${C_SEC_INCLUDE}
 )
 
@@ -49,7 +48,12 @@ set(AICPU_INC
 add_library(cust_aicpu_kernels SHARED
     ${AICPU_SRC}
 )
-add_dependencies(cust_aicpu_kernels eigen c_sec)
+add_dependencies(cust_aicpu_kernels c_sec)
+list(APPEND CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/eigen/share/eigen3/cmake)
+
+target_link_libraries(cust_aicpu_kernels PRIVATE
+    Eigen3::Eigen
+)
 target_include_directories(cust_aicpu_kernels PRIVATE
     ${AICPU_INC}
 )

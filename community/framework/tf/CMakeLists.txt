@@ -54,7 +54,7 @@ add_library(tf_plugin SHARED
     ${_proto_h}
 )
 
-add_dependencies(tf_plugin secure_c external_protobuf external_gtest)
+#add_dependencies(tf_plugin secure_c external_protobuf external_gtest)
 
 target_include_directories(tf_plugin PRIVATE
     ${TF_PLUGIN_INC}
