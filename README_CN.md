@@ -29,16 +29,7 @@
 </blockquote></details>
 
 </blockquote></details>
-<details><summary><b> framework</b></summary><blockquote>
-<details><summary><b> onnx</b></summary><blockquote>
-<b>add_plugin.cc  算子适配onnx框架插件代码</b><br>
-<b>CMakeLists.txt  算子适配插件编译文件</b><br>
-</blockquote></details>
-<details><summary><b> tf</b></summary><blockquote>
-<b>add_plugin.cc  算子适配tf框架插件代码</b><br>
-<b>CMakeLists.txt  算子适配插件编译文件</b><br>
-</blockquote></details>
-</blockquote></details>
+
 <details open><summary><b> ops</b></summary><blockquote>
 <details open><summary><b> add(以add算子为例)</b></summary><blockquote>
 <details><summary><b> ai_core</b></summary><blockquote>
@@ -69,6 +60,17 @@
 </blockquote></details>
 <details><summary><b> op_info_cfg</b></summary><blockquote>
 <b>add.ini 算子信息配置文件</b><br>
+</blockquote></details>
+</blockquote></details>
+<details><summary><b> framework</b></summary><blockquote>
+<details><summary><b> onnx</b></summary><blockquote>
+<b>add_plugin.cc  算子适配onnx框架插件代码</b><br>
+</blockquote></details>
+<details><summary><b> tf</b></summary><blockquote>
+<b>add_plugin.cc  算子适配tf框架插件代码</b><br>
+</blockquote></details>
+<details><summary><b> caffe</b></summary><blockquote>
+<b>add_plugin.cc  算子适配caffe框架插件代码</b><br>
 </blockquote></details>
 </blockquote></details>
 <details><summary><b> op_proto</b></summary><blockquote>

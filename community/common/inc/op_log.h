@@ -35,6 +35,12 @@
 
 #define OPPROTO_SUBMOD_NAME "OP_PROTO"
 
+#define DlogSubTmp(moduleId, submodule, level, fmt, ...)                                                 \
+  do                                                                                                     \
+  {                                                                                                      \
+    printf("log unuse %d %s %d %s", moduleId, submodule, level, fmt, __FILE__, __LINE__, ##__VA_ARGS__); \
+  } while (TMP_LOG != 0)
+
 template <class T>
 typename std::enable_if<std::is_same<std::string, typename std::decay<T>::type>::value, const char*>::type
 get_cstr(const T& name) {
@@ -157,23 +163,23 @@ enum {
 };
 
 #if !defined( __ANDROID__) && !defined(ANDROID)
-#define AICPU_D_OP_LOGI(opname, fmt, ...) DlogSub(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define AICPU_D_OP_LOGW(opname, fmt, ...) DlogSub(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_WARN, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define AICPU_D_OP_LOGE(opname, fmt, ...) DlogSub(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define AICPU_D_OP_LOGD(opname, fmt, ...) DlogSub(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define D_OP_LOGI(opname, fmt, ...) DlogSub(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define D_OP_LOGW(opname, fmt, ...) DlogSub(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_WARN,  " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define D_OP_LOGE(opname, fmt, ...) DlogSub(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define D_OP_LOGD(opname, fmt, ...) DlogSub(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define D_OP_EVENT(opname, fmt, ...) DlogSub(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_EVENT, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define GE_D_OP_LOGI(opname, fmt, ...) DlogSub(GE, OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define GE_D_OP_LOGW(opname, fmt, ...) DlogSub(GE, OPPROTO_SUBMOD_NAME, DLOG_WARN,  " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define GE_D_OP_LOGE(opname, fmt, ...) DlogSub(GE, OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define GE_D_OP_LOGD(opname, fmt, ...) DlogSub(GE, OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
-#define D_FUSION_PASS_LOGI(fmt, ...) DlogSub(FE, OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define D_FUSION_PASS_LOGW(fmt, ...) DlogSub(FE, OPPROTO_SUBMOD_NAME, DLOG_WARN,  " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define D_FUSION_PASS_LOGE(fmt, ...) DlogSub(FE, OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define D_FUSION_PASS_LOGD(fmt, ...) DlogSub(FE, OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define AICPU_D_OP_LOGI(opname, fmt, ...) DlogSubTmp(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define AICPU_D_OP_LOGW(opname, fmt, ...) DlogSubTmp(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_WARN, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define AICPU_D_OP_LOGE(opname, fmt, ...) DlogSubTmp(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define AICPU_D_OP_LOGD(opname, fmt, ...) DlogSubTmp(static_cast<int>(AICPU), OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define D_OP_LOGI(opname, fmt, ...) DlogSubTmp(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define D_OP_LOGW(opname, fmt, ...) DlogSubTmp(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_WARN,  " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define D_OP_LOGE(opname, fmt, ...) DlogSubTmp(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define D_OP_LOGD(opname, fmt, ...) DlogSubTmp(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define D_OP_EVENT(opname, fmt, ...) DlogSubTmp(static_cast<int>(OP), OPPROTO_SUBMOD_NAME, DLOG_EVENT, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define GE_D_OP_LOGI(opname, fmt, ...) DlogSubTmp(GE, OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define GE_D_OP_LOGW(opname, fmt, ...) DlogSubTmp(GE, OPPROTO_SUBMOD_NAME, DLOG_WARN,  " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define GE_D_OP_LOGE(opname, fmt, ...) DlogSubTmp(GE, OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define GE_D_OP_LOGD(opname, fmt, ...) DlogSubTmp(GE, OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d OpName:[%s] "#fmt, __FUNCTION__, __LINE__, opname, ##__VA_ARGS__)
+#define D_FUSION_PASS_LOGI(fmt, ...) DlogSubTmp(FE, OPPROTO_SUBMOD_NAME, DLOG_INFO, " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define D_FUSION_PASS_LOGW(fmt, ...) DlogSubTmp(FE, OPPROTO_SUBMOD_NAME, DLOG_WARN,  " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define D_FUSION_PASS_LOGE(fmt, ...) DlogSubTmp(FE, OPPROTO_SUBMOD_NAME, DLOG_ERROR, " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define D_FUSION_PASS_LOGD(fmt, ...) DlogSubTmp(FE, OPPROTO_SUBMOD_NAME, DLOG_DEBUG, " %s:%d "#fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define AICPU_D_OP_LOGI(opname, fmt, ...)
 #define AICPU_D_OP_LOGW(opname, fmt, ...)
