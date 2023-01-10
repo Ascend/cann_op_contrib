@@ -51,7 +51,9 @@
 </blockquote></details>
 </blockquote></details>
 
-<b> op_tiling</b><br>
+<details><summary><b> op_tiling</b></summary><blockquote>
+<b>add_tiling.cc 算子tiling.cc</b><br>
+</blockquote></details>
 </blockquote></details>
 <details><summary><b> ai_cpu</b></summary><blockquote>
 <details><summary><b> impl</b></summary><blockquote>
@@ -89,7 +91,6 @@
 </blockquote></details>
 </blockquote></details>
 </blockquote></details>
-
 <details><summary><b> scripts</b></summary><blockquote>
 <b>ai_core_parse_ini.py  tbe算子信息配置解析脚本</b><br>
 <b>CANN_OP_CONTRIB_install.sh  生态仓算子部署脚本</b><br>
@@ -102,8 +103,8 @@
 </blockquote></details>
 <b>CMakeLists.txt 生态仓总编译脚本</b><br>
 <b>build.sh 编译脚本，用于触发生态仓代码编译及编译出的文件路径变更</b><br>
-
 <b>pack.sh 生态仓run包打包脚本</b><br>
+</blockquote></details>
 </blockquote></details>
 
 #### 环境要求
