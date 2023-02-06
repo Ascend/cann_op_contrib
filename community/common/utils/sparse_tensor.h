@@ -112,6 +112,9 @@ class SparseTensor {
     uint32_t min_core_num = 1;
     int64_t max_core_num = std::max(min_core_num, aicpu::CpuKernelUtils::GetCPUNum(ctx) - kResvCpuNum);
     uint32_t result = static_cast<uint32_t>(KERNEL_STATUS_OK);
+    if (max_core_num == 0) {
+      return KERNEL_STATUS_PARAM_INVALID;
+    }
     (void)aicpu::CpuKernelUtils::ParallelFor(
         ctx, dims_size, dims_size / max_core_num, [&](std::int64_t begin, std::int64_t end) {
         int64_t start = begin;
@@ -230,6 +233,9 @@ class SparseTensor {
       }
       return;
     };
+    if (max_core_num == 0) {
+      return KERNEL_STATUS_PARAM_INVALID;
+    }
     KERNEL_HANDLE_ERROR(aicpu::CpuKernelUtils::ParallelFor(ctx, vals_size, vals_size / max_core_num, parallel_proc),
                         "SparseToDense Compute failed.")
     return result;

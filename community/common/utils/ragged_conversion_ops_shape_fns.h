@@ -25,23 +25,19 @@
 #include "graph/operator.h"
 
 namespace ge {
-
 namespace {
-
 enum class RowPartitionType { FIRST_DIM_SIZE, VALUE_ROWIDS, ROW_LENGTHS, ROW_SPLITS, ROW_LIMITS, ROW_STARTS };
 
-typedef struct {
+using Dim = struct {
   int64_t size = 1;
   std::string name;
-} Dim;
+};
 
-typedef struct {
+using TensorShape = struct {
   std::vector<Dim> dims;
   bool unknown_rank = false;
-} TensorShape;
-
+};
 }  //  namespace
-
 /**
  * make shape from shape proto
  * @param input_shape input tensor shape info
@@ -83,7 +79,6 @@ void ShapeHandleToTensorShape(Shape handle, TensorShape& shape_info);
  * @return status whether infershape success
  */
 graphStatus RaggedTensorToTensorShapeFn(Operator& op);
-
 }  // namespace ge
 
 #endif  // OPS_BUILT_IN_OP_PROTO_UTIL_RAGGED_CONVERSION_OPS_SHAPE_FNS_H_

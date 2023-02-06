@@ -22,7 +22,6 @@
 #define OPS_COMMON_INC_ERROR_CODE_H_
 
 namespace ge {
-
 // error code for report purpose.
 // 30000~34999 for aicpu engine error
 // and 35000~39999 for infershape error of aicpu op

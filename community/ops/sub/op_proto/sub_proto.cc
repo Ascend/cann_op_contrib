@@ -150,6 +150,4 @@ IMPLEMT_COMMON_INFERFUNC(TwoInOneOutCommonInferShape) {
 INFER_DATA_SLICE_FUNC_REG(Sub, ElewiseTwoInputInferDataSlice);
 COMMON_INFER_FUNC_REG(Sub, TwoInOneOutCommonInferShape);
 INFER_AXIS_TYPE_INFO_REG(Sub, InferAxisType4BroadcastOp);
-
-
 }

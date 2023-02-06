@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _ADD_KERNELS_H_
-#define _ADD_KERNELS_H_
+#ifndef AICPU_IMPL_ADD_KERNELS_H
+#define AICPU_IMPL_ADD_KERNELS_H
 
 #include "cpu_kernel.h"
 #include "cpu_types.h"

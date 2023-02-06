@@ -95,7 +95,6 @@
   } while (0)
 
 namespace optiling {
-
 #define VECTOR_INNER_ERR_REPORT_TILIING(op_name, err_msg, ...) \
   do { \
       OP_LOGE_WITHOUT_REPORT(op_name, err_msg, ##__VA_ARGS__); \
@@ -112,7 +111,6 @@ namespace optiling {
 }  // namespace optiling
 
 namespace ge {
-
 /*
  * get debug string of vector
  * param[in] v vector

@@ -23,7 +23,6 @@
 
 #include "../graph/operator_reg.h"
 namespace ge {
-
 REG_OP(Zeroslike)
     .INPUT(x, TensorType({DT_FLOAT16,DT_FLOAT,DT_INT32}))
     .OUTPUT(y, TensorType({DT_FLOAT16,DT_FLOAT,DT_INT32}))

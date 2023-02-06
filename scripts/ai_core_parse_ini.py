@@ -56,7 +56,7 @@ def parse_ini_to_obj(ini_file, tbe_ops_info):
                 key1 = line[:line.index("=")]
                 key2 = line[line.index("=")+1:]
                 key1_0, key1_1 = key1.split(".")
-                if not key1_0 in op:
+                if key1_0 not in op:
                     op[key1_0] = {}
                 if key1_1 in op[key1_0]:
                     raise RuntimeError("Op:" + op_name + " " + key1_0 + " " + key1_1 + " is repeated!")
@@ -84,13 +84,13 @@ def check_op_info(tbe_ops):
                 op_input_info = op[op_info_key]
                 missing_keys = []
                 for  required_op_input_info_key in required_op_input_info_keys:
-                    if not required_op_input_info_key in op_input_info:
+                    if required_op_input_info_key not in op_input_info:
                         missing_keys.append(required_op_input_info_key)
                 if len(missing_keys) > 0:
                     print("op: " + op_key + " " + op_info_key + " missing: " + ",".join(missing_keys))
                     is_valid = False
                 else:
-                    if not op_input_info["paramType"] in param_type_valid_value:
+                    if  op_input_info["paramType"] not in param_type_valid_value:
                         print("op: " + op_key + " " + op_info_key + \
                               " paramType not valid, valid key:[dynamic, optional, required]")
                         is_valid = False
@@ -98,13 +98,13 @@ def check_op_info(tbe_ops):
                 op_input_info = op[op_info_key]
                 missing_keys = []
                 for  required_op_input_info_key in required_op_output_info_keys:
-                    if not required_op_input_info_key in op_input_info:
+                    if required_op_input_info_key not in op_input_info:
                         missing_keys.append(required_op_input_info_key)
                 if len(missing_keys) > 0:
                     print("op: " + op_key + " " + op_info_key + " missing: " + ",".join(missing_keys))
                     is_valid = False
                 else:
-                    if not op_input_info["paramType"] in param_type_valid_value:
+                    if op_input_info["paramType"] not in param_type_valid_value:
                         print("op: " + op_key + " " + op_info_key + \
                               " paramType not valid, valid key:[fix, range, list]")
                         is_valid = False

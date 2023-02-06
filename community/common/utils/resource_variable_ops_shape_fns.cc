@@ -1,5 +1,5 @@
 /**
- * Copyright (c) Huawei Technologies Co., Ltd. 2019. All rights reserved.
+ * Copyright (c) 2022-2022 Huawei Technologies Co., Ltd.  All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@
 #include "error_util.h"
 
 namespace ge {
-
 graphStatus ValidateVariableResourceHandle(Operator& op, std::vector<ShapeAndType>& shape_and_type) {
   auto input_handle = op.GetInferenceContext()->GetInputHandleShapesAndTypes();
   if (input_handle.empty()) {

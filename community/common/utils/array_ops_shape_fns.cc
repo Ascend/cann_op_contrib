@@ -25,6 +25,7 @@
 #include "common_shape_fns.h"
 #include "graph/utils/op_desc_utils.h"
 #include "axis_util.h"
+#include "util.h"
 
 namespace ge {
 static graphStatus PadKnown(Operator& op, const Tensor& paddings_tensor, const int64_t input_dim_num) {
@@ -58,7 +59,7 @@ static graphStatus PadKnown(Operator& op, const Tensor& paddings_tensor, const i
   if (dims != UNKNOWN_SHAPE) {
     output_dims.assign(dims.begin(), dims.end());
   }
-  for (size_t i = 0; i < data.size(); i += 2) {
+  for (size_t i = 0; i < data.size(); i += NUM_VALUE2) {
     if ((data[i] < 0) || (data[i + 1] < 0)) {
       std::string err_msg = ConcatString("paddings", DebugString(data), " must be non-negative");
       VECTOR_INFER_SHAPE_INNER_ERR_REPORT(TbeGetName(op), err_msg);
@@ -88,11 +89,11 @@ graphStatus PadShapeFn(Operator& op) {
             DebugString(op.GetInputDesc(1).GetShape().GetDims()), "2D")));
     return GRAPH_FAILED;
   }
-  status = WithValue(paddings.GetDim(1), 2, input_dim_num, TbeGetName(op).c_str());
+  status = WithValue(paddings.GetDim(1), DIM_VALUE2, input_dim_num, TbeGetName(op).c_str());
   if (status != GRAPH_SUCCESS) {
     AICPU_INFER_SHAPE_CALL_ERR_REPORT(TbeGetName(op),
         ConcatString("call WithValue failed, ", GetShapeErrMsg(1,
-            DebugString(op.GetInputDesc(1).GetShape().GetDims()), ConcatString(2, " of dim[1]"))));
+            DebugString(op.GetInputDesc(1).GetShape().GetDims()), ConcatString(DIM_VALUE2, " of dim[1]"))));
     return GRAPH_FAILED;
   }
   Shape input;
@@ -100,17 +101,16 @@ graphStatus PadShapeFn(Operator& op) {
   if (dim0 != UNKNOWN_DIM) {
     status = WithRank(op.GetInputDesc(0), dim0, input, TbeGetName(op).c_str());
     if (status != GRAPH_SUCCESS) {
-      AICPU_INFER_SHAPE_CALL_ERR_REPORT(TbeGetName(op),
-        ConcatString("call WithRank failed, ", GetShapeErrMsg(0,
-            DebugString(op.GetInputDesc(0).GetShape().GetDims()), ConcatString(dim0, "D"))));
+      AICPU_INFER_SHAPE_CALL_ERR_REPORT(TbeGetName(op), ConcatString("call WithRank failed, ",
+          GetShapeErrMsg(0,  DebugString(op.GetInputDesc(0).GetShape().GetDims()),
+          ConcatString(dim0, "D"))));
       return GRAPH_FAILED;
     }
   } else if (op.GetInputDesc(0).GetShape().GetDim(0) != 0) {
     status = WithValue(dim0, op.GetInputDesc(0).GetShape().GetDimNum(), input_dim_num, TbeGetName(op).c_str());
     if (status != GRAPH_SUCCESS) {
-      AICPU_INFER_SHAPE_CALL_ERR_REPORT(TbeGetName(op),
-        ConcatString("call WithRank failed, ", GetShapeErrMsg(0,
-            DebugString(op.GetInputDesc(0).GetShape().GetDims()), ConcatString(dim0, "D"))));
+      AICPU_INFER_SHAPE_CALL_ERR_REPORT(TbeGetName(op), ConcatString("call WithRank failed, ",
+          GetShapeErrMsg(0, DebugString(op.GetInputDesc(0).GetShape().GetDims()),ConcatString(dim0, "D"))));
       return GRAPH_FAILED;
     }
   }

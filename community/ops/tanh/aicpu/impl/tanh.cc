@@ -81,6 +81,9 @@ uint32_t TanhCpuKernel::TanhCompute(CpuKernelContext &ctx) {
         *(output_y + i) = tanh_op((*x_idx));      
       }
     };
+    if (max_core_num == 0) {
+      return KERNEL_STATUS_PARAM_INVALID;
+    }
     KERNEL_HANDLE_ERROR(
         CpuKernelUtils::ParallelFor(ctx, data_num, data_num / max_core_num,
                                     shard_Tanh),

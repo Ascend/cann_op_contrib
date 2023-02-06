@@ -78,8 +78,6 @@ graphStatus DecodeImageShapeFn(Operator& op);
  * @return status whether infer shape success
  */
 bool DimsAllEqualOrUnknown(std::initializer_list<int64_t>&& inputs, int64_t unknown_dim_val = UNKNOWN_DIM);
-
-
 }  // namespace ge
 
 #endif  // OPS_BUILT_IN_OP_PROTO_UTIL_IMAGES_OPS_SHAPE_FNS_H_

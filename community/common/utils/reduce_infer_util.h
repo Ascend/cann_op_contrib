@@ -30,7 +30,6 @@
 using namespace std;
 using namespace ge;
 namespace reduce_ops {
-
 /*
  * only do infer shape for reduce with input_shape/axes, when keepdims = true
  * param[in] input_shape: GeShape input shape

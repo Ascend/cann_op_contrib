@@ -30,7 +30,6 @@ namespace ge {
  * @return status whether infershape success
  */
 graphStatus CreateAssignShapeFn(Operator& op);
-
 }  // namespace ge
 
 #endif  // OPS_BUILT_IN_OP_PROTO_UTIL_RESOURCE_VARIABLE_OPS_SHAPE_FNS_H_

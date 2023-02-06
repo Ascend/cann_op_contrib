@@ -34,7 +34,7 @@ class SubCpuKernel : public CpuKernel {
 
   template <typename T>
   void SpecialCompute(BcastShapeType type, int64_t start, int64_t end,
-                      const T *input1, const T *input2,  T *output);
+                      CpuKernelContext &ctx);
 
   template <typename T>
   uint32_t NoBcastCompute(CpuKernelContext &ctx);

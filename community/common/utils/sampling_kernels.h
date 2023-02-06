@@ -224,7 +224,6 @@ inline KeysCubicKernelFunc CreateKeysCubicKernel() {
 inline MitchellCubicKernelFunc CreateMitchellCubicKernel() {
   return MitchellCubicKernelFunc();
 }
-
 }  // namespace aicpu
 
 #endif  // _AICPU_AICPU_DEVICE_CPU_KERNELS_UTILS_SAMPLING_KERNELS_H_

@@ -66,8 +66,7 @@ std::string to_string(const std::set<T> &items) {
   oss << "]";
   return oss.str();
 }
-
 } // namespace ops
 
 
-#endif //OPS_BUILT_IN_OP_PROTO_UTIL_OP_COMMON_UTIL_H_
+#endif // OPS_BUILT_IN_OP_PROTO_UTIL_OP_COMMON_UTIL_H_

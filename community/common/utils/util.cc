@@ -143,7 +143,6 @@ bool CheckInputsShapeDtypeSame(const Operator& op, const std::vector<std::string
   auto input_name = first_input_name;
   for (++input_name; input_name != input_names.end(); ++input_name) {
     auto input_des = op.GetInputDescByName((*first_input_name).c_str());
-
     if (input_des.GetDataType() != first_input_des.GetDataType() ||
         input_des.GetShape().GetDims() != first_input_des.GetShape().GetDims()) {
       VECTOR_INFER_SHAPE_INNER_ERR_REPORT(
@@ -503,7 +502,6 @@ bool InferShapeAndTypeTwoInOneOutBroadcast(Operator& op, const string& input_nam
   OP_LOGI(TbeGetName(op).c_str(), "output shape is: %s, output dtype is:%s.", to_string(outputShape).c_str(),
           ge::TypeUtils::DataTypeToSerialString(input_dtype).c_str());
   is_dynamic = IsUnknown(dimVec);
-
   if (is_dynamic) {
     if (!InferShapeRangeTwoInOneOutBroadcast(op, input_name1, input_name2, output_name)) {
       return false;
@@ -862,7 +860,7 @@ static std::vector<int64_t> GetNewAxis4FRACTAL_NZ(std::size_t ori_shape_len, int
     return {new_shape_len - 4, new_shape_len - 1};
   }
 
-  if (static_cast<size_t>(non_negative_axis) == ori_shape_len - 2) {
+  if (static_cast<size_t>(non_negative_axis) == ori_shape_len - NUM_VALUE2) {
     if (!reduce_mode) {
       return {new_shape_len - 3};
     }
@@ -1356,7 +1354,7 @@ bool IsUnknownRank(const Operator& op, const std::string& tensor_name, const std
   }
 
   std::vector<int64_t> shape_vec = tensor_desc->GetShape().GetDims();
-  if (shape_vec.size() == 1 && shape_vec[0] == -2) {
+  if (shape_vec.size() == 1 && shape_vec[0] == INPUT_NEGATIVE_NUM2) {
     return true;
   }
   return false;
@@ -2252,7 +2250,6 @@ int64_t CalculateMaxInputDims(const std::vector<std::pair<int64_t, int64_t>>& x_
 void ReshapeRangeInfer(const Operator &op, const std::vector<std::pair<int64_t, int64_t>>& x_range,
                        std::vector<std::pair<int64_t, int64_t>>& y_range, GeShape& output_shape) {
   int64_t max_input_dims = CalculateMaxInputDims(x_range, op);
-
   if (max_input_dims < 0) {
     for (const auto dim : output_shape.GetDims()) {
       if (dim < 0) {
@@ -2273,7 +2270,7 @@ void ReshapeRangeInfer(const Operator &op, const std::vector<std::pair<int64_t, 
       } else {
         y_range.emplace_back(std::pair<int64_t, int64_t>(dim, dim));
         if (dim != 0) {
-          left = static_cast<int64_t>((static_cast<double>(left) + 0.5) / dim);
+          left = static_cast<int64_t>((static_cast<double>(left) + HALF) / dim);
         }
       }
       dim_index++;
@@ -2284,7 +2281,6 @@ void ReshapeRangeInfer(const Operator &op, const std::vector<std::pair<int64_t, 
     }
   }
 }
-
 }
 bool IsSliceUnknownShape(const std::vector<int64_t> &dim_vec, const int64_t &begin, const int64_t &end) {
   if (begin < 0 || end >= static_cast<int64_t>(dim_vec.size())) {

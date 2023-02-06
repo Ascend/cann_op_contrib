@@ -22,6 +22,7 @@
 #include <vector>
 #include "op_log.h"
 #include "error_util.h"
+#include "util.h"
 
 namespace ge {
 graphStatus CandidateSamplerShape(Operator& op) {
@@ -53,7 +54,7 @@ graphStatus CandidateSamplerShape(Operator& op) {
   }
 
   Shape true_classes;
-  if (WithRank(op.GetInputDesc(0), 2, true_classes, TbeGetName(op).c_str()) != GRAPH_SUCCESS) {
+  if (WithRank(op.GetInputDesc(0), NUM_VALUE2, true_classes, TbeGetName(op).c_str()) != GRAPH_SUCCESS) {
     string err_msg = ConcatString("input[true_classes] must be 2-D, real rank is ",
                                   true_classes.GetDimNum());
     AICPU_INFER_SHAPE_CALL_ERR_REPORT(TbeGetName(op), err_msg);

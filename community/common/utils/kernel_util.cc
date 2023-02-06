@@ -237,6 +237,10 @@ bool IsSquareMatrix(const std::vector<int64_t> &shape) {
 }
 
 bool AddrAlignedCheck(const void *addr, uint64_t alignment) {
+  if (alignment == 0) {
+    return false;
+  }
+  
   return reinterpret_cast<uint64_t>(reinterpret_cast<uintptr_t>(addr)) %
              alignment ==
          0;

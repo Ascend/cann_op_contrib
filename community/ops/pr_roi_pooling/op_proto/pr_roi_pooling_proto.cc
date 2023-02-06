@@ -21,28 +21,6 @@
 #include "utils/util.h"
 
 namespace ge {
-// ----------------PrRoIPooling Op Begin-------------------
-// static bool IsUnknownRankShape(const GeShape& input_shape) {
-//   return input_shape.IsUnknownDimNum();
-// }
-
-// void MakeUpShapeRange(const ge::GeShape& shape, std::vector<std::pair<int64_t, int64_t>>& range) {
-//   if (IsUnknownRankShape(shape)) {
-//     return;
-//   }
-
-//   if (range.empty()) {
-//     for (size_t i = 0; i < shape.GetDimNum(); i++) {
-//       int64_t dim = shape.GetDim(i);
-//       if (dim == -1) {
-//         range.push_back(std::pair<int64_t, int64_t>(0, -1));
-//       } else {
-//         range.push_back(std::pair<int64_t, int64_t>(dim, dim));
-//       }
-//     }
-//   }
-// }
-
 static bool IsRoiUnknownOutputShape(const GeShape& features_shape, const GeShape& rois_shape) {
   if (IsUnknownRankShape(features_shape) || IsUnknownRankShape(rois_shape)) {
     return true;
@@ -57,7 +35,7 @@ IMPLEMT_COMMON_INFERFUNC(PrRoIPoolingInferShape) {
   const size_t POOLED_H_IDX = 2;
   const size_t POOLED_W_IDX = 3;
   const size_t NCHW_DIMENSION_NUM = 4;
-  //OP_LOGD(TbeGetName(op).c_str(), "PrRoIPoolingInferShape Begin.");
+  OP_LOGD(TbeGetName(op).c_str(), "PrRoIPoolingInferShape Begin.");
   auto op_info = OpDescUtils::GetOpDescFromOperator(op);
   auto features_desc = op_info->MutableInputDesc(0);
   auto rois_desc = op_info->MutableInputDesc(1);
@@ -69,11 +47,11 @@ IMPLEMT_COMMON_INFERFUNC(PrRoIPoolingInferShape) {
   int64_t pool_h_shape;
   int64_t pool_w_shape;
   if (!AttrUtils::GetInt(op_info, "pooled_height", pool_h_shape)) {
-    //OP_LOGE(TbeGetName(op).c_str(), "PrRoIPoolingInferShape, Get Attr pooled_height failed");
+    OP_LOGE(TbeGetName(op).c_str(), "PrRoIPoolingInferShape, Get Attr pooled_height failed");
     return GRAPH_FAILED;
   }
   if (!AttrUtils::GetInt(op_info, "pooled_width", pool_w_shape)) {
-    //OP_LOGE(TbeGetName(op).c_str(), "PrRoIPoolingInferShape, Get Attr pooled_width failed");
+    OP_LOGE(TbeGetName(op).c_str(), "PrRoIPoolingInferShape, Get Attr pooled_width failed");
     return GRAPH_FAILED;
   }
   output_desc->SetDataType(features_dtype);

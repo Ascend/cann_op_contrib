@@ -21,11 +21,12 @@
 #include "linalg_ops_shape_fns.h"
 #include "op_log.h"
 #include "common_shape_fns.h"
+#include "util.h"
 
 namespace ge {
 graphStatus MakeBatchSquareMatrix(const TensorDesc& tensor, Shape& out, const char* op_name) {
   Shape s;
-  if (WithRankAtLeast(tensor, 2, s, op_name) == GRAPH_FAILED) {
+  if (WithRankAtLeast(tensor, DIM_VALUE2, s, op_name) == GRAPH_FAILED) {
     OP_LOGE(op_name, "input tensor's rank at least 2.");
     return GRAPH_FAILED;
   }
@@ -40,7 +41,7 @@ graphStatus MakeBatchSquareMatrix(const TensorDesc& tensor, Shape& out, const ch
   }
 
   Shape batch_shape;
-  if (SubShape(s, 0, -2, 1, batch_shape, op_name) == GRAPH_FAILED) {
+  if (SubShape(s, 0, INPUT_NEGATIVE_NUM2, 1, batch_shape, op_name) == GRAPH_FAILED) {
     OP_LOGE(op_name, "Get SubShape batch_shape Failed.");
     return GRAPH_FAILED;
   }
@@ -54,13 +55,13 @@ graphStatus MakeBatchSquareMatrix(const TensorDesc& tensor, Shape& out, const ch
 graphStatus MakeBatchSquareMatrix(const GeTensorDescPtr& tensor_desc,
                                   GeShape& out, const char* op_name) {
   GeShape ge_shape;
-  if (WithRankAtLeast(tensor_desc, 2, ge_shape, op_name) == GRAPH_FAILED) {
+  if (WithRankAtLeast(tensor_desc, DIM_VALUE2, ge_shape, op_name) == GRAPH_FAILED) {
     OP_LOGE(op_name, "Input tensor's rank at least 2.");
     return GRAPH_FAILED;
   }
   Shape s(ge_shape.GetDims());
   size_t existing = s.GetDimNum();
-  int64_t dim1 = s.GetDim(existing - 2);
+  int64_t dim1 = s.GetDim(existing - DIM_VALUE2);
   int64_t dim2 = s.GetDim(existing - 1);
 
   int64_t out_dim = 0;
@@ -71,7 +72,7 @@ graphStatus MakeBatchSquareMatrix(const GeTensorDescPtr& tensor_desc,
 
   if (RankKnown(ge_shape)) {
     GeShape batch_shape;
-    if (SubShape(ge_shape, 0, -2, 1, batch_shape, op_name) == GRAPH_FAILED) {
+    if (SubShape(ge_shape, 0, INPUT_NEGATIVE_NUM2, 1, batch_shape, op_name) == GRAPH_FAILED) {
       OP_LOGE(op_name, "Get subShape batch_shape failed.");
       return GRAPH_FAILED;
     }
@@ -98,12 +99,12 @@ graphStatus MatrixSolve(const TensorDesc& tensor1, const TensorDesc& tensor2, bo
       return GRAPH_FAILED;
     }
   } else {
-    if (WithRankAtLeast(tensor1, 2, lhs, op_name) == GRAPH_FAILED) {
+    if (WithRankAtLeast(tensor1, DIM_VALUE2, lhs, op_name) == GRAPH_FAILED) {
       OP_LOGE(op_name, "MatrixSolve func first input tensor must be at least 2.");
       return GRAPH_FAILED;
     }
   }
-  if (WithRankAtLeast(tensor2, 2, rhs, op_name) == GRAPH_FAILED) {
+  if (WithRankAtLeast(tensor2, DIM_VALUE2, rhs, op_name) == GRAPH_FAILED) {
     OP_LOGE(op_name, "MatrixSolve func second input tensor must be at least 2.");
     return GRAPH_FAILED;
   }
@@ -111,11 +112,11 @@ graphStatus MatrixSolve(const TensorDesc& tensor1, const TensorDesc& tensor2, bo
   Shape lhs_batch;
   Shape rhs_batch;
   // Make the common batch subshape.
-  if (SubShape(lhs, 0, -2, 1, lhs_batch, op_name) == GRAPH_FAILED) {
+  if (SubShape(lhs, 0, INPUT_NEGATIVE_NUM2, 1, lhs_batch, op_name) == GRAPH_FAILED) {
     OP_LOGE(op_name, "SubShape lhs_batch in MatrixSolve func failed.");
     return GRAPH_FAILED;
   }
-  if (SubShape(rhs, 0, -2, 1, rhs_batch, op_name) == GRAPH_FAILED) {
+  if (SubShape(rhs, 0, INPUT_NEGATIVE_NUM2, 1, rhs_batch, op_name) == GRAPH_FAILED) {
     OP_LOGE(op_name, "SubShape rhs_batch in MatrixSolve func failed.");
     return GRAPH_FAILED;
   }
@@ -129,8 +130,8 @@ graphStatus MatrixSolve(const TensorDesc& tensor1, const TensorDesc& tensor2, bo
   int64_t dim_val = 0;
   int64_t lhs_rank = lhs.GetDimNum();
   int64_t rhs_rank = rhs.GetDimNum();
-  int64_t dim_lhs = lhs.GetDim(lhs_rank - 2);
-  int64_t dim_rhs = rhs.GetDim(rhs_rank - 2);
+  int64_t dim_lhs = lhs.GetDim(lhs_rank - NUM_VALUE2);
+  int64_t dim_rhs = rhs.GetDim(rhs_rank - NUM_VALUE2);
   // lhs and rhs have the same value for m to be compatible.
   if (Merge(dim_lhs, dim_rhs, dim_val) == GRAPH_FAILED) {
     OP_LOGE(op_name, "Merge dimension dim_lhs and dim_rhs failed.");

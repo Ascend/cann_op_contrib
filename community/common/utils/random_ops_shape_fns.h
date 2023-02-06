@@ -24,7 +24,6 @@
 #include "common_shape_fns.h"
 
 namespace ge {
-
 /**
  * Set output shape that as same as a input for random op
  * @param op Operator

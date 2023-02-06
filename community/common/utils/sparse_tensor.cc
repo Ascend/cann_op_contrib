@@ -16,6 +16,7 @@
 
 #include "sparse_tensor.h"
 #include "cpu_types.h"
+#include "util.h"
 
 namespace aicpu {
 uint32_t SparseTensor::CreateSparseTensor(Tensor *ix, Tensor *tensorvals,
@@ -31,7 +32,7 @@ uint32_t SparseTensor::CreateSparseTensor(Tensor *ix, Tensor *tensorvals,
     return KERNEL_STATUS_INNER_ERROR;
   }
 
-  if (ix->GetTensorShape()->GetDims() > 2) {
+  if (ix->GetTensorShape()->GetDims() > DIM_VALUE2) {
     KERNEL_LOG_ERROR(
         "Index tensor dim size less than 2 or equal to 2, got size [%d] ",
         ix->GetTensorShape()->GetDims());
@@ -47,7 +48,7 @@ uint32_t SparseTensor::CreateSparseTensor(Tensor *ix, Tensor *tensorvals,
                      vals_dim0);
     return KERNEL_STATUS_INNER_ERROR;
   }
-  dims = ix->GetTensorShape()->GetDims() == 2
+  dims = ix->GetTensorShape()->GetDims() == DIM_VALUE2
              ? ix->GetTensorShape()->GetDimSize(1)
              : 1;
   int64_t orderSize = static_cast<int64_t>(order.size());

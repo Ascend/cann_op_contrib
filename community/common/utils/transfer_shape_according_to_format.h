@@ -37,7 +37,6 @@
 
 
 namespace ge {
-
 enum OpImplType {
   EN_IMPL_CUSTOM_CONSTANT_CCE = 0,    // custom constant op
   EN_IMPL_CUSTOM_TIK,                 // custom tik op
@@ -121,7 +120,6 @@ class ShapeTransferAccordingToFormat {
   std::map<ge::Format, GetNewShapeByAxisValueAndFormatPtr> getNewShapeFuncMap;
   std::map<ge::DataType, uint32_t> mapOfDtypeAndC0;
 };
-
 }  // namespace ge
 
 #endif  // OPS_BUILT_IN_OP_PROTO_UTIL_TRANSFER_SHAPE_ACCORDING_TO_FORMAT_H_

@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "status.h"
+#include "util.h"
 
 namespace aicpu {
 class BroadcastIterator {
@@ -52,7 +53,7 @@ class BroadcastIterator {
   std::vector<int64_t> input_strides_b_;
   std::vector<int64_t> input_back_strides_a_;
   std::vector<int64_t> input_back_strides_b_;
-  std::array<int64_t, 2> input_pos_ = { {0, 0} };
+  std::array<int64_t, NUM_VALUE2> input_pos_ = { {0, 0} };
   size_t output_dimension_{0};
 };
 
@@ -62,6 +63,6 @@ class BroadcastIterator {
  * @return status
  */
 uint32_t GetBroadcastShape(const std::vector<int64_t>& x, const std::vector<int64_t>& y,
-                       std::vector<int64_t>& broadcast_shape);
+                           std::vector<int64_t>& broadcast_shape);
 }  // namespace aicpu
 #endif

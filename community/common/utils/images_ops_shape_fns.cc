@@ -22,6 +22,7 @@
 #include "op_log.h"
 #include "error_util.h"
 #include "graph/utils/op_desc_utils.h"
+#include "util.h"
 
 namespace ge {
 graphStatus ColorspaceShapeFn(Operator& op, const std::string output_name) {
@@ -34,7 +35,7 @@ graphStatus ColorspaceShapeFn(Operator& op, const std::string output_name) {
     return GRAPH_PARAM_INVALID;
   }
   int64_t dim = op.GetInputDesc(0).GetShape().GetDims().back();
-  if (dim != 3) {
+  if (dim != DIM_VALUE3) {
     AscendString op_name;
     op.GetName(op_name);
     OP_LOGE(op_name.GetString(), "input[images] last dimension must be size 3.");
@@ -75,7 +76,7 @@ graphStatus SetOutputToSizedImage(Operator& op, const int64_t batch_dim, const s
     return GRAPH_PARAM_INVALID;
   }
   auto size_dims = op.GetInputDescByName(size_input_name.c_str()).GetShape().GetDims();
-  if (size_dims[0] != 2) {
+  if (size_dims[0] != DIM_VALUE2) {
     AscendString op_name;
     op.GetName(op_name);
     OP_LOGE(op_name.GetString(), "input size must be 1-D tensor of 2 elements.");
@@ -138,7 +139,7 @@ graphStatus SetOutputToSizedImage(Operator& op, const int64_t batch_dim, const s
 
 graphStatus EncodeImageShapeFn(Operator& op) {
   Shape unused_shape;
-  if (WithRank(op.GetInputDesc(0), 3, unused_shape, TbeGetName(op).c_str()) != GRAPH_SUCCESS) {
+  if (WithRank(op.GetInputDesc(0), DIM_VALUE3, unused_shape, TbeGetName(op).c_str()) != GRAPH_SUCCESS) {
     AscendString op_name;
     op.GetName(op_name);
     OP_LOGE(op_name.GetString(), "input rank must be 3 .");
@@ -159,7 +160,7 @@ graphStatus DecodeImageShapeFn(Operator& op) {
     AICPU_INFER_SHAPE_INNER_ERR_REPORT(TbeGetName(op), string("Get attr[chanels] failed"));
     return GRAPH_FAILED;
   }
-  if (channels != 0 && channels != 1 && channels != 3 && channels != 4) {
+  if (channels != DIM_VALUE0 && channels != DIM_VALUE1 && channels != DIM_VALUE3 && channels != DIM_VALUE4) {
     AICPU_INFER_SHAPE_INNER_ERR_REPORT(TbeGetName(op), string("attr[Channels] must be 0,1,3,or 4"));
     return GRAPH_FAILED;
   }
@@ -204,5 +205,4 @@ bool DimsAllEqualOrUnknown(std::initializer_list<int64_t>&& inputs, int64_t unkn
 
   return true;
 }
-
 }  // namespace ge

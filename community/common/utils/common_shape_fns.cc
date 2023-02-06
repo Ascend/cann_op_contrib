@@ -1,5 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd 2019-2022. All rights reserved.
+/**
+ * Copyright (c) 2022-2022 Huawei Technologies Co., Ltd.  All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
 #include "error_util.h"
 #include "graph/utils/op_desc_utils.h"
 #include "common/util/error_manager/error_manager.h"
+#include "util.h"
 
 namespace ge {
 const std::map<std::string, DataType> dtype_maps {
@@ -733,7 +734,7 @@ graphStatus Concatenate(const GeShape& s1, const GeShape& s2, GeShape& out) {
 
 graphStatus Matrix(int64_t dim1, int64_t dim2, Shape& out) {
   std::vector<int64_t> dims;
-  dims.reserve(2); // The number of dims is 2.
+  dims.reserve(DIM_VALUE2); // The number of dims is 2.
   dims.push_back(dim1);
   dims.push_back(dim2);
   Shape s(dims);
@@ -1024,7 +1025,7 @@ graphStatus ValidateSparseTensor(const TensorDesc& indices, const TensorDesc& va
                                  const char* op_name) {
   // Validate ranks
   Shape unused_shape;
-  if (WithRank(indices, 2, unused_shape, op_name) != GRAPH_SUCCESS) { // The rank is 2.
+  if (WithRank(indices, NUM_VALUE2, unused_shape, op_name) != GRAPH_SUCCESS) { // The rank is 2.
     std::string err_msg = ConcatString(
         "failed to call WithRank function, indices has wrong shape",
         DebugString(indices.GetShape().GetDims()), ", it should be 2D");

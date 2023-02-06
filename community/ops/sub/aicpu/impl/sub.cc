@@ -102,8 +102,10 @@ uint32_t SubCpuKernel::SubParamCheck(CpuKernelContext &ctx) {
 // 4. the shapes of input1 and input2 are different
 template <typename T>
 void SubCpuKernel::SpecialCompute(BcastShapeType type, int64_t start,
-                                   int64_t end, const T *input1,
-                                   const T *input2,  T *output) {
+                                  int64_t end, CpuKernelContext &ctx) {
+  auto input1 = reinterpret_cast<T *>(ctx.Input(0)->GetData());
+  auto input2 = reinterpret_cast<T *>(ctx.Input(1)->GetData());
+  auto output = reinterpret_cast<T *>(ctx.Output(0)->GetData());
   Eigen::internal::scalar_difference_op<T> difference_op;
   switch(type) {
     case BcastShapeType::SAME_SHAPE:
@@ -129,9 +131,6 @@ void SubCpuKernel::SpecialCompute(BcastShapeType type, int64_t start,
 
 template <typename T>
 uint32_t SubCpuKernel::NoBcastCompute(CpuKernelContext &ctx) {
-  auto in0 = reinterpret_cast<T *>(ctx.Input(0)->GetData());
-  auto in1 = reinterpret_cast<T *>(ctx.Input(1)->GetData());
-  auto out = reinterpret_cast<T *>(ctx.Output(0)->GetData());
   int64_t in0_elements_nums = ctx.Input(0)->NumElements();
   int64_t in1_elements_nums = ctx.Input(1)->NumElements();
   int64_t data_num = ctx.Output(0)->NumElements();
@@ -153,15 +152,17 @@ uint32_t SubCpuKernel::NoBcastCompute(CpuKernelContext &ctx) {
     }
 
     auto sharder_sub = [&](int64_t start, int64_t end) {
-      SpecialCompute<T>(type, start, end, in0, in1, out);
+      SpecialCompute<T>(type, start, end, ctx);
     };
-
+    if (max_core_num == 0) {
+      return KERNEL_STATUS_PARAM_INVALID;
+    }
     KERNEL_HANDLE_ERROR(CpuKernelUtils::ParallelFor(ctx, data_num,
                                                     data_num / max_core_num,
                                                     sharder_sub),
                         "Sub Compute failed.")
   } else {
-    SpecialCompute<T>(type, 0, data_num, in0, in1, out);
+    SpecialCompute<T>(type, 0, data_num, ctx);
   }
 
   return KERNEL_STATUS_OK;
@@ -193,7 +194,9 @@ uint32_t SubCpuKernel::BcastCompute(CpuKernelContext &ctx, Bcast &bcast) {
                      *(in1 + bcast.GetBroadcastYIndex(i)) );
       }
     };
-
+    if (max_core_num == 0) {
+      return KERNEL_STATUS_PARAM_INVALID;
+    }
     KERNEL_HANDLE_ERROR(CpuKernelUtils::ParallelFor(ctx, data_num,
                                                     data_num / max_core_num,
                                                     sharder_sub),
@@ -202,7 +205,6 @@ uint32_t SubCpuKernel::BcastCompute(CpuKernelContext &ctx, Bcast &bcast) {
     for (int64_t i = 0; i < data_num; ++i) {
       *(out + i) = difference_op(*(in0 + bcast.GetBroadcastXIndex(i)),
                    *(in1 + bcast.GetBroadcastYIndex(i))) ;
-                   
     }
   }
   return KERNEL_STATUS_OK;

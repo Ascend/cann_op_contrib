@@ -19,6 +19,7 @@
 
 #include <stdint.h>
 #include "utils/status.h"
+#include "util.h"
 
 /**
 * A class that represents an inline array.
@@ -54,7 +55,7 @@ class Array {
 
 class PhiloxRandom {
  public:
-  using ResultType = Array<uint32_t, 4>;
+  using ResultType = Array<uint32_t, NUM_VALUE4>;
   using ResultElementType = uint32_t;
   // The number of elements that will be returned.
   static constexpr int kResultElementCount = 4;
@@ -64,7 +65,7 @@ class PhiloxRandom {
    * The type for the 64-bit key stored in the form of two 32-bit uint
    * that are used in the diffusion process.
    */
-  using Key = Array<uint32_t, 2>;
+  using Key = Array<uint32_t, NUM_VALUE2>;
 
   PhiloxRandom() {
   }
@@ -74,10 +75,11 @@ class PhiloxRandom {
     const uint32_t seed_high_index = 1;
     const uint32_t offset_low_index = 2;
     const uint32_t offset_high_index = 3;
+    const uint32_t seed_offset_value = 32;
     key_[seed_low_index] = static_cast<uint32_t>(seed);
-    key_[seed_high_index] = static_cast<uint32_t>(seed >> 32);
+    key_[seed_high_index] = static_cast<uint32_t>(seed >> seed_offset_value);
     counter_[offset_low_index] = static_cast<uint32_t>(offset);
-    counter_[offset_high_index] = static_cast<uint32_t>(offset >> 32);
+    counter_[offset_high_index] = static_cast<uint32_t>(offset >> seed_offset_value);
   }
 
   ResultType const &counter() const {
@@ -98,10 +100,10 @@ class PhiloxRandom {
       ++count_hi;
     }
 
-    counter_[1] += count_hi;
-    if (counter_[1] < count_hi) {
-      if (++counter_[2] == 0) {
-        ++counter_[3];
+    counter_[INDEX_VALUE1] += count_hi;
+    if (counter_[INDEX_VALUE1] < count_hi) {
+      if (++counter_[INDEX_VALUE2] == 0) {
+        ++counter_[INDEX_VALUE3];
       }
     }
   }
@@ -148,10 +150,10 @@ class PhiloxRandom {
 
   // Helper function to skip the next sample of 128-bits in the current stream.
   void SkipOne() {
-    if (++counter_[0] == 0) {
-      if (++counter_[1] == 0) {
-        if (++counter_[2] == 0) {
-          ++counter_[3];
+    if (++counter_[INDEX_VALUE0] == 0) {
+      if (++counter_[INDEX_VALUE1] == 0) {
+        if (++counter_[INDEX_VALUE2] == 0) {
+          ++counter_[INDEX_VALUE3];
         }
       }
     }
@@ -176,13 +178,13 @@ class PhiloxRandom {
 
     uint32_t lo1;
     uint32_t hi1;
-    MultiplyHighLow(kPhiloxM4x32B, counter[2], &lo1, &hi1);
+    MultiplyHighLow(kPhiloxM4x32B, counter[INDEX_VALUE2], &lo1, &hi1);
 
     ResultType result;
-    result[0] = hi1 ^ counter[1] ^ key[0];
-    result[1] = lo1;
-    result[2] = hi0 ^ counter[3] ^ key[1];
-    result[3] = lo0;
+    result[INDEX_VALUE0] = hi1 ^ counter[1] ^ key[0];
+    result[INDEX_VALUE1] = lo1;
+    result[INDEX_VALUE2] = hi0 ^ counter[INDEX_VALUE3] ^ key[1];
+    result[INDEX_VALUE3] = lo0;
     return result;
   }
 

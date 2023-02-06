@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 '''
-import numpy as np
 import math
+import numpy as np
 
 
 class PrRoIPoolingNp:
@@ -82,28 +82,28 @@ class PrRoIPoolingNp:
         beta = y0 - float(s_h)
         lim_alpha = x1 - float(s_w)
         lim_beta = y1 - float(s_h)
-        tmp = (lim_alpha - 0.5*lim_alpha*lim_alpha - alpha + 0.5*alpha *
-               alpha)*(lim_beta - 0.5*lim_beta*lim_beta - beta + 0.5*beta*beta)
+        tmp = (lim_alpha - 0.5 * lim_alpha * lim_alpha - alpha + 0.5 * alpha *
+               alpha) * (lim_beta - 0.5 * lim_beta * lim_beta - beta + 0.5 * beta * beta)
         sum_out = self.get_feature_data(batch_idx, s_h, s_w) * tmp
 
         alpha = float(e_w) - x1
         lim_alpha = float(e_w) - x0
-        tmp = (lim_alpha - 0.5*lim_alpha*lim_alpha - alpha + 0.5*alpha *
-               alpha)*(lim_beta - 0.5*lim_beta*lim_beta - beta + 0.5*beta*beta)
+        tmp = (lim_alpha - 0.5 * lim_alpha * lim_alpha - alpha + 0.5 * alpha *
+               alpha) * (lim_beta - 0.5 * lim_beta * lim_beta - beta + 0.5 * beta * beta)
         sum_out += self.get_feature_data(batch_idx, s_h, e_w) * tmp
 
         alpha = x0 - float(s_w)
         beta = float(e_h) - y1
         lim_alpha = x1 - float(s_w)
         lim_beta = float(e_h) - y0
-        tmp = (lim_alpha - 0.5*lim_alpha * lim_alpha - alpha + 0.5*alpha *
-               alpha)*(lim_beta - 0.5*lim_beta*lim_beta - beta + 0.5*beta*beta)
+        tmp = (lim_alpha - 0.5 * lim_alpha * lim_alpha - alpha + 0.5 * alpha *
+               alpha) * (lim_beta - 0.5 * lim_beta * lim_beta - beta + 0.5 * beta * beta)
         sum_out += self.get_feature_data(batch_idx, e_h, s_w) * tmp
 
         alpha = float(e_w) - x1
         lim_alpha = float(e_w) - x0
-        tmp = (lim_alpha - 0.5*lim_alpha*lim_alpha - alpha + 0.5*alpha *
-               alpha)*(lim_beta - 0.5*lim_beta * lim_beta - beta + 0.5*beta*beta)
+        tmp = (lim_alpha - 0.5 * lim_alpha * lim_alpha - alpha + 0.5 * alpha *
+               alpha) * (lim_beta - 0.5 * lim_beta * lim_beta - beta + 0.5 * beta * beta)
         sum_out += self.get_feature_data(batch_idx, e_h, e_w) * tmp
 
         return sum_out
@@ -119,7 +119,7 @@ def calc_expect_func(features,
                      y,
                      pooled_height,
                      pooled_width,
-                     spatial_scale,):
+                     spatial_scale):
     obj = PrRoIPoolingNp(
         features["value"], rois["value"], pooled_height, pooled_width, spatial_scale)
     res = obj.pr_roi_pooling_compute()

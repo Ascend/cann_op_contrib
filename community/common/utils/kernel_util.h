@@ -116,7 +116,7 @@ std::string FormatToSerialString(Format format);
 
 /**
  * Get primary-format from format,
- * in bits field:
+ * in bits field
  * ------------------------------------------
  * |  1 byte  |   2 bytes  |     1 byt      |
  * |----------|------------|----------------|
@@ -130,7 +130,7 @@ inline int32_t GetPrimaryFormat(int32_t format) {
 }
 
 inline int32_t GetSubFormat(int32_t format) {
-  return static_cast<int32_t>((static_cast<uint32_t>(format) & 0xffff00) >> 8);
+  return static_cast<int32_t>((static_cast<uint32_t>(format) & 0xffff00) >> INPUT_NUM8);
 }
 
 inline bool HasSubFormat(int32_t format) { return GetSubFormat(format) > 0; }
@@ -158,7 +158,7 @@ inline bool MulWithoutOverflow(const int64_t x, const int64_t y, int64_t &xy) {
   const uint64_t uxy = ux * uy;
 
   // Check if we overflow uint64, using a cheap check if both inputs are small
-  if ((ux | uy) >> 32 != 0) {
+  if ((ux | uy) >> INPUT_NUM32 != 0) {
     // Ensure nonnegativity.  Note that negative numbers will appear "large"
     // to the unsigned comparisons above.
     if (x < 0 || y < 0) {
@@ -252,6 +252,5 @@ DataType DType(std::string dtype_str);
  * @return string of data type
  */
 std::string DTypeStr(DataType dtype);
-
 }  // namespace aicpu
 #endif

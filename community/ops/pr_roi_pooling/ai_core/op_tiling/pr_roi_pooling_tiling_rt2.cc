@@ -70,15 +70,15 @@ static bool CheckTensorShape(const gert::TilingContext* context, const gert::Sha
   int64_t rois_shape_dims = rois_shape->GetDimNum();
 
   if (x_diff_shape_dims != DIMNUM_5HD) {
-    //VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(),
-    //                              "CheckTensorShape, shape of features must be 5, but is [%ld].", x_diff_shape_dims);
+    VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(),
+                                    "CheckTensorShape, shape of features must be 5, but is [%ld].", x_diff_shape_dims);
 
     return false;
   }
 
   if (rois_shape_dims != DIMNUM_2D) {
-    //VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "CheckTensorShape, dims of rois must be 2, but is [%ld]",
-      //                              rois_shape_dims);
+    VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "CheckTensorShape, dims of rois must be 2, but is [%ld]",
+                                    rois_shape_dims);
     return false;
   }
 
@@ -93,32 +93,32 @@ static void CalcBlockNum(const int64_t& core_num, const int64_t& rois_n, int64_t
 }
 
 ge::graphStatus Tiling4PrRoIPooling(gert::TilingContext* context) {
-  //OP_LOGD(context->GetNodeName(), "Tiling4PrRoIPooling running.");
+  OP_LOGD(context->GetNodeName(), "Tiling4PrRoIPooling running.");
 
   const TilingPrepare4PrRoIPoolingCompileInfo* compile_info =
       reinterpret_cast<const TilingPrepare4PrRoIPoolingCompileInfo*>(context->GetCompileInfo());
-  //OPS_CHECK_NULL_WITH_CONTEXT(context, compile_info);
+  OPS_CHECK_NULL_WITH_CONTEXT(context, compile_info);
 
   PrRoIPoolingTilingParams* tilingdata = context->GetTilingData<PrRoIPoolingTilingParams>();
-  //OPS_CHECK_NULL_WITH_CONTEXT(context, tilingdata);
+  OPS_CHECK_NULL_WITH_CONTEXT(context, tilingdata);
 
   // get input shape info
   auto input_feature_map = context->GetInputShape(INPUT_FEATURES_IDX);
-  //OP_TILING_CHECK(input_feature_map == nullptr,
-    //              VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get input_feature_map failed."),
-      //            return ge::GRAPH_FAILED);
+  OP_TILING_CHECK(input_feature_map == nullptr,
+                 VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get input_feature_map failed."),
+                 return ge::GRAPH_FAILED);
   const gert::Shape& feature_map_shape = input_feature_map->GetStorageShape();
 
   auto input_rois = context->GetInputShape(INPUT_ROIS_IDX);
-  //OP_TILING_CHECK(input_rois == nullptr,
-    //              VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get input_rois failed."),
-      //            return ge::GRAPH_FAILED);
+  OP_TILING_CHECK(input_rois == nullptr,
+                 VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get input_rois failed."),
+                 return ge::GRAPH_FAILED);
   const gert::Shape& rois_shape = input_rois->GetStorageShape();
 
   int64_t core_num = compile_info->block_dim;
-  //OP_TILING_CHECK(!CheckTensorShape(context, &feature_map_shape, &rois_shape),
-   //               VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "PrRoIPoolingTiling: params check failed."),
-     //             return ge::GRAPH_FAILED);
+  OP_TILING_CHECK(!CheckTensorShape(context, &feature_map_shape, &rois_shape),
+                 VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "PrRoIPoolingTiling: params check failed."),
+                 return ge::GRAPH_FAILED);
   if (!CheckTensorShape(context, &feature_map_shape, &rois_shape)) {
     return ge::GRAPH_FAILED;
   }
@@ -144,29 +144,29 @@ ge::graphStatus Tiling4PrRoIPooling(gert::TilingContext* context) {
   tilingdata->num_tail_core = num_tail_core;
   // block_dim, core num used in tik op
   context->SetBlockDim(tilingdata->used_core_num);
-  //OP_LOGI(context->GetNodeName(), "Tiling4PrRoIPooling run success.");
-  //OP_LOGD(context->GetNodeName(), "Tiling4PrRoIPooling tiling_data:%s", GetTilingDataString<int64_t>(context).c_str());
+  OP_LOGI(context->GetNodeName(), "Tiling4PrRoIPooling run success.");
+  OP_LOGD(context->GetNodeName(), "Tiling4PrRoIPooling tiling_data:%s", GetTilingDataString<int64_t>(context).c_str());
   return ge::GRAPH_SUCCESS;
 }
 
 ge::graphStatus TilingPrepare4PrRoIPooling(gert::TilingParseContext* context) {
-  //OP_LOGD(context->GetNodeName(), "begin to do TilingPrepare4PrRoIPooling.");
+  OP_LOGD(context->GetNodeName(), "begin to do TilingPrepare4PrRoIPooling.");
   auto compile_info = GetCompileInfoPtr<TilingPrepare4PrRoIPoolingCompileInfo>(context);
-  //OPS_CHECK_NULL_WITH_CONTEXT(context, compile_info);
+  OPS_CHECK_NULL_WITH_CONTEXT(context, compile_info);
 
   std::unique_ptr<nlohmann::json> parsed_object_cinfo = GetCompileInfoJson(context);
-  //OPS_CHECK_NULL_WITH_CONTEXT(context, parsed_object_cinfo);
+  OPS_CHECK_NULL_WITH_CONTEXT(context, parsed_object_cinfo);
 
   const nlohmann::json& vars = (*parsed_object_cinfo)["vars"];
-  //OP_TILING_CHECK(vars.empty(), VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get vars failed."),
-    //              return ge::GRAPH_FAILED);
+  OP_TILING_CHECK(vars.empty(), VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get vars failed."),
+                 return ge::GRAPH_FAILED);
   if (vars.empty()) {
     return ge::GRAPH_FAILED;
   }
 
-  //OP_TILING_CHECK(!ReadCompileItem(vars, "core_num", compile_info->block_dim),
-  //                VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get core_num from compile info faided."),
-  //                return ge::GRAPH_FAILED);
+  OP_TILING_CHECK(!ReadCompileItem(vars, "core_num", compile_info->block_dim),
+                 VECTOR_INNER_ERR_REPORT_TILIING(context->GetNodeName(), "get core_num from compile info faided."),
+                 return ge::GRAPH_FAILED);
   if (!ReadCompileItem(vars, "core_num", compile_info->block_dim)) {
     return ge::GRAPH_FAILED;
   }

@@ -296,6 +296,5 @@ bool GetAttrValue(const T& paras, const struct AttrBase& attr_info, int32_t& val
   OP_LOGD("GetAttrValue", "Get the attr of %s is %d", attr_info.attr_name.c_str(), value);
   return true;
 }
-
 }  // namespace ops
 #endif  // OPS_COMMON_INC_OP_ATTR_H_

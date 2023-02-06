@@ -27,7 +27,6 @@
 #include <algorithm>
 
 namespace fe {
-
 const uint16_t DIM_0 = 0;
 const uint16_t DIM_1 = 1;
 const uint16_t DIM_2 = 2;
@@ -186,23 +185,23 @@ const uint16_t BitShift_10240 = 10240;
  * @brief   constructor of fp16 from sign exponent and mantissa
  */
 #define FP16_CONSTRUCTOR(s, e, m) \
-  (static_cast<uint16_t>(((s) << FP16_SIGN_INDEX) | ((e) << FP16_MAN_LEN) | ((m)&FP16_MAX_MAN)))
+  (static_cast<uint16_t>(((s) << FP16_SIGN_INDEX) | ((e) << FP16_MAN_LEN) | ((m) & FP16_MAX_MAN)))
 
 /**
  * @ingroup fp16 special value judgment
  * @brief   whether a fp16 is zero
  */
-#define FP16_IS_ZERO(x) (((x)&FP16_ABS_MAX) == 0)
+#define FP16_IS_ZERO(x) (((x) & FP16_ABS_MAX) == 0)
 /**
  * @ingroup fp16 special value judgment
  * @brief   whether a fp16 is a denormalized value
  */
-#define FP16_IS_DENORM(x) ((((x)&FP16_EXP_MASK) == 0))
+#define FP16_IS_DENORM(x) ((((x) & FP16_EXP_MASK) == 0))
 /**
  * @ingroup fp16 special value judgment
  * @brief   whether a fp16 is infinite
  */
-#define FP16_IS_INF(x) (((x)&FP16_ABS_MAX) == FP16_ABS_MAX)
+#define FP16_IS_INF(x) (((x) & FP16_ABS_MAX) == FP16_ABS_MAX)
 /**
  * @ingroup fp16 special value judgment
  * @brief   whether a fp16 is NaN
@@ -303,7 +302,7 @@ const uint16_t BitShift_10240 = 10240;
  * @ingroup fp32 basic operator
  * @brief   constructor of fp32 from sign exponent and mantissa
  */
-#define FP32_CONSTRUCTOR(s, e, m) (((s) << FP32_SIGN_INDEX) | ((e) << FP32_MAN_LEN) | ((m)&FP32_MAX_MAN))
+#define FP32_CONSTRUCTOR(s, e, m) (((s) << FP32_SIGN_INDEX) | ((e) << FP32_MAN_LEN) | ((m) & FP32_MAX_MAN))
 
 /**
  * @ingroup fp64 basic parameter
@@ -410,11 +409,11 @@ const uint16_t BitShift_10240 = 10240;
  * @ingroup fp16_t enum
  * @brief   round mode of last valid digital
  */
-typedef enum tagFp16RoundMode {
+using fp16RoundMode_t = enum tagFp16RoundMode {
   ROUND_TO_NEAREST = 0, /**< round to nearest even */
   ROUND_BY_TRUNCATED,   /**< round by truncated    */
   ROUND_MODE_RESERVED,
-} fp16RoundMode_t;
+};
 
 /**
  * @ingroup fp16_t
@@ -424,7 +423,7 @@ typedef enum tagFp16RoundMode {
  *         bit0-9:      10bit MAN       +---+-----+------------+
  *
  */
-typedef struct tagFp16 {
+using fp16_t =  struct tagFp16 {
   uint16_t val;
 
  public:
@@ -440,14 +439,14 @@ typedef struct tagFp16 {
    * @brief   Constructor with all type
    */
   template <typename T>
-  tagFp16(const T& value) {
+  explicit tagFp16(const T& value) {
     *this = value;
   }
   /**
    * @ingroup fp16_t constructor
    * @brief   Constructor with an uint16_t value
    */
-  tagFp16(const uint16_t& uiVal) : val(uiVal) {
+  explicit tagFp16(const uint16_t& uiVal) : val(uiVal) {
   }
   /**
    * @ingroup fp16_t constructor
@@ -723,8 +722,7 @@ typedef struct tagFp16 {
    * @return  Return int64_t value of fp16_t
    */
   uint32_t toUInt32();
-
-} fp16_t;
+};
 
 /**
  * @ingroup fp16_t public method
@@ -772,7 +770,7 @@ T* MinMan(const int16_t& ea, T* ma, const int16_t& eb, T* mb) {
 template <typename T>
 T RightShift(T man, int16_t shift) {
   int bits = sizeof(T) * 8;
-  T mask = (((T)1u) << ((unsigned int)(bits - 1)));
+  T mask = ((static_cast<T>(1u)) << (static_cast<unsigned int>(bits - 1)));
   for (int i = 0; i < shift; i++) {
     man = ((man & mask) | (man >> 1));
   }
@@ -846,4 +844,4 @@ int16_t GetManBitLength(T man) {
 /*lint +e1573*/
 };  // namespace fe
 
-#endif /*_FP16_T_HPP_*/
+#endif /* _FP16_T_HPP_*/

@@ -27,12 +27,13 @@
 #include <limits>
 
 #include "op_log.h"
+#include "util.h"
 
 namespace ge {
 graphStatus ValidateTableResourceHandle(Shape keys, std::vector<ShapeAndType> handleData,
                                         ShapeAndType& output_shape_and_type, bool is_lookup, const char* op_name) {
   Shape unknown_shape(ge::UNKNOWN_SHAPE);
-  if (handleData.size() != 2) {
+  if (handleData.size() != DIM_VALUE2) {
     output_shape_and_type.SetShape(unknown_shape);
     output_shape_and_type.SetType(DT_UNDEFINED);
   } else {
@@ -104,7 +105,7 @@ graphStatus ValidateTableResourceHandle(const Operator& op,
   }
 
   auto handle_data = shapes_and_types[0];
-  if (handle_data.size() != 2) {
+  if (handle_data.size() != DIM_VALUE2) {
     OP_LOGI(op_name, "handle data(shapes_and_types[0]) size is not 2, return unknown shape");
     output_shape_and_type.SetShape(Shape(UNKNOWN_RANK));
     output_shape_and_type.SetType(DT_UNDEFINED);
@@ -176,5 +177,4 @@ graphStatus ValidateTableResourceHandle(const Operator& op,
 
   return GRAPH_SUCCESS;
 }
-
 }  // namespace ge

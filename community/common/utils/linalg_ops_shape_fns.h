@@ -26,7 +26,6 @@
 #include "graph/op_desc.h"
 
 namespace ge {
-
 /**
  * Generate a square matrix's Shape
  * @param tensor Input tensor
@@ -52,7 +51,6 @@ graphStatus MakeBatchSquareMatrix(const GeTensorDescPtr& tensor_desc,
  */
 graphStatus MatrixSolve(const TensorDesc& tensor1, const TensorDesc& tensor2, bool square, Shape& out,
                         const char* op_name);
-
 }  // namespace ge
 
 #endif  // OPS_BUILT_IN_OP_PROTO_UTIL_LINALG_OPS_SHAPE_FNS_H_

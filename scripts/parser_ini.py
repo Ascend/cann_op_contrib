@@ -171,13 +171,6 @@ class IniParser(object):
         _write(self.aicpu_ops_info, json_file_real_path)
         print(">>>> Found %s AICPU ops, write into: %s" % (len(self.aicpu_ops_info), json_file_real_path))
 
-        # if not self.custom_flag:
-        #     file_path, file_name = os.path.split(json_file_real_path)
-        #     custom_file_path = os.path.join(file_path, "%s_custom%s" % os.path.splitext(file_name))
-        #     _write(self.custom_ops_info, custom_file_path)
-        #     print(">>>> Found %s custom AICPU ops, write into: %s" % (len(self.custom_ops_info), custom_file_path))
-        # else:
-        #     print("### Custom flag is set, all custom ops have been integrated into: %s" % json_file_real_path)
 
     def parse(self, ini_paths: list, out_file_path, custom=False):
         """
@@ -249,7 +242,7 @@ def main():
                 ini_parser = IniParser()
                 ini_parser.parse([file_path], outfile_path, custom=args.custom)
 
-    replace_file_char(outfile_path,"}{",",")
+    replace_file_char(outfile_path, "}{", ",")
 
 
 if __name__ == '__main__':

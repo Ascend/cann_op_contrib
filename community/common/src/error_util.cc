@@ -28,7 +28,6 @@ using namespace std;
 using namespace ge;
 
 namespace ge {
-
 std::string GetViewErrorCodeStr(ge::ViewErrorCode errCode) {
   return "E" + std::to_string(errCode);
 }
@@ -138,5 +137,4 @@ void CommonRuntimeErrLog(const std::string& opname, const std::string& descripti
   OP_LOGE_WITHOUT_REPORT(opname.c_str(), description);
   (void)ErrorManager::GetInstance().ReportErrMessage("E50058", err_map);
 }
-
 }  // namespace ge

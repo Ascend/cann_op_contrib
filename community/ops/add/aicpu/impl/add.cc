@@ -101,7 +101,7 @@ uint32_t AddCpuKernel::AddCompute(const CpuKernelContext &ctx) {
   bcast.GetBcastVec(calcInfo);
   int32_t rank = static_cast<int32_t>(calcInfo.shape_out.size());
   switch (rank) {
-    case 0:
+    case DIM_VALUE0:
     {
       T v0 = *(reinterpret_cast<const T *>(calcInfo.input_0->GetData()));
       T v1 = *(reinterpret_cast<const T *>(calcInfo.input_1->GetData()));
@@ -109,22 +109,22 @@ uint32_t AddCpuKernel::AddCompute(const CpuKernelContext &ctx) {
       *(value_out) = v0 + v1;
       return KERNEL_STATUS_OK;
     }
-    case 1:
-      return AddCalculateWithAlignedCheck<1, T>(ctx, calcInfo);
-    case 2:
-      return AddCalculateWithAlignedCheck<2, T>(ctx, calcInfo);
-    case 3:
-      return AddCalculateWithAlignedCheck<3, T>(ctx, calcInfo);
-    case 4:
-      return AddCalculateWithAlignedCheck<4, T>(ctx, calcInfo);
-    case 5:
-      return AddCalculateWithAlignedCheck<5, T>(ctx, calcInfo);
-    case 6:
-      return AddCalculateWithAlignedCheck<6, T>(ctx, calcInfo);
-    case 7:
-      return AddCalculateWithAlignedCheck<7, T>(ctx, calcInfo);
-    case 8:
-      return AddCalculateWithAlignedCheck<8, T>(ctx, calcInfo);
+    case DIM_VALUE1:
+      return AddCalculateWithAlignedCheck<DIM_VALUE1, T>(ctx, calcInfo);
+    case DIM_VALUE2:
+      return AddCalculateWithAlignedCheck<DIM_VALUE2, T>(ctx, calcInfo);
+    case DIM_VALUE3:
+      return AddCalculateWithAlignedCheck<DIM_VALUE3, T>(ctx, calcInfo);
+    case DIM_VALUE4:
+      return AddCalculateWithAlignedCheck<DIM_VALUE4, T>(ctx, calcInfo);
+    case DIM_VALUE5:
+      return AddCalculateWithAlignedCheck<DIM_VALUE5, T>(ctx, calcInfo);
+    case DIM_VALUE6:
+      return AddCalculateWithAlignedCheck<DIM_VALUE6, T>(ctx, calcInfo);
+    case DIM_VALUE7:
+      return AddCalculateWithAlignedCheck<DIM_VALUE7, T>(ctx, calcInfo);
+    case DIM_VALUE8:
+      return AddCalculateWithAlignedCheck<DIM_VALUE8, T>(ctx, calcInfo);
     default:
       KERNEL_LOG_ERROR("[%s] Rank of output should less than 8 but get [%zu].",
                        ctx.GetOpType().c_str(), calcInfo.shape_out.size());

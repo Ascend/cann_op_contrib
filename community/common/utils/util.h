@@ -75,9 +75,8 @@
   } while (0)
 
 namespace ge {
-
 // enum type and string type mapping
-static const std::map<ge::DataType, std::string> DTYPE_STR_MAP{
+const std::map<ge::DataType, std::string> DTYPE_STR_MAP{
     {ge::DT_FLOAT16, "float16"}, {ge::DT_FLOAT, "float32"}, {ge::DT_INT8, "int8"},   {ge::DT_INT16, "int16"},
     {ge::DT_INT32, "int32"},     {ge::DT_INT64, "int64"},   {ge::DT_UINT8, "uint8"}, {ge::DT_UINT16, "uint16"},
     {ge::DT_UINT32, "uint32"},   {ge::DT_UINT64, "uint64"}, {ge::DT_BOOL, "bool"},   {ge::DT_INT4, "int4"},
@@ -249,7 +248,7 @@ bool GetConstValue(const Operator& op, const Tensor& const_tensor, const DataTyp
 bool GetConstValue(const Operator& op, const GeTensorPtr& const_tensor, const DataType& dtype,
                    std::vector<int64_t>& const_data);
 bool GetConstValue(const Operator& op, const GeTensor* const_tensor, const DataType& dtype,
-std::vector<int64_t>& const_data);
+                   std::vector<int64_t>& const_data);
 bool GetScalerValue(const Operator& op, const Tensor& const_tensor, const DataType& dtype, std::int64_t& const_data);
 bool InferShapeAndTypeTwoInOneOutBroadcast(Operator& op, const string& input_name1, const string& input_name2,
                                            const string& output_name);
@@ -607,4 +606,36 @@ void FixRangeMaxToInt32max(GeShape& shape, std::vector<std::pair<int64_t, int64_
 }  // namespace array_ops
 }  // namespace ge
 
+// other value
+const int64_t INPUT_NEGATIVE_NUM2 = -2;
+const int32_t DIM_VALUE0 = 0;
+const int32_t DIM_VALUE1 = 1;
+const int32_t DIM_VALUE2 = 2;
+const int32_t DIM_VALUE3 = 3;
+const int32_t DIM_VALUE4 = 4;
+const int32_t DIM_VALUE5 = 5;
+const int32_t DIM_VALUE6 = 6;
+const int32_t DIM_VALUE7 = 7;
+const int32_t DIM_VALUE8 = 8;
+const double HALF = 0.5;
+
+const int32_t NUM_VALUE0 = 0;
+const int32_t NUM_VALUE1 = 1;
+const int32_t NUM_VALUE2 = 2;
+const int32_t NUM_VALUE3 = 3;
+const int32_t NUM_VALUE4 = 4;
+const int32_t NUM_VALUE5 = 5;
+const int32_t NUM_VALUE6 = 6;
+const int32_t NUM_VALUE7 = 7;
+const int32_t NUM_VALUE8 = 8;
+
+const int32_t INDEX_VALUE0 = 0;
+const int32_t INDEX_VALUE1 = 1;
+const int32_t INDEX_VALUE2 = 2;
+const int32_t INDEX_VALUE3 = 3;
+const int32_t INDEX_VALUE4 = 4;
+const int32_t INDEX_VALUE5 = 5;
+const int32_t INDEX_VALUE6 = 6;
+const int32_t INDEX_VALUE7 = 7;
+const int32_t INDEX_VALUE8 = 8;
 #endif  // OPS_BUILT_IN_OP_PROTO_UTIL_UTIL_H_

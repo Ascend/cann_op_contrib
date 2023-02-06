@@ -192,5 +192,4 @@ bool AxisUtil::GetAxisValueByC1HWNCoC0(const vector<int64_t>& originalDimVec, co
   axisValue[static_cast<uint64_t>(AXIS_Co)] = originalDimVec[AXIS_C1HWNCoC0_DIM_Co];
   return true;
 }
-
 };  // namespace ge

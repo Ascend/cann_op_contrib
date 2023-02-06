@@ -104,7 +104,6 @@ class LogUniformSampler : public RangeSampler {
  private:
   const double log_range_;
 };
-
 }  // namespace cpu
 }  // namespace aicpu
 

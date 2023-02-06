@@ -31,7 +31,6 @@
 #include "runtime/tensor.h"
 
 namespace ops {
-
 template <typename _T, typename... _Args>
 inline std::shared_ptr<_T> make_shared_nothrow(_Args&&... __args) noexcept(
     noexcept(_T(std::forward<_Args>(__args)...))) {

@@ -24,7 +24,6 @@
 
 namespace aicpu {
 class NodeDefBuilder {
-
   public:
   	struct InputOutputNode{
   		std::string node;
