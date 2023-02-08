@@ -31,6 +31,8 @@
                 <!--filteritem type="filepath" name="projectroot/[a-zA-Z0-9]{20,}.sh" desc="Temp files"/-->
             </filefilter>
             <filefilter name="defaultPolicyFilter" desc="Filters for compatibility,license header policies">
+                <filteritem type="filename" name="OWNERS" desc="Describe commite owner"/>
+                <filteritem type="filename" name=".gitmodules" desc="git submodule "/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies">
             </filefilter>
