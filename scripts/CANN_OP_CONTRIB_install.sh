@@ -198,8 +198,14 @@ function install_process() {
     fi
     # 检查是否存在config.ini文件，如果不存在，则退出
     if [ ! -f ${operate_path}/vendors/config.ini ] ; then
-        print "ERROR" "The config.ini file does not exist, install failed."
-        return 1
+        chmod 750 -R ${operate_path}/../..
+        touch ${operate_path}/vendors/config.ini
+        chmod 777 ${operate_path}/vendors/config.ini
+        if [ -z $OPP_CUSTOM_VENDOR ];then
+            echo "load_priority=community" > ${operate_path}/vendors/config.ini
+        else
+            echo "load_priority=$OPP_CUSTOM_VENDOR" > ${operate_path}/vendors/config.ini
+        fi
     fi
     # 安装
     chmod +w ${operate_path}/vendors  2>/dev/null

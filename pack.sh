@@ -34,7 +34,7 @@
 # 生成编译结果
 bash build.sh $targetkerner $targetdir
 if [ $? -ne 0 ];then
-    exit
+    exit 1
 fi
 
 kerner=`arch`
@@ -48,7 +48,7 @@ cp ./scripts/CANN_OP_CONTRIB_install.sh ./CANN_OP_CONTRIB/scripts
 # 判断编译后文件夹是否存在
 if [ ! -d ./CANN_OP_CONTRIB/vendors ] ;then
     echo "[ERROR] After compilation, the vendors folders must exist in the ./CANN_OP_CONTRIB directory"
-    exit
+    exit 1
 fi
 
 # 设置run包前置脚本行数值

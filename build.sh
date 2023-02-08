@@ -54,7 +54,14 @@ build_cann_aicpu() {
 
 change_dir() 
 {
+  AI_CORE_PATH=""
+  if [ -z $OPP_CUSTOM_VENDOR ];then
+    AI_CORE_PATH="${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/community_impl"
+  else
+    AI_CORE_PATH="${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/${OPP_CUSTOM_VENDOR}_impl"
+  fi
   mk_dir "${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe" > /dev/null
+  mk_dir "${AI_CORE_PATH}" > /dev/null
 
   if [ -d ${BUILD_PATH}/install/community/framework ];then
     cp -r ${BUILD_PATH}/install/community/framework ${TAR_DIR_PATH}/vendors/community/ > /dev/null
@@ -67,7 +74,8 @@ change_dir()
   fi
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
     cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
-    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/impl
+    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/* ${AI_CORE_PATH}
+    rm -rf ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl
   fi
   if [ -d ${BUILD_PATH}/install/community/op_config ];then
     cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
