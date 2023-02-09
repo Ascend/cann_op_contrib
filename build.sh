@@ -37,6 +37,7 @@ build_cann_tbe() {
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
     echo "CANN tbe faild"
+    exit 1
   else
     echo "CANN tbe success!"
   fi
@@ -47,6 +48,7 @@ build_cann_aicpu() {
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
     echo "CANN build aicpu faild"
+    exit 1
   else
     echo "CANN build aicpu success!"
   fi
