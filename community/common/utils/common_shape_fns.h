@@ -31,7 +31,6 @@
 #include "error_code.h"
 
 namespace ge {
-
 struct ShapeAndRange {
   Shape shape_;
   std::vector<std::pair<int64_t, int64_t>> shape_range_;
@@ -459,7 +458,6 @@ std::string DTypeStr(DataType dtype);
 graphStatus SetShapeAndRange(Operator& op, const ShapeAndRange& feed_shape_and_range);
 
 graphStatus GetShapeAndRange(Operator& op, ShapeAndRange& out, bool& geted, InferenceContextPtr infer_context);
-
 }  // namespace ge
 
 #endif  // OPS_BUILT_IN_OP_PROTO_UTIL_COMMON_SHAPE_FNS_H_

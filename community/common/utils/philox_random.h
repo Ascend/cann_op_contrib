@@ -166,7 +166,7 @@ class PhiloxRandom {
                               uint32_t *result_high) {
     const uint64_t product = static_cast<uint64_t>(a) * b;
     *result_low = static_cast<uint32_t>(product);
-    *result_high = static_cast<uint32_t>(product >> 32);
+    *result_high = static_cast<uint32_t>(product >> NUM_VALUE32);
   }
 
   // Helper function for a single round of the underlying Philox algorithm.

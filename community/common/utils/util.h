@@ -619,6 +619,18 @@ const int32_t DIM_VALUE7 = 7;
 const int32_t DIM_VALUE8 = 8;
 const double HALF = 0.5;
 
+const float F_HALF = 0.5f;
+const float F_ONE_HALF = 1.5f;
+const float F_NUM_VALUE0 = 0.0F;
+const float F_NUM_VALUE1 = 1.0f;
+const float F_NUM_VALUE2 = 2.0f;
+const float F_NUM_VALUE3 = 3.0f;
+const float F_NUM_VALUE4 = 4.0f;
+const float F_NUM_VALUE5 = 5.0f;
+const float F_NUM_VALUE6 = 6.0f;
+const float F_NUM_VALUE7 = 7.0f;
+const float F_NUM_VALUE8 = 8.0f;
+
 const int32_t NUM_VALUE0 = 0;
 const int32_t NUM_VALUE1 = 1;
 const int32_t NUM_VALUE2 = 2;
@@ -628,6 +640,7 @@ const int32_t NUM_VALUE5 = 5;
 const int32_t NUM_VALUE6 = 6;
 const int32_t NUM_VALUE7 = 7;
 const int32_t NUM_VALUE8 = 8;
+const int32_t NUM_VALUE32 = 32;
 
 const int32_t INDEX_VALUE0 = 0;
 const int32_t INDEX_VALUE1 = 1;

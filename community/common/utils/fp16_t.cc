@@ -307,7 +307,7 @@ static int16_t fp16ToInt16(const uint16_t& fpVal) {
 
   if (FP16_IS_DENORM(fpVal)) {  // Denormalized number
     retV = 0;
-    ret = *((uint8_t*)&retV);
+    ret = *(reinterpret_cast<uint8_t*>(&retV));
     return ret;
   }
 
@@ -355,7 +355,7 @@ static int16_t fp16ToInt16(const uint16_t& fpVal) {
     retV = (sRet << BitShift_15) | (mRet);
   }
 
-  ret = *((int16_t*)&retV);
+  ret = *(reinterpret_cast<int16_t*>(&retV));
   return ret;
 }
 /**
@@ -458,7 +458,7 @@ static int32_t fp16ToInt32(const uint16_t& fpVal) {
     retV = (sRet << BitShift_31) | (mRet);
   }
 
-  ret = *((int32_t*)&retV);
+  ret = *(reinterpret_cast<int32_t*>(&retV));
   return ret;
 }
 /**
@@ -1180,7 +1180,7 @@ fp16_t& fp16_t::operator=(const double& dVal) {
   uint16_t sRet, mRet;
   int16_t eRet;
   uint64_t eD, mD;
-  uint64_t ui64V = *((uint64_t*)&dVal);  // 1:11:52bit sign:exp:man
+  uint64_t ui64V = *(reinterpret_cast<const uint64_t*>(&dVal));
   uint32_t mLenDelta;
 
   sRet = static_cast<uint16_t>((ui64V & FP64_SIGN_MASK) >> FP64_SIGN_INDEX);  // 4Byte

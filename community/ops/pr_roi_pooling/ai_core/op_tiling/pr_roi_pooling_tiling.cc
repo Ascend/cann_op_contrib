@@ -97,6 +97,9 @@ static const std::vector<std::string> COMPILE_INFO_KEY = {"core_num"};
 
 static void CalcBlockNum(const int64_t& core_num, const int64_t& rois_n, int64_t& num_per_core, int64_t& used_core_num,
                          int64_t& num_tail_core) {
+  if(core_num == 0 || num_per_core == 0) {
+    return;
+  }
   num_per_core = (rois_n + core_num - 1) / core_num;
   used_core_num = (rois_n + num_per_core - 1) / num_per_core;
   num_tail_core = rois_n - (used_core_num - 1) * num_per_core;

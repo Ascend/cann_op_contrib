@@ -20,7 +20,7 @@
 #include <cmath>
 #include <stdio.h>
 #include "cpu_context.h"
-
+#include "util.h"
 namespace aicpu {
 // Defines functions for different types of sampling kernels.
 enum SamplingKernelType {
@@ -115,9 +115,9 @@ struct GaussianKernelFunc {
   float operator()(float x) const {
     x = std::abs(x);
     if (x >= radius) {
-      return 0.0;
+      return F_NUM_VALUE0;
     }
-    return static_cast<float>(std::exp(-x * x / (2.0 * sigma * sigma)));
+    return static_cast<float>(std::exp(-x * x / (F_NUM_VALUE2 * sigma * sigma)));
   }
   float Radius() const {
     return radius;
@@ -130,10 +130,10 @@ struct GaussianKernelFunc {
 struct BoxKernelFunc {
   float operator()(float x) const {
     x = std::abs(x);
-    return x < 0.5f ? 1. : x == 0.5f ? 0.5f : 0.0f;
+    return x < F_HALF ? F_NUM_VALUE1 : x == F_HALF ? F_HALF : F_NUM_VALUE0;
   }
   float Radius() const {
-    return 1.f;
+    return F_NUM_VALUE1;
   }
 };
 
@@ -141,10 +141,10 @@ struct TriangleKernelFunc {
   // https://en.wikipedia.org/wiki/Triangle_function
   float operator()(float x) const {
     x = std::abs(x);
-    return x < 1.0f ? 1.0f - x : 0.0f;
+    return x < F_NUM_VALUE1 ? F_NUM_VALUE1 - x : F_NUM_VALUE0;
   }
   float Radius() const {
-    return 1.f;
+    return F_NUM_VALUE1;
   }
 };
 
@@ -194,19 +194,19 @@ struct MitchellCubicKernelFunc {
 };
 
 inline LanczosKernelFunc CreateLanczos1Kernel() {
-  return LanczosKernelFunc(1.0);
+  return LanczosKernelFunc(F_NUM_VALUE1);
 }
 
 inline LanczosKernelFunc CreateLanczos3Kernel() {
-  return LanczosKernelFunc(3.0);
+  return LanczosKernelFunc(F_NUM_VALUE3);
 }
 
 inline LanczosKernelFunc CreateLanczos5Kernel() {
-  return LanczosKernelFunc(5.0);
+  return LanczosKernelFunc(F_NUM_VALUE5);
 }
 
 inline GaussianKernelFunc CreateGaussianKernel() {
-  return GaussianKernelFunc(1.5);
+  return GaussianKernelFunc(F_ONE_HALF);
 }
 
 inline BoxKernelFunc CreateBoxKernel() {

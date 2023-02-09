@@ -30,7 +30,7 @@
 
 #include "op_log.h"
 
-const static bool vector_prof_switch = std::getenv("VECTOR_PROF") != nullptr;
+const bool vector_prof_switch = std::getenv("VECTOR_PROF") != nullptr;
 
 #define PROFILING_PROTO_INIT(op_type)                                                                         \
   auto profiling_op_name = op_type;                                                                           \

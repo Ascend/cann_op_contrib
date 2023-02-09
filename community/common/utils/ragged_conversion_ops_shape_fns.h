@@ -25,7 +25,6 @@
 #include "graph/operator.h"
 
 namespace ge {
-namespace {
 enum class RowPartitionType { FIRST_DIM_SIZE, VALUE_ROWIDS, ROW_LENGTHS, ROW_SPLITS, ROW_LIMITS, ROW_STARTS };
 
 using Dim = struct {
@@ -37,7 +36,6 @@ using TensorShape = struct {
   std::vector<Dim> dims;
   bool unknown_rank = false;
 };
-}  //  namespace
 /**
  * make shape from shape proto
  * @param input_shape input tensor shape info

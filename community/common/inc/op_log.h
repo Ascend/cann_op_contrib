@@ -35,10 +35,11 @@
 
 #define OPPROTO_SUBMOD_NAME "OP_PROTO"
 
-#define DlogSubTmp(moduleId, submodule, level, fmt, ...)                                                 \
-  do                                                                                                     \
-  {                                                                                                      \
-    printf("log unuse %d %s %d %s", moduleId, submodule, level, fmt, __FILE__, __LINE__, ##__VA_ARGS__); \
+#define DlogSubTmp(moduleId, submodule, level, fmt, ...)        \
+  do                                                            \
+  {                                                             \
+    printf("[%s:%d]" fmt, __FILE__, __LINE__, ##__VA_ARGS__);   \
+    printf("\n");                                               \
   } while (TMP_LOG != 0)
 
 template <class T>

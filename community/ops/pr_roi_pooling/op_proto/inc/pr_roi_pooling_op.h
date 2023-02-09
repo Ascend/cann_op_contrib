@@ -22,7 +22,8 @@
 
 namespace ge {
 /**
-* @brief In IoUNet, PrRoI Pooling is an integration-based (bilinear interpolation) average pooling method for RoI Pooling. 
+* @brief In IoUNet, PrRoI Pooling is an integration-based (bilinear interpolation) average 
+pooling method for RoI Pooling. 
 * It avoids any quantization and has a continuous gradient on bbox coordinates. \n
 
 * @par Inputs:

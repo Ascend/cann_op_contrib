@@ -844,4 +844,4 @@ int16_t GetManBitLength(T man) {
 /*lint +e1573*/
 };  // namespace fe
 
-#endif /* _FP16_T_HPP_*/
+#endif // _FP16_T_HPP_

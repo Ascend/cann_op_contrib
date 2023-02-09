@@ -190,8 +190,7 @@ uint32_t SubCpuKernel::BcastCompute(CpuKernelContext &ctx, Bcast &bcast) {
 
     auto sharder_sub = [&](int64_t start, int64_t end) {
       for (int64_t i = start; i < end; ++i) {
-        *(out + i) = difference_op(*(in0 + bcast.GetBroadcastXIndex(i)),
-                     *(in1 + bcast.GetBroadcastYIndex(i)) );
+        *(out + i) = difference_op(*(in0 + bcast.GetBroadcastXIndex(i)), *(in1 + bcast.GetBroadcastYIndex(i)));
       }
     };
     if (max_core_num == 0) {
@@ -203,8 +202,7 @@ uint32_t SubCpuKernel::BcastCompute(CpuKernelContext &ctx, Bcast &bcast) {
                         "Sub Compute failed.")
   } else {
     for (int64_t i = 0; i < data_num; ++i) {
-      *(out + i) = difference_op(*(in0 + bcast.GetBroadcastXIndex(i)),
-                   *(in1 + bcast.GetBroadcastYIndex(i))) ;
+      *(out + i) = difference_op(*(in0 + bcast.GetBroadcastXIndex(i)), *(in1 + bcast.GetBroadcastYIndex(i)));
     }
   }
   return KERNEL_STATUS_OK;

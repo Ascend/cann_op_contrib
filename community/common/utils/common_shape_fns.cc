@@ -121,7 +121,6 @@ graphStatus WithRankShape(GeShape& shape, int64_t rank, const char* op_name)
   std::vector<int64_t> dim_values = shape.GetDims();
   shape = GeShape(dim_values);
   return GRAPH_SUCCESS;
-
 }
 
 graphStatus WithRank(const TensorDesc& tensor, int64_t rank, Shape& out, const char* op_name) {
@@ -517,7 +516,7 @@ template <typename Ta, typename Tb>
 bool FastBoundsCheck(const Ta index, const Tb limit) {
   static_assert(std::is_integral<Ta>::value && std::is_integral<Tb>::value,
                 "FastBoundsCheck can only be used on integer types.");
-  typedef typename std::make_unsigned<decltype(index + limit)>::type UIndex;
+  using UIndex = typename std::make_unsigned<decltype(index + limit)>::type;
   return static_cast<UIndex>(index) < static_cast<UIndex>(limit);
 }
 

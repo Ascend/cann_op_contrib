@@ -110,8 +110,8 @@ class PrRoIPoolingNp:
 
     def get_feature_data(self, batch_idx, h, w):
         overflow = ((h < 0) or (w < 0) or (h >= self.in_height) or (w >= self.in_width))
-        retVal = 0.0 if overflow else self.features[batch_idx, :, h, w]
-        return retVal
+        ret_val = 0.0 if overflow else self.features[batch_idx, :, h, w]
+        return ret_val
 
 
 def calc_expect_func(features,
