@@ -35,6 +35,8 @@
                 <filteritem type="filename" name=".gitmodules" desc="git submodule "/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filename" name="OWNERS" desc="Describe commite owner"/>
+                <filteritem type="filename" name=".gitmodules" desc="git submodule "/>
             </filefilter>
             <filefilter name="licenseFileNamePolicyFilter" desc="Filters for LICENSE file policies">
             </filefilter>
