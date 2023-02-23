@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2022 Huawei Technologies Co., Ltd.  All rights reserved.
+ * Copyright (c) 2023-2023 Huawei Technologies Co., Ltd.  All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-class add_tiling_test : public testing::Test {
-protected:
-  static void SetUpTestCase() {
-    std::cout << "add_tiling_test SetUp" << std::endl;
-  }
+int main(int argc, char **argv)
+{
+    testing::InitGoogleTest(&argc,argv);
+    int ret = RUN_ALL_TESTS();
 
-  static void TearDownTestCase() {
-    std::cout << "add_tiling_test TearDown" << std::endl;
-  }
-};
-
-TEST_F(add_tiling_test, add_tiling_test_001) {
-  int ret = 1;
-  EXPECT_EQ(ret, 1);
+    return ret;
 }

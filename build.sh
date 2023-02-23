@@ -91,12 +91,103 @@ change_dir_aicpu()
     cp -r ${BUILD_PATH}/install/community/cpu ${TAR_DIR_PATH}/vendors/community/op_impl >/dev/null
   fi
 }
-main() {
-  # CANN build start
-  build_cann_tbe
-  # Change dir
-  change_dir
-  build_cann_aicpu
-  change_dir_aicpu
+
+ut_tbe() {
+  mk_dir ${BUILD_PATH}
+  cd ${BUILD_PATH}
+  python3 ../scripts/run_tbe_ut_all.py
+  if [ $? -ne 0 ];then
+    echo "CANN build tbe ut faild"
+    exit 1
+  else
+    echo "CANN build tbe ut success!"
+  fi
+  cd ${BASE_PATH}
 }
-main
+
+ut_aicpu() {
+  ./scripts/run_aicpu_ut.sh $1
+  if [ $? -ne 0 ];then
+    echo "CANN build aicpu ut faild"
+    exit 1
+  else
+    echo "CANN build aicpu ut success!"
+  fi
+  cd ${BASE_PATH}
+}
+
+ut_proto(){
+  ./scripts/run_op_proto_ut.sh $1
+  if [ $? -ne 0 ];then
+    echo "CANN build op_proto ut faild"
+    exit 1
+  else
+    echo "CANN build op_proto ut success!"
+  fi
+  cd ${BASE_PATH}
+}
+
+ut_tiling(){
+  ./scripts/run_tiling_ut.sh $1
+  if [ $? -ne 0 ];then
+    echo "CANN build tiling ut faild"
+    exit 1
+  else
+    echo "CANN build tiling ut success!"
+  fi
+  cd ${BASE_PATH}
+}
+
+echo_help(){
+  echo "eg: ./build.sh -u all            run all cases"
+  echo "eg: ./build.sh -u tbe            run UT cases of tbe"
+  echo "eg: ./build.sh -u aicpu          run UT cases of aicpu"
+  echo "eg: ./build.sh -u proto          run UT cases of op proto"
+  echo "eg: ./build.sh -u tiling         run UT cases of tiling"
+  echo "eg: ./build.sh                   compile op of all"
+}
+
+main() {
+  if [ $# == 0 ];then
+    # CANN build start
+    build_cann_tbe
+    change_dir
+    build_cann_aicpu
+    change_dir_aicpu
+  else
+    if [ $1 == "tbe" ];then
+      ut_tbe
+    elif [ "$1" == "aicpu" ];then
+      ut_aicpu $2
+    elif [ "$1" == "proto" ];then
+      ut_proto $2
+    elif [ "$1" == "tiling" ];then
+      ut_tiling $2
+    elif [ "$1" == "all" ];then
+      ut_tbe
+      ut_aicpu
+      ut_proto
+      ut_tiling
+    elif [ "$1" == "help" ] || [ "$1" == "h" ];then
+      echo_help
+    else
+      echo "use ./build.sh h for get some help"
+    fi
+  fi
+}
+
+while getopts hj:u: OPTION;do
+  case $OPTION in
+  u)ut_type=$OPTARG
+  ;;
+  j)THREAD_NUM=$OPTARG
+  ;;
+  h)echo_help
+  exit 0
+  ;;
+  ?)echo "get a non option $OPTARG and OPTION is $OPTION"
+  ;;
+  esac
+done
+
+main $ut_type $THREAD_NUM

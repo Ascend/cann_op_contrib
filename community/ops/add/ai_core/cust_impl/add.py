@@ -12,57 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""
-add
-"""
-from tbe.dsl.api import auto_schedule
-from tbe.dsl.api import build
-import te.lang.cce as tbe
-from impl.util.platform_adapter import register_operator_compute
-from impl.util.platform_adapter import tvm
-from impl.util.platform_adapter import para_check
-from impl.util.platform_adapter import shape_util
-from impl.util import util_common
-from impl.dynamic.add import static_reshape
-from impl.dynamic.add import calc_input_tensor
-from impl.dynamic.add import add_compute_for_batchmatmul
-from impl.dynamic.add import op_select_format as add_op_select_format
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+from __future__ import absolute_import
+
+from functools import reduce
+import tbe.dsl as tbe
+from tbe import tvm
+from tbe.common.register import register_op_compute
+from tbe.common.utils import para_check
+from tbe.common.utils import shape_util
+
+# General limitation of the reduce size for input shape: 2**31
+SHAPE_SIZE_LIMIT = 2147483648
 
 
-# 'pylint: disable=locally-disabled,too-many-arguments,unused-argument
-def op_select_format(input_x, input_y, output_z, kernel_name="add"):
-    """
-    select format dynamically \n
-    op_select_format support desc:
-
-    1.when input x's ori_shape is 4, and bias's shape is not 1. \n
-    The Op Bias can support
-    ND + ND = ND,
-    NC1HWC0 + NC1HWC0 = NC1HWC0.
-
-        for example:
-        inputs:
-            x        ori shape = [16, 16, 16, 16, 16] ori_format = "NC1HWC0"
-            bias     ori shape = [16, 16, 16, 16, 16] ori_format = "NC1HWC0"
-        outputs:
-            y        ori shape = [16, 16, 16, 16, 16] ori_format = "NC1HWC0"
-
-    2.In other scenes, all input(x, bias) only support ND.
-
-        for example:
-        inputs:
-            x        ori shape = [2] ori_format = "ND"
-            bias     ori shape = [2] ori_format = "ND"
-        outputs:
-            y        ori shape = [2] ori_format = "ND"
-
-    """
-    return add_op_select_format(input_x, input_y, output_z, kernel_name)
-
-
-# 'pylint: disable=locally-disabled,too-many-arguments,unused-argument
-@register_operator_compute("add", op_mode="static", support_fusion=True)
-def add_compute(input_x, input_y, output_z, is_scene_1d=False, broadcast_flag=True, kernel_name="add"):
+# pylint: disable=locally-disabled,too-many-arguments,unused-argument
+@register_op_compute("add", op_mode="dynamic", support_fusion=True)
+def add_compute(input_x, input_y, output_z, kernel_name="add"):
     """
     calculating data's add, c = a + b
 
@@ -72,10 +40,8 @@ def add_compute(input_x, input_y, output_z, is_scene_1d=False, broadcast_flag=Tr
         the placeholder of first input data
     input_y: TVM tensor
         the placeholder of second input data
-    output_z: dict
+    output_data: dict
         shape and dtype of output, should be broadcast shape and type as input
-    is_scene_1d: bool
-        is scene 1d
     kernel_name: str
         cce kernel name, default value is add
 
@@ -83,36 +49,25 @@ def add_compute(input_x, input_y, output_z, is_scene_1d=False, broadcast_flag=Tr
     -------
     res : output of the data's add
     """
-    x_dtype = input_x.dtype.lower()
-    if x_dtype in ("uint8", "int8"):
-        input_x = tbe.cast_to(input_x, "float16")
-        input_y = tbe.cast_to(input_y, "float16")
+    shape_x = shape_util.shape_to_list(input_x.shape)
+    shape_y = shape_util.shape_to_list(input_y.shape)
 
-    if is_scene_1d:
-        shape_x = shape_util.shape_to_list(input_x.shape)
-        shape_y = shape_util.shape_to_list(input_y.shape)
-        if shape_x != shape_y:
-            if broadcast_flag:
-                # if shape not equal, then apply broadcast.
-                shape_x, shape_y, shape_max = para_check.produce_shapes(shape_x, shape_y)
-                input_x = tbe.broadcast(input_x, shape_max)
-                input_y = tbe.broadcast(input_y, shape_max)
-            else:
-                input_y = tbe.broadcast(input_y, shape_x)
-    else:
-        batchmatmul_flag, input_x, input_y = calc_input_tensor(input_x, input_y)
-        if batchmatmul_flag:
-            return add_compute_for_batchmatmul(input_x, input_y)
+    shape_x, shape_y, shape_max = shape_util.broadcast_shapes(shape_x, shape_y,
+                                                              param_name_input1="input_x",
+                                                              param_name_input2="input_y")
+    shape_size = reduce(lambda x, y: x * y, shape_max[:])
+    if shape_size > SHAPE_SIZE_LIMIT:
+        raise RuntimeError("the shape is too large to calculate")
 
+    input_x = tbe.broadcast(input_x, shape_max)
+    input_y = tbe.broadcast(input_y, shape_max)
     res = tbe.vadd(input_x, input_y)
-    if x_dtype in ("uint8", "int8"):
-        res = util_common.uint8_int8_overflow_proc(res, x_dtype)
 
     return res
 
 
-@para_check.check_op_params(para_check.REQUIRED_INPUT, para_check.REQUIRED_INPUT, para_check.REQUIRED_OUTPUT,
-                            para_check.KERNEL_NAME)
+@para_check.check_op_params(para_check.REQUIRED_INPUT, para_check.REQUIRED_INPUT,
+                            para_check.REQUIRED_OUTPUT, para_check.KERNEL_NAME)
 def add(input_x, input_y, output_z, kernel_name="add"):
     """
     algorithm: add
@@ -121,9 +76,9 @@ def add(input_x, input_y, output_z, kernel_name="add"):
     Parameters
     ----------
     input_x : dict
-        shape and dtype of first input, only support float16, float32, int32, int8, uint8
+        shape and dtype of first input, only support float16, float32, int32
     input_y : dict
-        shape and dtype of second input, only support float16, float32, int32, int8, uint8
+        shape and dtype of second input, only support float16, float32, int32
     output_z: dict
         shape and dtype of output, should be broadcast shape and type as input
     kernel_name : str
@@ -133,20 +88,30 @@ def add(input_x, input_y, output_z, kernel_name="add"):
     -------
     None
     """
-    # check dtype
-    check_tuple = ("float16", "float32", "int32", "int8", "uint8")
+    shape_x = input_x.get("shape")
+    shape_y = input_y.get("shape")
+
+    check_tuple = ("float16", "float32", "int32")
     input_data_type = input_x.get("dtype").lower()
     para_check.check_dtype(input_data_type, check_tuple, param_name="input_x")
 
-    broadcast_flag, is_scene_1d = None, None
-    shape_x, shape_y, broadcast_flag, is_scene_1d = static_reshape(input_x, input_y)
+    shape_x, shape_y, shape_max = shape_util.broadcast_shapes(shape_x, shape_y,
+                                                              param_name_input1="input_x",
+                                                              param_name_input2="input_y")
 
-    data_x = tvm.placeholder(shape_x, dtype=input_data_type, name="data_1")
-    data_y = tvm.placeholder(shape_y, dtype=input_data_type, name="data_2")
-    res = add_compute(data_x, data_y, output_z, is_scene_1d, broadcast_flag, kernel_name)
+    if shape_x[-1] == 1 and shape_y[-1] == 1 and shape_max[-1] == 1:
+        shape_x = shape_x if len(shape_x) == 1 else shape_x[:-1]
+        shape_y = shape_y if len(shape_y) == 1 else shape_y[:-1]
+        shape_max = shape_max if len(shape_max) == 1 else shape_max[:-1]
+
+    data_x = tvm.placeholder(shape_x, name="data_1", dtype=input_data_type)
+    data_y = tvm.placeholder(shape_y, name="data_2", dtype=input_data_type)
+
+    res = add_compute(data_x, data_y, output_z, kernel_name)
 
     with tvm.target.cce():
-        schedule = auto_schedule(res)
+        schedule = tbe.auto_schedule(res)
 
-    config = {"print_ir": False, "name": kernel_name, "tensor_list": (data_x, data_y, res)}
-    build(schedule, config)
+    config = {"name": kernel_name,
+              "tensor_list": (data_x, data_y, res)}
+    tbe.build(schedule, config)

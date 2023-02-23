@@ -22,21 +22,24 @@ endif()
 message("Search libs under install path ${ASCEND_DIR}")
 
 set(ASCEND_ATC_DIR ${ASCEND_DIR}/compiler/lib64)
-set(ASCEND_OPENSDK_LIB ${ASCEND_DIR}/opensdk/opensdk/lib)
-set(CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/cmake)
-
+set(OPENSDK_DIR ${ASCEND_DIR}/opensdk/opensdk)
+set(ASCEND_OPENSDK_LIB ${OPENSDK_DIR}/lib)
+set(CMAKE_PREFIX_PATH ${OPENSDK_DIR}/cmake)
 
 list(APPEND CMAKE_PREFIX_PATH 
-  ${ASCEND_DIR}/opensdk/opensdk/jpeg
-  ${ASCEND_DIR}/opensdk/opensdk/gtest
-  ${ASCEND_DIR}/opensdk/opensdk/json
-  ${ASCEND_DIR}/opensdk/opensdk/eigen/share/eigen3/cmake
+  ${OPENSDK_DIR}/jpeg
+  ${OPENSDK_DIR}/c_sec
+  ${OPENSDK_DIR}/gtest
+  ${OPENSDK_DIR}/json
+  ${OPENSDK_DIR}/eigen/share/eigen3/cmake
+  ${OPENSDK_DIR}/gtest_shared/lib/cmake/GTest
+  ${OPENSDK_DIR}/gtest_shared/lib64/cmake/GTest
 )
 
 
-set(CMAKE_MODULE_PATH ${ASCEND_DIR}/opensdk/opensdk/cmake/modules)
+set(CMAKE_MODULE_PATH ${OPENSDK_DIR}/cmake/modules)
 find_package(jpeg MODULE)
-find_package(gtest MODULE)
+find_package(GTest CONFIG)
 find_package(json MODULE)
 
 if(NOT BUILD_AICPU)

@@ -28,6 +28,9 @@ using KernelStatus = uint32_t;
 constexpr uint32_t KERNEL_STATUS_OK = 0U;
 constexpr uint32_t KERNEL_STATUS_PARAM_INVALID = 1U;
 constexpr uint32_t KERNEL_STATUS_INNER_ERROR = 2U;
-constexpr uint32_t KERNEL_STATUS_PROTOBUF_ERROR = 3U;
+constexpr uint32_t KERNEL_STATUS_TIMEOUT = 3U;
+constexpr uint32_t KERNEL_STATUS_PROTOBUF_ERROR = 4U;
+constexpr uint32_t KERNEL_STATUS_SHARDER_ERROR = 5U;
+constexpr uint32_t KERNEL_STATUS_END_OF_SEQUENCE = 201U;
 }  // namespace aicpu
 #endif  // KERNEL_STATUS_H

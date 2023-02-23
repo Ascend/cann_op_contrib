@@ -11,8 +11,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
+set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
+set(METADEF_INCLUDE ${OPENSDK}/include/metadef)
+set(GRAPHENGINE_INCLUDE ${OPENSDK}/include/air)
 
-set(PROTO "${METADEF_DIR}/proto/insert_op.proto")
+set(PROTO "${OPENSDK}/proto/insert_op.proto")
 protobuf_generate(opp _proto_cc _proto_h ${PROTO})
 
 
@@ -41,13 +44,13 @@ file(GLOB PROTO_SRC
 
 set(PROTO_INC
     ${CANN_ROOT_DIR}/community/common/utils
-    ${METADEF_DIR}
-    ${METADEF_DIR}/inc
-    ${METADEF_DIR}/inc/exe_graph
-    ${METADEF_DIR}/inc/external
-    ${METADEF_DIR}/third_party/graphengine/inc
-    ${METADEF_DIR}/third_party/graphengine/inc/external
-    ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${METADEF_INCLUDE}/exe_graph
+    ${METADEF_INCLUDE}/external
+    ${METADEF_INCLUDE}/external/graph
+    ${GRAPHENGINE_INCLUDE}
+    ${GRAPHENGINE_INCLUDE}/external
+    ${OPENSDK}/include/slog
+    ${OPENSDK}/c_sec/include
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
     ${CANN_ROOT_DIR}/community/common/src
@@ -136,7 +139,6 @@ file(GLOB TILING_SRC
     ${CANN_ROOT_DIR}/community/common/utils/tiling_util.cc
     ${CANN_ROOT_DIR}/community/common/utils/fp16_t.cc
 )
-
 set(TILING_LINK_LIB
     -Wl,--no-as-needed
     graph
@@ -150,13 +152,13 @@ set(TILING_LINK_LIB
 )
 
 set(TILING_INC
-    ${METADEF_DIR}/inc
-    ${METADEF_DIR}/inc/exe_graph
-    ${METADEF_DIR}/inc/external
-    ${METADEF_DIR}/inc/external/graph
-    ${METADEF_DIR}/third_party/graphengine/inc
-    ${METADEF_DIR}/third_party/graphengine/inc/external
-    ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${METADEF_INCLUDE}/exe_graph
+    ${METADEF_INCLUDE}/external
+    ${METADEF_INCLUDE}/external/graph
+    ${OPENSDK}/include/slog
+    ${OPENSDK}/c_sec/include
+    ${GRAPHENGINE_INCLUDE}
+    ${GRAPHENGINE_INCLUDE}/external
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
     ${C_SEC_INCLUDE}
@@ -284,24 +286,24 @@ add_custom_target(aic_910b_ops_info ALL
 
 # --------------------------- build tf_plugin --------------------------
 set(TF_PROTO
-    "${METADEF_DIR}/proto/tensorflow/versions.proto"
-    "${METADEF_DIR}/proto/tensorflow/resource_handle.proto"
-    "${METADEF_DIR}/proto/tensorflow/tensor_shape.proto"
-    "${METADEF_DIR}/proto/tensorflow/function.proto"
-    "${METADEF_DIR}/proto/tensorflow/node_def.proto"
-    "${METADEF_DIR}/proto/tensorflow/graph.proto"
-    "${METADEF_DIR}/proto/tensorflow/tensor.proto"
-    "${METADEF_DIR}/proto/tensorflow/attr_value.proto"
-    "${METADEF_DIR}/proto/tensorflow/graph_library.proto"
-    "${METADEF_DIR}/proto/tensorflow/types.proto"
-    "${METADEF_DIR}/proto/tensorflow/op_def.proto"
+    "${OPENSDK}/proto/tensorflow/versions.proto"
+    "${OPENSDK}/proto/tensorflow/resource_handle.proto"
+    "${OPENSDK}/proto/tensorflow/tensor_shape.proto"
+    "${OPENSDK}/proto/tensorflow/function.proto"
+    "${OPENSDK}/proto/tensorflow/node_def.proto"
+    "${OPENSDK}/proto/tensorflow/graph.proto"
+    "${OPENSDK}/proto/tensorflow/tensor.proto"
+    "${OPENSDK}/proto/tensorflow/attr_value.proto"
+    "${OPENSDK}/proto/tensorflow/graph_library.proto"
+    "${OPENSDK}/proto/tensorflow/types.proto"
+    "${OPENSDK}/proto/tensorflow/op_def.proto"
 )
 protobuf_generate(opp _proto_cc _proto_h ${TF_PROTO})
 file(GLOB TF_PLUGIN_SRC ${CANN_ROOT_DIR}/community/ops/**/framework/tf/*.cc)
 
 set(TF_PLUGIN_INC
-    ${METADEF_DIR}/inc/external
-    ${METADEF_DIR}/third_party/graphengine/inc
+    ${METADEF_INCLUDE}/external
+    ${GRAPHENGINE_INCLUDE}
 )
 
 set(TF_PLUGIN_LINK_LIB
@@ -348,13 +350,13 @@ cann_install(
 
 # --------------------------- build onnx_plugin --------------------------
 
-set(ONNX_PROTO "${METADEF_DIR}/proto/onnx/ge_onnx.proto")
+set(ONNX_PROTO "${OPENSDK}/proto/onnx/ge_onnx.proto")
 protobuf_generate(opp _proto_cc _proto_h ${ONNX_PROTO})
 
 file(GLOB ONNX_PLUGIN_SRC ${CANN_ROOT_DIR}/community/ops/**/framework/onnx/*.cc)
 set(ONNX_PLUGIN_INC
-    ${METADEF_DIR}/inc
-    ${METADEF_DIR}/inc/external
+    ${METADEF_INCLUDE}
+    ${METADEF_INCLUDE}/external
 )
 
 set(ONNX_PLUGIN_LINK_LIB
@@ -402,7 +404,7 @@ cann_install(
 
 # --------------------------- build caffe_plugin --------------------------
 set(_proto_srcs
-    "${METADEF_DIR}/proto/caffe/caffe.proto"
+    "${OPENSDK}/proto/caffe/caffe.proto"
   )
 
   protobuf_generate(opp _proto_cc _proto_h ${_proto_srcs})
@@ -414,9 +416,9 @@ set(_proto_srcs
     ${_proto_h}
   )
     set(CAFFE_PLUGIN_INC
-        ${METADEF_DIR}/inc
-        ${METADEF_DIR}/inc/external
-        ${METADEF_DIR}/third_party/graphengine/inc
+        ${METADEF_INCLUDE}
+        ${METADEF_INCLUDE}/external
+        ${GRAPHENGINE_INCLUDE}
     )
 
   target_include_directories(caffe_plugin PRIVATE

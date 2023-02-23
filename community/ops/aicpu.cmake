@@ -13,6 +13,10 @@
 # limitations under the License.
 # ============================================================================
 # --------------------------------aicpu---------------------------------------
+set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
+set(METADEF_INCLUDE ${OPENSDK}/include/metadef)
+set(GRAPHENGINE_INCLUDE ${OPENSDK}/include/air)
+
 if (MINRC)
     set(CMAKE_C_COMPILER /usr/bin/aarch64-linux-gnu-gcc)
     set(CMAKE_CXX_COMPILER /usr/bin/aarch64-linux-gnu-g++)
@@ -45,11 +49,12 @@ endif()
 
 set(AICPU_INCLUDE ${AICPU_OPP_ENV}/inc)
 set(AICPU_INC
-    ${METADEF_DIR}/inc
-    ${METADEF_DIR}/inc/external
-    ${METADEF_DIR}/third_party/graphengine/inc
-    ${METADEF_DIR}/third_party/graphengine/inc/external
-    ${METADEF_DIR}/third_party/fwkacllib/inc
+    ${METADEF_INCLUDE}
+    ${METADEF_INCLUDE}/external
+    ${GRAPHENGINE_INCLUDE}
+    ${GRAPHENGINE_INCLUDE}/external
+    ${OPENSDK}/include
+    ${OPENSDK}/include/slog
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
     ${CANN_ROOT_DIR}/community/common/src

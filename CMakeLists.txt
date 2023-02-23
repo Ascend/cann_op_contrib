@@ -38,11 +38,9 @@ if(DEFINED ENV{D_PKG_SERVER})
     message("Download packages from PKG server")
 endif()
 set(CANN_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(THIRD_PARTY_DIR ${CANN_ROOT_DIR}/third_party)
 set(BUILD_DIR ${CANN_ROOT_DIR}/build)
 set(INSTALL_DIR "${BUILD_DIR}/install")
 set(PROTO_BINARY_DIR "${BUILD_DIR}/proto")
-set(METADEF_DIR ${THIRD_PARTY_DIR}/metadef)
 
 add_compile_options(
     -Werror=sign-compare -Werror=address -Werror=unused-variable
@@ -60,7 +58,7 @@ if(BUILD_AICPU)
     include(cmake/external/secure_c.cmake)
 endif()
 
-if(ALL_UT OR PROTO_UT OR TILING_UT)
+if(ALL_UT OR PROTO_UT OR TILING_UT OR AICPU_UT)
     include(cmake/util/intf_pub_llt_gccnative.cmake)
 endif()
 
