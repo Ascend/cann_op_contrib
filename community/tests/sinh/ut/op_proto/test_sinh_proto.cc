@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "inc/sinh_op.h"
+#include "sinh_op.h"
 
 class SinhTest : public testing::Test {
 protected:

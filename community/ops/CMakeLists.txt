@@ -195,31 +195,6 @@ cann_install(
     DESTINATION "${TILING_INSTALL_PATH}"
 )
 
-if(ALL_UT OR TILING_UT)
-    add_library(op_tiling_llt STATIC
-        ${TILING_SRC}
-    )
-    #add_dependencies(op_tiling_llt secure_c external_protobuf external_gtest)
-    if(NOT ${CMAKE_BUILD_MODE} STREQUAL "FALSE")
-        set(compile_opt_mode ${CMAKE_BUILD_MODE})
-    else()
-        set(compile_opt_mode -O0)
-    endif()
-    target_include_directories(op_tiling_llt PUBLIC
-        ${TILING_INC}
-    )
-    target_compile_options(op_tiling_llt PUBLIC
-        ${compile_opt_mode}
-        -Dgoogle=ascend_private
-    )
-    target_link_libraries(op_tiling_llt
-        PRIVATE
-        $<BUILD_INTERFACE:intf_llt_pub>
-        PUBLIC
-        ${TILING_LINK_LIB}
-    )
-endif()
-
 # -----------------------------------------------------------------------
 file(GLOB OP_IMPL_FILES ./**/ai_core/cust_impl/*.py)
 set(OP_IMPL_INSTALL_PATH "${INSTALL_DIR}/community/op_impl")

@@ -27,34 +27,21 @@ set(_optiling_files
 
 set(_op_tiling_include
   ${CMAKE_COMMON_SOURCE_DIR}
-  ${OPENSDK}/json/include
-  ${METADEF_INCLUDE}/external
   ${METADEF_INCLUDE}/external/graph
-  ${METADEF_INCLUDE}
-  ${OPENSDK}/c_sec/include
   ${CMAKE_COMMON_SOURCE_DIR}/inc
-  ${UTILS_DIR}
   ${GRAPHENGINE_INCLUDE}
   ${GRAPHENGINE_INCLUDE}/external
-  ${OPENSDK}/include/slog
-  ${METADEF_INCLUDE}/exe_graph
-  ${METADEF_INCLUDE}/inc
-  ${METADEF_INCLUDE}/common/util
 )
 set(_op_tiling_link_libs
     -Wl,--no-as-needed
     graph
     graph_base
-    exe_graph
-    platform
     register
     alog
     error_manager
-    ascend_protobuf
     -Wl,--as-needed
     c_sec
     json
-    platform
 )
   
 add_library(optiling_llt STATIC ${_optiling_files})

@@ -17,6 +17,8 @@ export BASE_PATH=$(cd "$(dirname $0)"; pwd)
 export BUILD_PATH="${BASE_PATH}/build"
 CMAKE_HOST_PATH="${BUILD_PATH}/cann"
 TAR_DIR_PATH="${BASE_PATH}/CANN_OP_CONTRIB"
+THREAD_NUM=4
+build_type=""
 
 mk_dir() {
   local create_dir="$1"
@@ -106,7 +108,7 @@ ut_tbe() {
 }
 
 ut_aicpu() {
-  ./scripts/run_aicpu_ut.sh $1
+  ./scripts/run_aicpu_ut.sh $1 $2
   if [ $? -ne 0 ];then
     echo "CANN build aicpu ut faild"
     exit 1
@@ -117,7 +119,7 @@ ut_aicpu() {
 }
 
 ut_proto(){
-  ./scripts/run_op_proto_ut.sh $1
+  ./scripts/run_op_proto_ut.sh $1 $2
   if [ $? -ne 0 ];then
     echo "CANN build op_proto ut faild"
     exit 1
@@ -128,7 +130,7 @@ ut_proto(){
 }
 
 ut_tiling(){
-  ./scripts/run_tiling_ut.sh $1
+  ./scripts/run_tiling_ut.sh $1 $2
   if [ $? -ne 0 ];then
     echo "CANN build tiling ut faild"
     exit 1
@@ -147,28 +149,37 @@ echo_help(){
   echo "eg: ./build.sh                   compile op of all"
 }
 
+gen_cov_html(){
+  cd ${BUILD_PATH}
+  lcov -d ./ -c -o init.info
+  lcov -a init.info -o total.info
+  lcov --remove total.info '*/usr/include/*' "*/community/common/*" "*/build/proto/*" '*/Ascend/ascend-toolkit/*' '*/ascend_protobuf/include/*' '*/eigen/include/*' '*/usr/lib/*' '*/usr/lib64/*' '*/src/log/*' '*/tests/*' '*/usr/local/include/*' '*/usr/local/lib/*' '*/usr/local/lib64/*' '*/third/*' 'testa.cpp' -o final.info
+  genhtml -o cover_report_all --legend --title "lcov"  --prefix=./ final.info
+}
+
 main() {
-  if [ $# == 0 ];then
+  if [ "$build_type" == "" ];then
     # CANN build start
     build_cann_tbe
     change_dir
     build_cann_aicpu
     change_dir_aicpu
   else
-    if [ $1 == "tbe" ];then
+    if [ "$build_type" == "tbe" ];then
       ut_tbe
-    elif [ "$1" == "aicpu" ];then
-      ut_aicpu $2
-    elif [ "$1" == "proto" ];then
-      ut_proto $2
-    elif [ "$1" == "tiling" ];then
-      ut_tiling $2
-    elif [ "$1" == "all" ];then
+    elif [ "$build_type" == "aicpu" ];then
+      ut_aicpu $THREAD_NUM
+    elif [ "$build_type" == "proto" ];then
+      ut_proto $THREAD_NUM
+    elif [ "$build_type" == "tiling" ];then
+      ut_tiling $THREAD_NUM
+    elif [ "$build_type" == "all" ];then
       ut_tbe
-      ut_aicpu
-      ut_proto
-      ut_tiling
-    elif [ "$1" == "help" ] || [ "$1" == "h" ];then
+      ut_aicpu $THREAD_NUM "no_report"
+      ut_proto $THREAD_NUM  "no_report"
+      ut_tiling $THREAD_NUM "no_report"
+      gen_cov_html
+    elif [ "$build_type" == "help" ] || [ "$build_type" == "h" ];then
       echo_help
     else
       echo "use ./build.sh h for get some help"
@@ -178,7 +189,7 @@ main() {
 
 while getopts hj:u: OPTION;do
   case $OPTION in
-  u)ut_type=$OPTARG
+  u)build_type=$OPTARG
   ;;
   j)THREAD_NUM=$OPTARG
   ;;
@@ -190,4 +201,4 @@ while getopts hj:u: OPTION;do
   esac
 done
 
-main $ut_type $THREAD_NUM
+main

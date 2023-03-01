@@ -68,7 +68,7 @@ run_ut(){
 gen_cover(){
   lcov -d ./ -c -o init.info 
   lcov -a init.info -o total.info
-  lcov --remove total.info '*/usr/include/*' '*/Ascend/ascend-toolkit/*' '*/ascend_protobuf/include/*' '*/eigen/include/*' '*/usr/lib/*' '*/usr/lib64/*' '*/src/log/*' '*/tests/*' '*/usr/local/include/*' '*/usr/local/lib/*' '*/usr/local/lib64/*' '*/third/*' 'testa.cpp' -o final.info
+  lcov --remove total.info '*/usr/include/*' "*/ai_core/*" "*/op_proto/*" "*/community/common/*" "*/build/proto/*" '*/Ascend/ascend-toolkit/*' '*/ascend_protobuf/include/*' '*/eigen/include/*' '*/usr/lib/*' '*/usr/lib64/*' '*/src/log/*' '*/tests/*' '*/usr/local/include/*' '*/usr/local/lib/*' '*/usr/local/lib64/*' '*/third/*' 'testa.cpp' -o final.info
   genhtml -o cover_report_aicpu --legend --title "lcov"  --prefix=./ final.info
 }
 
@@ -79,6 +79,8 @@ main() {
   gen_data
   change_dir $build_dir
   run_ut
-  gen_cover
+  if [ "$2" != "no_report" ];then
+    gen_cover
+  fi
 }
-main $1
+main $1 $2

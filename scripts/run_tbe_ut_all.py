@@ -59,8 +59,9 @@ def run_case():
 
 def clean_old_cov():
     report_path = "../build/cov_report_tbe/"
-    cmd = "rm {}".format(report_path)
-    os.system(cmd)
+    if os.path.exists(report_path):
+        cmd = "rm -rf {}".format(report_path)
+        os.system(cmd)
 
 
 if __name__ == "__main__":
