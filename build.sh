@@ -18,7 +18,8 @@ export BUILD_PATH="${BASE_PATH}/build"
 CMAKE_HOST_PATH="${BUILD_PATH}/cann"
 TAR_DIR_PATH="${BASE_PATH}/CANN_OP_CONTRIB"
 THREAD_NUM=4
-build_type=""
+BUILD_TYPE=""
+ENV_TYPE=""
 
 mk_dir() {
   local create_dir="$1"
@@ -157,41 +158,64 @@ gen_cov_html(){
   genhtml -o cover_report_all --legend --title "lcov"  --prefix=./ final.info
 }
 
+run_ut_by_model(){
+    if [ "$BUILD_TYPE" == "tbe" ];then
+      ut_tbe
+    elif [ "$BUILD_TYPE" == "aicpu" ];then
+      ut_aicpu $THREAD_NUM
+    elif [ "$BUILD_TYPE" == "proto" ];then
+      ut_proto $THREAD_NUM
+    elif [ "$BUILD_TYPE" == "tiling" ];then
+      ut_tiling $THREAD_NUM
+    elif [ "$BUILD_TYPE" == "all" ];then
+      ut_tbe
+      ut_aicpu $THREAD_NUM "no_report"
+      ut_proto $THREAD_NUM  "no_report"
+      ut_tiling $THREAD_NUM "no_report"
+      gen_cov_html
+    elif [ "$BUILD_TYPE" == "help" ] || [ "$BUILD_TYPE" == "h" ];then
+      echo_help
+    else
+      echo "use ./build.sh h for get some help"
+    fi
+}
+
+run_ut_by_type(){
+      if [ "$ENV_TYPE" == "python" ];then
+      ut_tbe
+    elif [ "$ENV_TYPE" == "cpp" ];then
+      ut_aicpu $THREAD_NUM "no_report"
+      ut_proto $THREAD_NUM  "no_report"
+      ut_tiling $THREAD_NUM "no_report"
+      gen_cov_html
+    else
+      echo "use ./build.sh h for get some help"
+    fi
+}
+
 main() {
-  if [ "$build_type" == "" ];then
+  if [ "$BUILD_TYPE" == "" ] && [ "$ENV_TYPE" == "" ];then
     # CANN build start
     build_cann_tbe
     change_dir
     build_cann_aicpu
     change_dir_aicpu
   else
-    if [ "$build_type" == "tbe" ];then
-      ut_tbe
-    elif [ "$build_type" == "aicpu" ];then
-      ut_aicpu $THREAD_NUM
-    elif [ "$build_type" == "proto" ];then
-      ut_proto $THREAD_NUM
-    elif [ "$build_type" == "tiling" ];then
-      ut_tiling $THREAD_NUM
-    elif [ "$build_type" == "all" ];then
-      ut_tbe
-      ut_aicpu $THREAD_NUM "no_report"
-      ut_proto $THREAD_NUM  "no_report"
-      ut_tiling $THREAD_NUM "no_report"
-      gen_cov_html
-    elif [ "$build_type" == "help" ] || [ "$build_type" == "h" ];then
-      echo_help
+    if [ "$ENV_TYPE" == "" ];then
+      run_ut_by_model
     else
-      echo "use ./build.sh h for get some help"
+      run_ut_by_type
     fi
   fi
 }
 
-while getopts hj:u: OPTION;do
+while getopts hj:u:e: OPTION;do
   case $OPTION in
-  u)build_type=$OPTARG
+  u)BUILD_TYPE=$OPTARG
   ;;
   j)THREAD_NUM=$OPTARG
+  ;;
+  e)ENV_TYPE=$OPTARG
   ;;
   h)echo_help
   exit 0

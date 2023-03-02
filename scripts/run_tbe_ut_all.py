@@ -50,6 +50,9 @@ def run_case():
     if res == 0:
         report_path = "../build/cov_report_tbe/"
         if os.path.isdir(report_path):
+            os.chdir(report_path)
+            cmd = "coverage xml"
+            os.system(cmd)
             exit(res)
         else:
             exit(-1)
