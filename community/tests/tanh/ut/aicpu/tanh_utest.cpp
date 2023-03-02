@@ -353,3 +353,14 @@ TEST_F(TEST_TANH_UT, INPUT_BOOL_UNSUPPORT) {
   CREATE_NODEDEF(shapes, data_types, datas);
   RUN_KERNEL(node_def, HOST, KERNEL_STATUS_PARAM_INVALID);
 }
+
+TEST_F(TEST_TANH_UT, INPUT_BOOL_UNSUPPORT2) {
+  vector<DataType> data_types = {DT_BOOL, DT_BOOL};
+  vector<vector<int64_t>> shapes = {{2, 12},  {2, 12}};
+  bool input1[24] = {(bool)1};
+
+  bool output[24] = {(bool)0};
+  vector<void *> datas = {(void *)input1,  (void *)output};
+  CREATE_NODEDEF(shapes, data_types, datas);
+  RUN_KERNEL(node_def, HOST, KERNEL_STATUS_PARAM_INVALID);
+}

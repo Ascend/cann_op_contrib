@@ -1,0 +1,13 @@
+cann_op_contrib:
+  commiter:
+    "xxx"
+  team: "community"
+  src:
+    release:
+      - community/ops
+    unrelease:
+      - community/common
+      - community/tests
+  llt:
+    ut_check:true
+    st_check:false

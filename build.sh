@@ -154,8 +154,8 @@ gen_cov_html(){
   cd ${BUILD_PATH}
   lcov -d ./ -c -o init.info
   lcov -a init.info -o total.info
-  lcov --remove total.info '*/usr/include/*' "*/community/common/*" "*/build/proto/*" '*/Ascend/ascend-toolkit/*' '*/ascend_protobuf/include/*' '*/eigen/include/*' '*/usr/lib/*' '*/usr/lib64/*' '*/src/log/*' '*/tests/*' '*/usr/local/include/*' '*/usr/local/lib/*' '*/usr/local/lib64/*' '*/third/*' 'testa.cpp' -o final.info
-  genhtml -o cover_report_all --legend --title "lcov"  --prefix=./ final.info
+  lcov --remove total.info '*/usr/include/*' "*/community/common/*" "*/opensdk/*" "*/build/proto/*" '*/ascend-toolkit/*' '*/ascend_protobuf/include/*' '*/eigen/include/*' '*/usr/lib/*' '*/usr/lib64/*' '*/src/log/*' '*/tests/*' '*/usr/local/include/*' '*/usr/local/lib/*' '*/usr/local/lib64/*' '*/third/*' 'testa.cpp' -o coverage.info
+  genhtml -o cov --legend --title "lcov"  --prefix=./ coverage.info
 }
 
 run_ut_by_model(){
