@@ -21,6 +21,7 @@ set(UTILS_DIR ${CMAKE_COMMON_SOURCE_DIR}/utils)
 set(_op_proto_utils
   ${UTILS_DIR}/axis_util.cc
   ${UTILS_DIR}/common_shape_fns.cc
+  ${UTILS_DIR}/linalg_ops_shape_fns.cc
   ${CMAKE_COMMON_SOURCE_DIR}/src/error_util.cc
   ${UTILS_DIR}/transfer_shape_according_to_format.cc
   ${UTILS_DIR}/util.cc

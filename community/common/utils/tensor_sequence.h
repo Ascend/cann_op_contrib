@@ -17,6 +17,7 @@
 #define AI_CPU_NORMALIZED_TENSOR_SEQUENCE_H
 
 #include <vector>
+#include <sstream>
 
 #include "exe_graph/runtime/shape.h"
 #include "exe_graph/runtime/tensor.h"
