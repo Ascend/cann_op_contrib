@@ -42,12 +42,8 @@ find_package(jpeg MODULE)
 find_package(GTest CONFIG)
 find_package(json MODULE)
 
-if(NOT BUILD_AICPU)
-  list(APPEND CMAKE_PREFIX_PATH
-    ${ASCEND_DIR}/opensdk/opensdk/c_sec
-  )
-  find_package(securec MODULE)
-endif()
+find_package(securec MODULE)
+
 
 list(APPEND CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/eigen/share/eigen3/cmake)
 find_package(Eigen3 CONFIG)

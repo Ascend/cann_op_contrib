@@ -53,11 +53,6 @@ include(cmake/util/intf_pub_linux.cmake)
 include(cmake/util/util.cmake)
 include(cmake/dependencies.cmake)
 
-if(BUILD_AICPU)
-    include(ExternalProject)
-    include(cmake/external/secure_c.cmake)
-endif()
-
 if(ALL_UT OR PROTO_UT OR TILING_UT OR AICPU_UT)
     include(cmake/util/intf_pub_llt_gccnative.cmake)
 endif()

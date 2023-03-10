@@ -52,21 +52,19 @@ set(AICPU_INC
     ${METADEF_INCLUDE}
     ${METADEF_INCLUDE}/external
     ${GRAPHENGINE_INCLUDE}
-    ${GRAPHENGINE_INCLUDE}/external
     ${OPENSDK}/include
     ${OPENSDK}/include/slog
+    ${OPENSDK}/c_sec/include
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
-    ${CANN_ROOT_DIR}/community/common/src
     ${AICPU_INCLUDE}
-    ${C_SEC_INCLUDE}
 )
 
 
 add_library(cust_aicpu_kernels SHARED
     ${AICPU_SRC}
 )
-add_dependencies(cust_aicpu_kernels c_sec)
+
 list(APPEND CMAKE_PREFIX_PATH ${ASCEND_DIR}/opensdk/opensdk/eigen/share/eigen3/cmake)
 
 target_link_libraries(cust_aicpu_kernels PRIVATE
@@ -82,6 +80,7 @@ if("${AICPU_SOC_VERSION}" STREQUAL "")
 else()
     set(AICPU_SOC_VERSION $ENV{AICPU_SOC_VERSION})
 endif()
+
 
 if(EXISTS "${AICPU_OPP_ENV}/lib/${AICPU_SOC_VERSION}/libascend_protobuf.a")
     target_link_libraries(cust_aicpu_kernels PRIVATE

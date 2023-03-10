@@ -73,13 +73,7 @@ file(GLOB OP_TILING_TC_FILES ${CANN_ROOT_DIR}/community/tests/**/ut/tiling/*.cc)
 add_executable(ops_cpp_op_tiling_utest
         ${OP_TILING_TC_FILES}
         )
-target_include_directories(ops_cpp_op_tiling_utest PRIVATE
-        ${GTEST_INCLUDE}
-        ${METADEF_INCLUDE}/external
-        ${METADEF_INCLUDE}/exe_graph
-        ${UTILS_DIR}
-        ${CANN_ROOT_DIR}/community/ops
-        )
+
 target_compile_definitions(ops_cpp_op_tiling_utest PRIVATE
         _GLIBCXX_USE_CXX11_ABI=0
         $<$<STREQUAL:${BUILD_OPEN_PROJECT},TRUE>:ONLY_COMPILE_OPEN_SRC>
@@ -96,7 +90,6 @@ target_compile_options(ops_cpp_op_tiling_utest PUBLIC
 target_link_libraries(ops_cpp_op_tiling_utest PRIVATE
         -Wl,--whole-archive
         optiling_llt
-        exe_graph
         -Wl,--no-whole-archive
         GTest::gtest
         GTest::gtest_main
