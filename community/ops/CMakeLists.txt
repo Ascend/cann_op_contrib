@@ -196,7 +196,7 @@ cann_install(
 )
 
 # -----------------------------------------------------------------------
-file(GLOB OP_IMPL_FILES ./**/ai_core/cust_impl/*.py)
+file(GLOB OP_IMPL_FILES ./**/ai_core/impl/*.py)
 set(OP_IMPL_INSTALL_PATH "${INSTALL_DIR}/community/op_impl")
 add_custom_target(copy_op_impl ALL)
 cann_install(
@@ -204,7 +204,7 @@ cann_install(
     FILES       ${OP_IMPL_FILES}
     DESTINATION "${OP_IMPL_INSTALL_PATH}"
 )
-file(GLOB OP_IMPL_DYNAMIC_FILES ./**/ai_core/cust_impl/dynamic/*.py)
+file(GLOB OP_IMPL_DYNAMIC_FILES ./**/ai_core/impl/dynamic/*.py)
 set(OP_IMPL_DYNAMIC_INSTALL_PATH "${INSTALL_DIR}/community/op_impl/dynamic")
 add_custom_target(copy_op_impl_dynamic ALL)
 cann_install(

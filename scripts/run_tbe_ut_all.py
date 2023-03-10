@@ -20,7 +20,7 @@ from op_test_frame.ut import op_ut_runner
 def conf_path():
     op_path = "../community/ops/"
     op_list = os.listdir(op_path)
-    op_impl_path_end = "ai_core/cust_impl"
+    op_impl_path_end = "ai_core"
     source_path = ""
     for file_path in op_list:
         abs_path = os.path.abspath(os.path.join(op_path, file_path))
