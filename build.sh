@@ -61,38 +61,48 @@ change_dir()
 {
   AI_CORE_PATH=""
   if [ -z $OPP_CUSTOM_VENDOR ];then
-    AI_CORE_PATH="${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/community_impl"
-  else
-    AI_CORE_PATH="${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/${OPP_CUSTOM_VENDOR}_impl"
+    OPP_CUSTOM_VENDOR="community"
   fi
-  mk_dir "${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe" > /dev/null
+  AI_CORE_PATH="${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe/${OPP_CUSTOM_VENDOR}_impl"
+  VECTOR_CORE_PATH="${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/vector_core/tbe/${OPP_CUSTOM_VENDOR}_impl"
+  mk_dir "${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe" > /dev/null
+  mk_dir "${VECTOR_CORE_PATH}" > /dev/null
   mk_dir "${AI_CORE_PATH}" > /dev/null
 
   if [ -d ${BUILD_PATH}/install/community/framework ];then
-    cp -r ${BUILD_PATH}/install/community/framework ${TAR_DIR_PATH}/vendors/community/ > /dev/null
+    cp -r ${BUILD_PATH}/install/community/framework ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/ > /dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/op_proto ];then
-    cp -r ${BUILD_PATH}/install/community/op_proto ${TAR_DIR_PATH}/vendors/community/ > /dev/null
+    cp -r ${BUILD_PATH}/install/community/op_proto ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/ > /dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/op_tiling ];then
-    cp -r ${BUILD_PATH}/install/community/op_tiling ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
+    cp -r ${BUILD_PATH}/install/community/op_tiling ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe > /dev/null
   fi
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
-    cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
-    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/* ${AI_CORE_PATH}
+    cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe > /dev/null
+    cp ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/* ${AI_CORE_PATH}
+    cp ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/*.cpp ${VECTOR_CORE_PATH}
     rm -rf ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl
   fi
   if [ -d ${BUILD_PATH}/install/community/op_config ];then
-    cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe > /dev/null
-    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_config ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/config
+    cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe > /dev/null
+    mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_config ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe/config
   fi
 }
 
 change_dir_aicpu()
 {
-  if [ -d ${BUILD_PATH}/install/community/cpu ];then
-    cp -r ${BUILD_PATH}/install/community/cpu ${TAR_DIR_PATH}/vendors/community/op_impl >/dev/null
+  if [ -z $OPP_CUSTOM_VENDOR ];then
+    OPP_CUSTOM_VENDOR="community"
   fi
+  if [ -d ${BUILD_PATH}/install/community/cpu ];then
+    cp -r ${BUILD_PATH}/install/community/cpu ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl >/dev/null
+  fi
+}
+
+build_tik2(){
+  cd ${BASE_PATH} 
+  python3 scripts/gen_tik2_code.py
 }
 
 ut_tbe() {
@@ -115,6 +125,17 @@ ut_aicpu() {
     exit 1
   else
     echo "CANN build aicpu ut success!"
+  fi
+  cd ${BASE_PATH}
+}
+
+ut_tik2() {
+  ./scripts/run_tik2_ut.sh $1 $2
+  if [ $? -ne 0 ];then
+    echo "CANN build tik2 ut faild"
+    exit 1
+  else
+    echo "CANN build tik2 ut success!"
   fi
   cd ${BASE_PATH}
 }
@@ -147,6 +168,7 @@ echo_help(){
   echo "eg: ./build.sh -u aicpu          run UT cases of aicpu"
   echo "eg: ./build.sh -u proto          run UT cases of op proto"
   echo "eg: ./build.sh -u tiling         run UT cases of tiling"
+  echo "eg: ./build.sh -u tik2           run UT cases of tik2"
   echo "eg: ./build.sh                   compile op of all"
 }
 
@@ -167,11 +189,14 @@ run_ut_by_model(){
     ut_proto $THREAD_NUM
   elif [ "$BUILD_TYPE" == "tiling" ];then
     ut_tiling $THREAD_NUM
+  elif [ "$BUILD_TYPE" == "tik2" ];then
+    ut_tik2 $THREAD_NUM
   elif [ "$BUILD_TYPE" == "all" ];then
     ut_tbe
     ut_aicpu $THREAD_NUM "no_report"
     ut_proto $THREAD_NUM  "no_report"
     ut_tiling $THREAD_NUM "no_report"
+    ut_tik2 $THREAD_NUM "no_report"
     gen_cov_html
   elif [ "$BUILD_TYPE" == "help" ] || [ "$BUILD_TYPE" == "h" ];then
     echo_help
@@ -187,6 +212,7 @@ run_ut_by_type(){
     ut_aicpu $THREAD_NUM "no_report"
     ut_proto $THREAD_NUM  "no_report"
     ut_tiling $THREAD_NUM "no_report"
+    ut_tik2 $THREAD_NUM "no_report"
     gen_cov_html
   else
     echo "use ./build.sh h for get some help"
@@ -196,6 +222,7 @@ run_ut_by_type(){
 main() {
   if [ "$BUILD_TYPE" == "" ] && [ "$ENV_TYPE" == "" ];then
     # CANN build start
+    build_tik2
     build_cann_tbe
     change_dir
     build_cann_aicpu

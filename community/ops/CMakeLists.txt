@@ -196,7 +196,7 @@ cann_install(
 )
 
 # -----------------------------------------------------------------------
-file(GLOB OP_IMPL_FILES ./**/ai_core/impl/*.py)
+file(GLOB OP_IMPL_FILES ./**/ai_core/impl/*)
 set(OP_IMPL_INSTALL_PATH "${INSTALL_DIR}/community/op_impl")
 add_custom_target(copy_op_impl ALL)
 cann_install(

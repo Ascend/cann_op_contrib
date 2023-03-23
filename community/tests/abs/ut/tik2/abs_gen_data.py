@@ -13,17 +13,20 @@
 # limitations under the License.
 # ============================================================================
 
-if(AICPU_UT)
-    include(aicpu_ut.cmake)
-elseif(PROTO_UT)
-    include(op_proto_ut.cmake)
-elseif(TILING_UT)
-    include(tiling_ut.cmake)
-elseif(TIK2_UT)
-    include(tik2_ut.cmake)
-else()
-    include(aicpu_ut.cmake)
-    include(op_proto_ut.cmake)
-    include(tiling_ut.cmake)
-    include(tik2_ut.cmake)
-endif()
+import numpy as np
+import os
+
+def write_file_txt(file_name, data, fmt="%s"):
+    if (file_name is None):
+        print("file name is none, do not write data to file")
+        return
+    dir_name = os.path.dirname(file_name)
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+    np.savetxt(file_name, data.flatten(), fmt=fmt, delimiter='', newline='\n')
+
+np.random.seed(677)
+input1 = np.random.uniform(-100, 100, [16, 32]).astype(np.float16)
+golden = np.abs(input1).astype(np.float16)
+write_file_txt("abs/data/output_y.txt",golden,fmt="%s")
+input1.tofile("abs/data/input_x.bin")

@@ -53,7 +53,7 @@ include(cmake/util/intf_pub_linux.cmake)
 include(cmake/util/util.cmake)
 include(cmake/dependencies.cmake)
 
-if(ALL_UT OR PROTO_UT OR TILING_UT OR AICPU_UT)
+if(ALL_UT OR PROTO_UT OR TILING_UT OR AICPU_UT OR TIK2_UT)
     include(cmake/util/intf_pub_llt_gccnative.cmake)
 endif()
 

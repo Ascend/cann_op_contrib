@@ -15,7 +15,7 @@
 
 if(BUILD_AICPU)
     include(ops/aicpu.cmake)
-elseif(ALL_UT OR PROTO_UT OR TILING_UT OR AICPU_UT)
+elseif(ALL_UT OR PROTO_UT OR TILING_UT OR AICPU_UT OR TIK2_UT)
     add_subdirectory(tests)
 else()
     add_subdirectory(ops)
