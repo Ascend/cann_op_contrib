@@ -773,7 +773,7 @@ static graphStatus GetShapeDataFromShapeTensor(Operator& op,
   int64_t dim_value = ((rank > 0) && (dims[0] > 0)) ? dims[0] : 1;
   data.clear();
   if (dims[0] < 0) {
-    OP_LOGI(op_name, "Shape rank is %zu, dims[0] value is [%lld]", dims.size(),
+    OP_LOGI(op_name, "Shape rank is %zu, dims[0] value is [%ld]", dims.size(),
             dims[0]);
     data.push_back(UNKNOWN_DIM_NUM);
     return GRAPH_SUCCESS;
@@ -832,19 +832,19 @@ static graphStatus GetShapeDataFromConstData(const Tensor& tensor, int64_t rank,
     return GRAPH_FAILED;
   }
   int64_t dim_value = rank > 0 ? dims[0] : 1;
-  OP_LOGI(op_name, "data_type = %d, dim_value = %lld", data_type, dim_value);
+  OP_LOGI(op_name, "data_type = %d, dim_value = %ld", data_type, dim_value);
   data.clear();
   data.reserve(dim_value);
   if (data_type == DT_INT32) {
     const int32_t* shape_data = reinterpret_cast<const int32_t*>(tensor.GetData());
     for (int64_t i = 0; i < dim_value; i++) {
-      OP_LOGI(op_name, "DT_INT32 i = %lld, shape_data[i] = %lld", i, static_cast<int64_t>(shape_data[i]));
+      OP_LOGI(op_name, "DT_INT32 i = %ld, shape_data[i] = %ld", i, static_cast<int64_t>(shape_data[i]));
       data.push_back(static_cast<int64_t>(shape_data[i]));
     }
   } else if (data_type == DT_INT64) {
     const int64_t* shape_data = reinterpret_cast<const int64_t*>(tensor.GetData());
     for (int64_t i = 0; i < dim_value; i++) {
-      OP_LOGI(op_name, "DT_INT64 i = %lld, shape_data[i] = %lld", i, shape_data[i]);
+      OP_LOGI(op_name, "DT_INT64 i = %ld, shape_data[i] = %ld", i, shape_data[i]);
       data.push_back(shape_data[i]);
     }
   } else {

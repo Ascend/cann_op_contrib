@@ -75,17 +75,19 @@ target_include_directories(cust_aicpu_kernels PRIVATE
 )
 
 
-if("${AICPU_SOC_VERSION}" STREQUAL "")
-    set(AICPU_SOC_VERSION "Ascend910")
+
+string(FIND "$ENV{SOC_VERSION}" "Ascend910" SOC_VER)
+
+if(-1 LESS ${SOC_VER})
+    set(SOC_VERSION "Ascend910")
 else()
-    set(AICPU_SOC_VERSION $ENV{AICPU_SOC_VERSION})
+    set(SOC_VERSION "Ascend310")
 endif()
 
-
-if(EXISTS "${AICPU_OPP_ENV}/lib/${AICPU_SOC_VERSION}/libascend_protobuf.a")
+if(EXISTS "${AICPU_OPP_ENV}/lib/${SOC_VERSION}/libascend_protobuf.a")
     target_link_libraries(cust_aicpu_kernels PRIVATE
         -Wl,--whole-archive
-        ${AICPU_OPP_ENV}/lib/${AICPU_SOC_VERSION}/libascend_protobuf.a
+        ${AICPU_OPP_ENV}/lib/${SOC_VERSION}/libascend_protobuf.a
         -Wl,--no-whole-archive
         -s
         -Wl,-Bsymbolic
@@ -93,10 +95,10 @@ if(EXISTS "${AICPU_OPP_ENV}/lib/${AICPU_SOC_VERSION}/libascend_protobuf.a")
     )
 endif()
 
-if(EXISTS "${AICPU_OPP_ENV}/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a")
+if(EXISTS "${AICPU_OPP_ENV}/lib/${SOC_VERSION}/libcpu_kernels_context.a")
     target_link_libraries(cust_aicpu_kernels PRIVATE
         -Wl,--whole-archive
-        ${AICPU_OPP_ENV}/lib/${AICPU_SOC_VERSION}/libcpu_kernels_context.a
+        ${AICPU_OPP_ENV}/lib/${SOC_VERSION}/libcpu_kernels_context.a
         -Wl,--no-whole-archive
     )
 else()

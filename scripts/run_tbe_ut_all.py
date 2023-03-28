@@ -36,7 +36,10 @@ def run_case():
     case_files = "../community/tests"
     cov_report = "html"
     process_num = 1
-    soc_version = 'Ascend910A'
+    try:
+        soc_version = os.environ["SOC_VERSION"]
+    except KeyError:
+        soc_version = "Ascend910A"
     simulator_lib_path = os.environ["ASCEND_AICPU_PATH"] + '/toolkit/tools/simulator'
     cov_report_path = "./cov_report_tbe"
     simulator_mode = "pv"

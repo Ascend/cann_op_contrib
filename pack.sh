@@ -41,7 +41,7 @@ kerner=`arch`
 
 # 将脚本拷贝到编译后目录
 mkdir -p ./CANN_OP_CONTRIB/scripts
-mkdir ./output
+mkdir -p ./output
 cp ./scripts/install_run.sh ./CANN_OP_CONTRIB/scripts
 cp ./scripts/CANN_OP_CONTRIB_install.sh ./CANN_OP_CONTRIB/scripts
 

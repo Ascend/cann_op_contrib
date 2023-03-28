@@ -47,7 +47,8 @@
 <details open><summary><b> add(以add算子为例)</b></summary><blockquote>
 <details><summary><b> ai_core</b></summary><blockquote>
 <details><summary><b> impl</b></summary><blockquote>
-<b>add.py 算子实现代码</b><br>
+<b>add.py DSL/TIK方式算子实现代码</b><br>
+<b>add.cpp TIK2方式算子实现代码</b><br>
 </blockquote></details>
 <details><summary><b> op_info_cfg</b></summary><blockquote>
 <details><summary><b> ascend310</b></summary><blockquote>
@@ -100,7 +101,26 @@
 </blockquote></details>
 <details><summary><b> tests</b></summary><blockquote>
 <details><summary><b> add(以add算子为例)</b></summary><blockquote>
-<b> ut</b><br>
+<details><summary><b> ut</b></summary><blockquote>
+<details><summary><b> aicpu</b></summary><blockquote>
+<b>test_add_gen_data.py 测试数据生成脚本，文件名需要以gen_data.py结尾</b><br>
+<b>add_utest.cc AICPU算子实现UT</b><br>
+</blockquote></details>
+<details><summary><b> op_proto</b></summary><blockquote>
+<b>test_add_proto.cc 算子原型UT</b><br>
+</blockquote></details>
+<details><summary><b> tbe</b></summary><blockquote>
+<b>test_add_gen_data.py 测试数据生成脚本，文件名需要以gen_data.py结尾</b><br>
+<b>test_add_impl.py DSL/TIK方式算子UT用例</b><br>
+</blockquote></details>
+<details><summary><b> tik2</b></summary><blockquote>
+<b>add_ut.cc TIK2方式算子实现代码UT用例</b><br>
+</blockquote></details>
+<details><summary><b> tiling</b></summary><blockquote>
+<b>add_tiling_ut.cc Tiling代码UT用例</b><br>
+</blockquote></details>
+
+</blockquote></details>
 </blockquote></details>
 </blockquote></details>
 </blockquote></details>
@@ -109,6 +129,11 @@
 <b>CANN_OP_CONTRIB_install.sh  生态仓算子部署脚本</b><br>
 <b>install_run.sh  生态仓run包安装脚本</b><br>
 <b>parse_ini.py  aicpu算子信息配置解析脚本</b><br>
+<b>run_aicpu_ut.sh  aicpu算子实现UT测试脚本</b><br>
+<b>run_op_proto_ut.sh  算子原型UT测试脚本</b><br>
+<b>run_tbe_ut_all.py  DSL/TIK方式开发的tbe算子UT测试脚本</b><br>
+<b>run_tik2_ut.sh  TIK2方式开发的tbe算子UT测试脚本</b><br>
+<b>run_tiling_ut.sh  Tiling代码UT测试脚本</b><br>
 
 </blockquote></details>
 <b>CMakeLists.txt 生态仓cmake编译脚本</b><br>
@@ -123,6 +148,15 @@
 [软件包下载地址及用户手册](#https://www.hiascend.com/software/cann/community)
 
 其中communitysdk包需解压到toolkit安装路径(如~/Ascend/ascend-toolkit/latest/)
+
+环境变量配置可参考(#https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/63RC1alpha001/softwareinstall/instg/instg_000040.html)
+此外还需配置
+
+```
+export SOC_VERSION=Ascend910A
+```
+**说明**SOC_VERSION为可选配置的环境变量，如果不配置，编译和测试时默认按照Ascend910，开发者应设置为自己使用的芯片型号，常用为Ascend910、Ascend310等，普通用户可以在默认安装路径~/Ascend/ascend-toolkit/latest/toolkit/tools/simulator目录下查看目录获取更多可配置的值
+
 
 ## 算子编译打包
 算子开发指导请参见[算子开发指南](#https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/63RC1alpha001/operatordevelopment/opdevg/atlasopdev_10_0001.html)，完成所需交付件的实现，存放要求请参见[目录结构简介](#目录结构简介)
@@ -152,7 +186,6 @@
     ```
     ./CANN_OP_CONTRIB_linux-x86_64.run -h
     ```
-
 ## 算子开发文档
 有关开发指南、教程和API的更多详细信息，请参阅[学习向导](#https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/63RC1alpha001/operatordevelopment/opdevg/atlasopdev_10_0001.html)。
 

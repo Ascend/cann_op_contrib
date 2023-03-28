@@ -29,7 +29,23 @@ mk_dir() {
 build_ut() {
   echo "Build UT"
   mk_dir "${BUILD_PATH}"
-  cd "${BUILD_PATH}" && cmake  .. -D AICPU_UT=False -D PROTO_UT=False -D TILING_UT=False -D TIK2_UT=True -Dproduct_type=ascend910 -Dinstall_path=$ASCEND_CUSTOM_PATH
+  product_type="ascend910"
+  if [ $SOC_VERSION ];then
+    product_type=${SOC_VERSION,,}
+    product_910="ascend910"
+    product_610="ascend610"
+    product_310="ascend310p"
+    if [[ $product_type =~ $product_910 ]];then
+      product_type=$product_910
+    elif [[ $product_type =~ $product_610 ]];then
+      product_type=$product_610
+    elif [[ $product_type =~ "ascend310" ]];then
+      product_type=$product_310
+    else
+      product_type=$product_910
+    fi
+  fi
+  cd "${BUILD_PATH}" && cmake  .. -D AICPU_UT=False -D PROTO_UT=False -D TILING_UT=False -D TIK2_UT=True -Dproduct_type=${product_type} -Dinstall_path=$ASCEND_CUSTOM_PATH
   make clean
   make ${VERBOSE} -j $1
   if [ $? -ne 0 ];then

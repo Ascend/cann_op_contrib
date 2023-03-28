@@ -118,7 +118,6 @@ class IniParser(object):
         Check ini op info setting correct or enough
         If custom op found and self.custom_flag not set, will remove these op out from aicpu_ops_info
         """
-        print("\n==============check valid for aicpu ops info start==============")
         for op_name, op_info in self.aicpu_ops_info.items():
             op_info_flag = False
             op_io_flag = False
@@ -155,7 +154,7 @@ class IniParser(object):
         if not self.custom_flag:
             for op_name in self.custom_ops_info:
                 del self.aicpu_ops_info[op_name]
-        print("==============check valid for aicpu ops info end================\n")
+
 
     def write(self, json_file_path):
         """

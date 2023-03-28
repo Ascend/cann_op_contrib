@@ -22,4 +22,6 @@ for root, dirs, files in os.walk("./"):
         if "gen_data.py" in file_name:
             file_path = os.path.join(root, file_name)
             cmd = "python3 {}".format(file_path)
+            op_name = file_path.split("/")[1]
+            print("Gen (", op_name, ") data")
             os.system(cmd)

@@ -39,18 +39,19 @@ build_cann_tbe() {
   cd "${CMAKE_HOST_PATH}" && cmake  ../..
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
-    echo "CANN tbe faild"
+    echo "CANN build tbe faild."
     exit 1
   else
-    echo "CANN tbe success!"
+    echo "CANN build tbe success!"
   fi
 }
 
 build_cann_aicpu() {
+  mk_dir "${CMAKE_HOST_PATH}"
   cd "${CMAKE_HOST_PATH}" && cmake ../.. -D BUILD_AICPU=True
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
-    echo "CANN build aicpu faild"
+    echo "CANN build aicpu faild."
     exit 1
   else
     echo "CANN build aicpu success!"
@@ -110,10 +111,10 @@ ut_tbe() {
   cd ${BUILD_PATH}
   python3 ../scripts/run_tbe_ut_all.py
   if [ $? -ne 0 ];then
-    echo "CANN build tbe ut faild"
+    echo "CANN execute tbe ut faild."
     exit 1
   else
-    echo "CANN build tbe ut success!"
+    echo "CANN execute tbe ut success!"
   fi
   cd ${BASE_PATH}
 }
@@ -121,10 +122,10 @@ ut_tbe() {
 ut_aicpu() {
   ./scripts/run_aicpu_ut.sh $1 $2
   if [ $? -ne 0 ];then
-    echo "CANN build aicpu ut faild"
+    echo "CANN execute aicpu ut faild."
     exit 1
   else
-    echo "CANN build aicpu ut success!"
+    echo "CANN execute aicpu ut success!"
   fi
   cd ${BASE_PATH}
 }
@@ -132,10 +133,10 @@ ut_aicpu() {
 ut_tik2() {
   ./scripts/run_tik2_ut.sh $1 $2
   if [ $? -ne 0 ];then
-    echo "CANN build tik2 ut faild"
+    echo "CANN execute tik2 ut faild."
     exit 1
   else
-    echo "CANN build tik2 ut success!"
+    echo "CANN execute tik2 ut success!"
   fi
   cd ${BASE_PATH}
 }
@@ -143,10 +144,10 @@ ut_tik2() {
 ut_proto(){
   ./scripts/run_op_proto_ut.sh $1 $2
   if [ $? -ne 0 ];then
-    echo "CANN build op_proto ut faild"
+    echo "CANN execute op_proto ut faild."
     exit 1
   else
-    echo "CANN build op_proto ut success!"
+    echo "CANN execute op_proto ut success!"
   fi
   cd ${BASE_PATH}
 }
@@ -154,10 +155,10 @@ ut_proto(){
 ut_tiling(){
   ./scripts/run_tiling_ut.sh $1 $2
   if [ $? -ne 0 ];then
-    echo "CANN build tiling ut faild"
+    echo "CANN execute tiling ut faild."
     exit 1
   else
-    echo "CANN build tiling ut success!"
+    echo "CANN execute tiling ut success!"
   fi
   cd ${BASE_PATH}
 }
@@ -169,7 +170,16 @@ echo_help(){
   echo "eg: ./build.sh -u proto          run UT cases of op proto"
   echo "eg: ./build.sh -u tiling         run UT cases of tiling"
   echo "eg: ./build.sh -u tik2           run UT cases of tik2"
+  echo "eg: ./build.sh -c                clean up temporary files"
+  echo "eg: ./build.sh -a                compile aicpu op"
+  echo "eg: ./build.sh -t                compile tbe op"
   echo "eg: ./build.sh                   compile op of all"
+}
+
+clean_tmp(){
+  rm -rf build
+  rm -rf output
+  rm -rf CANN_OP_CONTRIB
 }
 
 gen_cov_html(){
@@ -236,13 +246,23 @@ main() {
   fi
 }
 
-while getopts hj:u:e: OPTION;do
+while getopts atchj:u:e: OPTION;do
   case $OPTION in
   u)BUILD_TYPE=$OPTARG
   ;;
   j)THREAD_NUM=$OPTARG
   ;;
   e)ENV_TYPE=$OPTARG
+  ;;
+  c)clean_tmp
+  exit 0
+  ;;
+  a)build_cann_aicpu
+  exit 0
+  ;;
+  t)build_tik2
+  build_cann_tbe
+  exit 0
   ;;
   h)echo_help
   exit 0

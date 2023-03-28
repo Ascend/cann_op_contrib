@@ -1116,7 +1116,7 @@ bool GetConstValue(const Operator& op, const Tensor& const_tensor, const DataTyp
   for (size_t i = 0; i < size; ++i) {
     const_data.push_back((uint64_t)(*(const_data_ptr + i)));
     OP_LOGD(TbeGetName(op).c_str(),
-            "const data uint64 fusion pass, const_data[%llu]",
+            "const data uint64 fusion pass, const_data[%lu]",
             (uint64_t)(*(const_data_ptr + i)));
   }
   return true;
@@ -1835,7 +1835,7 @@ ge::graphStatus GetDimNumForOp(const Operator& op,
     ge::GeShape shape = op_desc->GetInputDescPtr(input_ids[idx])->GetShape();
     if (shape.IsUnknownDimNum()) {
       dim_num = ge::UNKNOWN_DIM_NUM;
-      OP_LOGD(TbeGetName(op), "Input(%u) has unknown rank shape", idx);
+      OP_LOGD(TbeGetName(op), "Input(%lu) has unknown rank shape", idx);
       return GRAPH_SUCCESS;
     } else {
       dim_num = std::max(dim_num, shape.GetDimNum());
@@ -1846,7 +1846,7 @@ ge::graphStatus GetDimNumForOp(const Operator& op,
     ge::GeShape shape = op_desc->GetOutputDescPtr(output_ids[idx])->GetShape();
     if (shape.IsUnknownDimNum()) {
       dim_num = ge::UNKNOWN_DIM_NUM;
-      OP_LOGD(TbeGetName(op), "Output(%u) has unknown rank shape", idx);
+      OP_LOGD(TbeGetName(op), "Output(%lu) has unknown rank shape", idx);
       return GRAPH_SUCCESS;
     } else {
       dim_num = std::max(dim_num, shape.GetDimNum());

@@ -19,14 +19,14 @@ from op_gen.template.tik2.scripts import tik2_replay_build
 
 def gen_op_code(ini_path, impl_path):
     try:
-        soc_version = os.environ["AICPU_SOC_VERSION"]
+        soc_version = os.environ["SOC_VERSION"]
     except KeyError:
         soc_version = "ascend910"
     file_out_path = "./build/install/community/op_impl"
     if not os.path.isdir(file_out_path):
         os.makedirs(file_out_path)
-    tik2_replay_build.gen_replay(ini_path, impl_path, file_out_path, soc_version)
-    tik2_impl_build.write_scripts(ini_path, file_out_path, soc_version)
+    tik2_replay_build.gen_replay(ini_path, "", "", impl_path, file_out_path, soc_version)
+    tik2_impl_build.write_scripts(ini_path, "", "", file_out_path, soc_version)
 
 
 def get_file_list():
