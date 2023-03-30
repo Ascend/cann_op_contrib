@@ -129,14 +129,10 @@ target_link_libraries(cpu_kernels_llt
     Eigen3::Eigen
 )
 
-file(GLOB UT_SRC_CC ${CANN_ROOT_DIR}/community/tests/**/ut/aicpu/*.cc
-)
-
 file(GLOB UT_SRC_CPP ${CANN_ROOT_DIR}/community/tests/**/ut/aicpu/*.cpp
 )
 
 set(_cpu_kernels_ut_files
-  ${UT_SRC_CC}
   ${UT_SRC_CPP}
   ${CANN_ROOT_DIR}/community/common/utils/node_def_builder.cpp
   ${CANN_ROOT_DIR}/community/common/utils/aicpu_read_file.cpp

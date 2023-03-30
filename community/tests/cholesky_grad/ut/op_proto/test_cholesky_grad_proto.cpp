@@ -20,6 +20,8 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
+#include "cholesky_grad_op.h"
+#include "op_proto_test_util.h"
 
 class CholeskyGradTest : public testing::Test {
  protected:

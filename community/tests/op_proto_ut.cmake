@@ -78,11 +78,16 @@ target_link_libraries(opsproto_llt
     ${_op_proto_link_libs}
 )
 
-file(GLOB OP_PROTO_TEST_FILES ${CANN_ROOT_DIR}/community/tests/**/ut/op_proto/*.cc)
+file(GLOB OP_PROTO_TEST_FILES ${CANN_ROOT_DIR}/community/tests/**/ut/op_proto/*.cpp)
 
 add_executable(ops_cpp_proto_utest
         ${OP_PROTO_TEST_FILES}
+        ${UTILS_DIR}/op_proto_test_util.cpp
         )
+
+target_include_directories(ops_cpp_proto_utest PRIVATE
+  ${UTILS_DIR}
+)
 
 target_compile_definitions(ops_cpp_proto_utest PRIVATE
         _GLIBCXX_USE_CXX11_ABI=0

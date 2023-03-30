@@ -149,13 +149,13 @@
 
 其中communitysdk包需解压到toolkit安装路径(如~/Ascend/ascend-toolkit/latest/)
 
-环境变量配置可参考(#https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/63RC1alpha001/softwareinstall/instg/instg_000040.html)
+环境变量配置可参考(https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/63RC1alpha001/softwareinstall/instg/instg_000040.html)
 此外还需配置
 
 ```
 export SOC_VERSION=Ascend910A
 ```
-**说明**SOC_VERSION为可选配置的环境变量，如果不配置，编译和测试时默认按照Ascend910，开发者应设置为自己使用的芯片型号，常用为Ascend910、Ascend310等，普通用户可以在默认安装路径~/Ascend/ascend-toolkit/latest/toolkit/tools/simulator目录下查看目录获取更多可配置的值
+> **说明**: SOC_VERSION为可选配置的环境变量，如果不配置，编译和测试时默认按照Ascend910，开发者应设置为自己使用的芯片型号，常用为Ascend910、Ascend310等，普通用户可以在默认安装路径~/Ascend/ascend-toolkit/latest/toolkit/tools/simulator目录下查看目录获取更多可配置的值
 
 
 ## 算子编译打包
