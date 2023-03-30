@@ -37,8 +37,8 @@ TEST_F(AbsTest, abs_test_case_1) {
     size_t inputByteSize = 16 * 32 * sizeof(uint16_t);
     size_t outputByteSize = 16 * 32 * sizeof(uint16_t);
     uint32_t blockDim = 1;
-    uint8_t* x = (uint8_t*)malloc(inputByteSize);
-    uint8_t* y = (uint8_t*)malloc(outputByteSize);
+    uint8_t* x = (uint8_t*)gm_alloc(inputByteSize);
+    uint8_t* y = (uint8_t*)gm_alloc(outputByteSize);
     ReadFile(ktestcaseFilePath + "abs/data/input_x.bin", inputByteSize, x, inputByteSize);
     ICPU_RUN_KF(abs_tik2, blockDim, x, y); // use this macro for cpu debug
     
