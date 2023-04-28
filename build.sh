@@ -15,7 +15,8 @@
 # ============================================================================
 export BASE_PATH=$(cd "$(dirname $0)"; pwd)
 export BUILD_PATH="${BASE_PATH}/build"
-CMAKE_HOST_PATH="${BUILD_PATH}/cann"
+CMAKE_CANN_PATH="${BUILD_PATH}/cann"
+CMAKE_TIK2_PATH="${BUILD_PATH}/tik2"
 TAR_DIR_PATH="${BASE_PATH}/CANN_OP_CONTRIB"
 THREAD_NUM=4
 BUILD_TYPE=""
@@ -34,9 +35,9 @@ build_cann_tbe() {
   mk_dir "${BUILD_PATH}/install/community/cpu/config" > /dev/null
   python3 scripts/parser_ini.py *.ini ${BUILD_PATH}/install/community/cpu/config/cust_aicpu_kernel.json
 
-  mk_dir "${CMAKE_HOST_PATH}"
+  mk_dir "${CMAKE_CANN_PATH}"
 
-  cd "${CMAKE_HOST_PATH}" && cmake  ../..
+  cd "${CMAKE_CANN_PATH}" && cmake  ../.. -D BUILD_AICPU=False -D BUILD_TIK2=False
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
     echo "CANN build tbe faild."
@@ -47,8 +48,8 @@ build_cann_tbe() {
 }
 
 build_cann_aicpu() {
-  mk_dir "${CMAKE_HOST_PATH}"
-  cd "${CMAKE_HOST_PATH}" && cmake ../.. -D BUILD_AICPU=True
+  mk_dir "${CMAKE_CANN_PATH}"
+  cd "${CMAKE_CANN_PATH}" && cmake ../.. -D BUILD_AICPU=True -D BUILD_TIK2=False
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
     echo "CANN build aicpu faild."
@@ -65,9 +66,7 @@ change_dir()
     OPP_CUSTOM_VENDOR="community"
   fi
   AI_CORE_PATH="${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe/${OPP_CUSTOM_VENDOR}_impl"
-  VECTOR_CORE_PATH="${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/vector_core/tbe/${OPP_CUSTOM_VENDOR}_impl"
   mk_dir "${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe" > /dev/null
-  mk_dir "${VECTOR_CORE_PATH}" > /dev/null
   mk_dir "${AI_CORE_PATH}" > /dev/null
 
   if [ -d ${BUILD_PATH}/install/community/framework ];then
@@ -82,13 +81,18 @@ change_dir()
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
     cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe > /dev/null
     cp ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/* ${AI_CORE_PATH}
-    cp ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/*.cpp ${VECTOR_CORE_PATH}
     rm -rf ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl
   fi
   if [ -d ${BUILD_PATH}/install/community/op_config ];then
     cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe > /dev/null
     mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_config ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe/config
   fi
+  if [ -d $CMAKE_TIK2_PATH ];then
+    cp -r $CMAKE_TIK2_PATH/op_proto ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
+    cp -r $CMAKE_TIK2_PATH/op_impl ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
+    cp -r $CMAKE_TIK2_PATH/framework ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
+  fi
+  
 }
 
 change_dir_aicpu()
@@ -102,9 +106,29 @@ change_dir_aicpu()
 }
 
 build_tik2(){
+  mk_dir "${CMAKE_CANN_PATH}"
+  cd "${CMAKE_CANN_PATH}" && cmake ../.. -D BUILD_AICPU=False -D BUILD_TIK2=True
+  make ${VERBOSE} -j${THREAD_NUM}
+  if [ $? -ne 0 ];then
+    echo "CANN build tik2 faild."
+    exit 1
+  else
+    echo "CANN build tik2 success!"
+  fi
   cd ${BASE_PATH} 
-  python3 scripts/gen_tik2_code.py
-}
+  ini_file_list=$(find $CMAKE_TIK2_PATH -name *.ini)
+  for ini_file in $ini_file_list
+  do
+    file_name=${ini_file##*/}
+    file_name_arr=(${file_name//-/ })
+    dir_name=${file_name_arr[1]}
+    config_path=$CMAKE_TIK2_PATH/op_impl/ai_core/tbe/config/$dir_name
+    mkdir -p $config_path
+    python3 ./scripts/ai_core_parse_ini.py $CMAKE_TIK2_PATH/*.ini $config_path/aic-$dir_name-ops-info.json
+  done
+  cd ${BASE_PATH} 
+  python3 ./scripts/gen_tik2_code.py
+} 
 
 ut_tbe() {
   mk_dir ${BUILD_PATH}
@@ -232,8 +256,8 @@ run_ut_by_type(){
 main() {
   if [ "$BUILD_TYPE" == "" ] && [ "$ENV_TYPE" == "" ];then
     # CANN build start
-    build_tik2
     build_cann_tbe
+    build_tik2
     change_dir
     build_cann_aicpu
     change_dir_aicpu
@@ -261,7 +285,6 @@ while getopts atchj:u:e: OPTION;do
   exit 0
   ;;
   t)build_tik2
-  build_cann_tbe
   exit 0
   ;;
   h)echo_help

@@ -17,9 +17,8 @@
 #include "register/register.h"
 
 namespace domi {
-REGISTER_CUSTOM_OP("Gather")
-  .FrameworkType(TENSORFLOW)
-  .OriginOpType({"Gather", "ResourceGather"})
-  .ParseParamsFn(AutoMappingFn)
-  .ImplyType(ImplyType::TVM);
+REGISTER_CUSTOM_OP("Add")
+    .FrameworkType(TENSORFLOW)
+    .OriginOpType("Add")
+    .ParseParamsByOperatorFn(AutoMappingByOpFn);
 }  // namespace domi

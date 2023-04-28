@@ -45,7 +45,7 @@ build_ut() {
       product_type=$product_910
     fi
   fi
-  cd "${BUILD_PATH}" && cmake  .. -D AICPU_UT=False -D PROTO_UT=False -D TILING_UT=False -D TIK2_UT=True -Dproduct_type=${product_type} -Dinstall_path=$ASCEND_CUSTOM_PATH
+  cd "${BUILD_PATH}" && cmake  .. -DAICPU_UT=False -DPROTO_UT=False -DTILING_UT=False -DTIK2_UT=True -Dproduct_type=${product_type}
   make clean
   make ${VERBOSE} -j $1
   if [ $? -ne 0 ];then
@@ -64,7 +64,7 @@ check_dir_exe(){
 }
 
 gen_data() {
-  python3 scripts/gen_test_data.py
+  python3 scripts/gen_test_data.py tik2
 }
 
 change_dir(){

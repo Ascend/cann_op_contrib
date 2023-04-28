@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef GE_OP_ABS_H
-#define GE_OP_ABS_H
-#include "graph/operator_reg.h"
-namespace ge {
-REG_OP(Abs)
-    .INPUT(x, TensorType({DT_FLOAT16, DT_FLOAT}))
-    .OUTPUT(y, TensorType({DT_FLOAT16, DT_FLOAT}))
-    .OP_END_FACTORY_REG(Abs)
-}
-#endif // GE_OP_ABS_H
+#include "register/register.h"
+
+namespace domi {
+REGISTER_CUSTOM_OP("AddTik2")
+    .FrameworkType(TENSORFLOW)
+    .OriginOpType("AddTik2")
+    .ParseParamsByOperatorFn(AutoMappingByOpFn);
+}  // namespace domi

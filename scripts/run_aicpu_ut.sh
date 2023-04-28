@@ -48,7 +48,7 @@ check_dir_exe(){
 }
 
 gen_data() {
-  python3 scripts/gen_test_data.py
+  python3 scripts/gen_test_data.py aicpu
 }
 
 change_dir(){

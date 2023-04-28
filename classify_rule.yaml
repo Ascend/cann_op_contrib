@@ -8,6 +8,9 @@ cann_op_contrib:
     unrelease:
       - community/common
       - community/tests
+      - community/ops/add_tik2/ai_core/op_host
+      - community/ops/add_tik2/framework
+      - community/ops/add/framework
   llt:
     ut_check:true
     st_check:false

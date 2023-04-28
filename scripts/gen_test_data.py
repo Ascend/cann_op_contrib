@@ -13,9 +13,10 @@
 # limitations under the License.
 # ============================================================================
 import os
+import sys
 
 os.chdir("community/tests")
-os.system("pwd")
+ut_type = sys.argv[1]
 
 for root, dirs, files in os.walk("./"):
     for file_name in files:
@@ -23,5 +24,6 @@ for root, dirs, files in os.walk("./"):
             file_path = os.path.join(root, file_name)
             cmd = "python3 {}".format(file_path)
             op_name = file_path.split("/")[1]
-            print("Gen (", op_name, ") data")
-            os.system(cmd)
+            if ut_type in file_path:
+                print("Gen (", op_name, ") data")
+                os.system(cmd)

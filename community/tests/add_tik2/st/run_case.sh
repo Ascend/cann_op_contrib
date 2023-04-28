@@ -1,4 +1,5 @@
-# Copyright 2020 Huawei Technologies Co., Ltd
+#!/bin/bash
+# Copyright (c) 2023-2023 Huawei Technologies Co., Ltd.  All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-
-if(BUILD_AICPU)
-    include(ops/aicpu.cmake)
-elseif(ALL_UT OR PROTO_UT OR TILING_UT OR AICPU_UT OR TIK2_UT)
-    add_subdirectory(tests)
-elseif(BUILD_TIK2)
-    include(ops/op_host.cmake)
-    include(ops/plugin.cmake)
-else()
-    add_subdirectory(ops)
-endif()
+if [ -z $ASCEND_CUSTOM_PATH ];then
+  ASCEND_CUSTOM_PATH=/usr/local/Ascend/ascend-toolkit/latest
+fi
+export DDK_PATH=$ASCEND_CUSTOM_PATH
+export NPU_HOST_LIB=$ASCEND_CUSTOM_PATH/runtime/lib64/stub
+source $ASCEND_CUSTOM_PATH/../set_env.sh
+$ASCEND_CUSTOM_PATH/python/site-packages/bin/msopst run -i add_tik2.json -soc Ascend910A -out tik2_st/out/

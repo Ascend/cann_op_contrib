@@ -15,17 +15,16 @@
 
 project(tik2_ut)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-file(GLOB TIK2_OPP_SRC ${CANN_ROOT_DIR}/community/ops/**/ai_core/impl/*.cpp)
-
+file(GLOB TIK2_OPP_KERNEL_SRC ${CANN_ROOT_DIR}/community/ops/**/ai_core/op_kernel/*.cpp)
 
 add_library(tik2_llt STATIC
-  ${TIK2_OPP_SRC}
+  ${TIK2_OPP_KERNEL_SRC}
 )
 
 target_include_directories(tik2_llt PUBLIC
-  ${install_path}/compiler/tikcpp
+  ${ASCEND_DIR}/compiler/tikcpp
 )
 
 target_compile_options(tik2_llt PUBLIC
@@ -35,10 +34,7 @@ target_compile_options(tik2_llt PUBLIC
   -DRUN_TEST
 )
 
-if (NOT DEFINED ENV{CMAKE_PREFIX_PATH})
-    set(CMAKE_PREFIX_PATH ${install_path}/tools/tikicpulib/lib/cmake)
-endif()
-
+list(APPEND CMAKE_PREFIX_PATH ${ASCEND_DIR}/tools/tikicpulib/lib/cmake)
 find_package(tikicpulib REQUIRED)
 
 target_link_libraries(tik2_llt
@@ -62,8 +58,12 @@ add_executable(tik2_ut
   ${_tik2_ut_files}
 )
 
+add_definitions(-DTIK2_UT="TIK2_UT")
+
 target_include_directories(tik2_ut PRIVATE
   ${CANN_ROOT_DIR}/community/common/utils
+  ${ASCEND_DIR}/include
+  ${ASCEND_DIR}/tools/tikicpulib/lib/include
 )
 
 target_link_libraries(tik2_ut
