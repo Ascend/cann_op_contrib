@@ -19,10 +19,15 @@ set(GRAPHENGINE_INCLUDE ${OPENSDK}/include/air)
 set(UTILS_DIR ${CMAKE_COMMON_SOURCE_DIR}/utils)
 
 set(_op_proto_utils
+  ${UTILS_DIR}/array_ops_shape_fns.cc
   ${UTILS_DIR}/axis_util.cc
   ${UTILS_DIR}/common_shape_fns.cc
   ${UTILS_DIR}/linalg_ops_shape_fns.cc
   ${CMAKE_COMMON_SOURCE_DIR}/src/error_util.cc
+  ${UTILS_DIR}/images_ops_shape_fns.cc
+  ${UTILS_DIR}/ragged_conversion_ops_shape_fns.cc
+  ${UTILS_DIR}/random_ops_shape_fns.cc
+  ${UTILS_DIR}/reduce_infer_util.cc
   ${UTILS_DIR}/transfer_shape_according_to_format.cc
   ${UTILS_DIR}/util.cc
 )
