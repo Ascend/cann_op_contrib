@@ -98,6 +98,28 @@
 <b>add_proto.cc 算子原型实现文件</b><br>
 </blockquote></details>
 </blockquote></details>
+<details open><summary><b> add_tik2(Ascend C方式开发tbe算子)</b></summary><blockquote>
+<details><summary><b> ai_core</b></summary><blockquote>
+<details><summary><b> op_host</b></summary><blockquote>
+<b>add_tik2_tiling.h Tiling注册</b><br>
+<b>add_tik2.cpp Tiling实现及算子信息库配置和算子原型注册推导</b><br>
+</blockquote></details>
+<details><summary><b> op_kernel</b></summary><blockquote>
+<b>add_tik2.cpp 算子实现逻辑代码</b><br>
+</blockquote></details>
+</blockquote></details>
+<details><summary><b> framework</b></summary><blockquote>
+<details><summary><b> onnx</b></summary><blockquote>
+<b>add_tik2_plugin.cc  算子适配onnx框架插件代码</b><br>
+</blockquote></details>
+<details><summary><b> tf</b></summary><blockquote>
+<b>add_tik2_plugin.cc  算子适配tf框架插件代码</b><br>
+</blockquote></details>
+<details><summary><b> caffe</b></summary><blockquote>
+<b>add_tik2_plugin.cc  算子适配caffe框架插件代码</b><br>
+</blockquote></details>
+</blockquote></details>
+</blockquote></details>
 </blockquote></details>
 <details><summary><b> tests</b></summary><blockquote>
 <details><summary><b> add(以add算子为例)</b></summary><blockquote>
@@ -127,6 +149,9 @@
 <details><summary><b> scripts</b></summary><blockquote>
 <b>ai_core_parse_ini.py  tbe算子信息配置解析脚本</b><br>
 <b>CANN_OP_CONTRIB_install.sh  生态仓算子部署脚本</b><br>
+<b>gen_ops_filter.sh  Ascend C方式开发算子时，算子信息库文件生成脚本</b><br>
+<b>gen_test_data.py  UT测试数据生成脚本</b><br>
+<b>gen_tik2_code.py  Ascend C算子实现代码生成对应python文件脚本</b><br>
 <b>install_run.sh  生态仓run包安装脚本</b><br>
 <b>parse_ini.py  aicpu算子信息配置解析脚本</b><br>
 <b>run_aicpu_ut.sh  aicpu算子实现UT测试脚本</b><br>
