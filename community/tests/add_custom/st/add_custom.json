@@ -1,8 +1,8 @@
 [
 	{
-		"case_name":"Test_AddTik2_001",
-		"op":"AddTik2",
-		"calc_expect_func_file": "test_add_tik2_data.py:calc_expect_func",
+		"case_name":"Test_AddCustom_001",
+		"op":"AddCustom",
+		"calc_expect_func_file": "test_add_custom_data.py:calc_expect_func",
 		"input_desc":[
 			{
 				"name": "x",

@@ -48,7 +48,6 @@
 <details><summary><b> ai_core</b></summary><blockquote>
 <details><summary><b> impl</b></summary><blockquote>
 <b>add.py DSL/TIK方式算子实现代码</b><br>
-<b>add.cpp TIK2方式算子实现代码</b><br>
 </blockquote></details>
 <details><summary><b> op_info_cfg</b></summary><blockquote>
 <details><summary><b> ascend310</b></summary><blockquote>
@@ -98,25 +97,25 @@
 <b>add_proto.cc 算子原型实现文件</b><br>
 </blockquote></details>
 </blockquote></details>
-<details open><summary><b> add_tik2(Ascend C方式开发tbe算子)</b></summary><blockquote>
+<details open><summary><b> add_custom(Ascend C方式开发tbe算子)</b></summary><blockquote>
 <details><summary><b> ai_core</b></summary><blockquote>
 <details><summary><b> op_host</b></summary><blockquote>
-<b>add_tik2_tiling.h Tiling注册</b><br>
-<b>add_tik2.cpp Tiling实现及算子信息库配置和算子原型注册推导</b><br>
+<b>add_custom_tiling.h Tiling注册</b><br>
+<b>add_custom.cpp Tiling实现及算子信息库配置和算子原型注册推导</b><br>
 </blockquote></details>
 <details><summary><b> op_kernel</b></summary><blockquote>
-<b>add_tik2.cpp 算子实现逻辑代码</b><br>
+<b>add_custom.cpp 算子实现逻辑代码</b><br>
 </blockquote></details>
 </blockquote></details>
 <details><summary><b> framework</b></summary><blockquote>
 <details><summary><b> onnx</b></summary><blockquote>
-<b>add_tik2_plugin.cc  算子适配onnx框架插件代码</b><br>
+<b>add_custom_plugin.cc  算子适配onnx框架插件代码</b><br>
 </blockquote></details>
 <details><summary><b> tf</b></summary><blockquote>
-<b>add_tik2_plugin.cc  算子适配tf框架插件代码</b><br>
+<b>add_custom_plugin.cc  算子适配tf框架插件代码</b><br>
 </blockquote></details>
 <details><summary><b> caffe</b></summary><blockquote>
-<b>add_tik2_plugin.cc  算子适配caffe框架插件代码</b><br>
+<b>add_custom_plugin.cc  算子适配caffe框架插件代码</b><br>
 </blockquote></details>
 </blockquote></details>
 </blockquote></details>
@@ -135,8 +134,9 @@
 <b>test_add_gen_data.py 测试数据生成脚本，文件名需要以gen_data.py结尾</b><br>
 <b>test_add_impl.py DSL/TIK方式算子UT用例</b><br>
 </blockquote></details>
-<details><summary><b> tik2</b></summary><blockquote>
-<b>add_ut.cc TIK2方式算子实现代码UT用例</b><br>
+<details><summary><b> ascendc</b></summary><blockquote>
+<b>add_ascendc_gen_data.py 测试数据生成脚本，文件名需要以gen_data.py结尾</b><br>
+<b>add_ascendc_ut.cc Ascend C方式算子实现代码的UT用例</b><br>
 </blockquote></details>
 <details><summary><b> tiling</b></summary><blockquote>
 <b>add_tiling_ut.cc Tiling代码UT用例</b><br>
@@ -151,13 +151,13 @@
 <b>CANN_OP_CONTRIB_install.sh  生态仓算子部署脚本</b><br>
 <b>gen_ops_filter.sh  Ascend C方式开发算子时，算子信息库文件生成脚本</b><br>
 <b>gen_test_data.py  UT测试数据生成脚本</b><br>
-<b>gen_tik2_code.py  Ascend C算子实现代码生成对应python文件脚本</b><br>
+<b>gen_ascendc_code.py  Ascend C算子实现代码生成对应python文件脚本</b><br>
 <b>install_run.sh  生态仓run包安装脚本</b><br>
 <b>parse_ini.py  aicpu算子信息配置解析脚本</b><br>
 <b>run_aicpu_ut.sh  aicpu算子实现UT测试脚本</b><br>
 <b>run_op_proto_ut.sh  算子原型UT测试脚本</b><br>
 <b>run_tbe_ut_all.py  DSL/TIK方式开发的tbe算子UT测试脚本</b><br>
-<b>run_tik2_ut.sh  TIK2方式开发的tbe算子UT测试脚本</b><br>
+<b>run_ascendc_ut.sh  Ascend C方式开发的tbe算子UT测试脚本</b><br>
 <b>run_tiling_ut.sh  Tiling代码UT测试脚本</b><br>
 
 </blockquote></details>
@@ -170,7 +170,7 @@
 ## 开发环境要求
 使用源码进行编译构建之前，需安装社区版本的对应平台开发套件软件包(toolkit)及配套版本的算子开发工具包(communitysdk)
 
-[软件包下载地址及用户手册](#https://www.hiascend.com/software/cann/community)
+[软件包下载地址及用户手册](https://www.hiascend.com/software/cann/community)
 
 其中communitysdk包需解压到toolkit安装路径(如~/Ascend/ascend-toolkit/latest/)
 

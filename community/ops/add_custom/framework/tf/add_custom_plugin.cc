@@ -17,8 +17,8 @@
 #include "register/register.h"
 
 namespace domi {
-REGISTER_CUSTOM_OP("AddTik2")
+REGISTER_CUSTOM_OP("AddCustom")
     .FrameworkType(TENSORFLOW)
-    .OriginOpType("AddTik2")
+    .OriginOpType("Add")
     .ParseParamsByOperatorFn(AutoMappingByOpFn);
 }  // namespace domi

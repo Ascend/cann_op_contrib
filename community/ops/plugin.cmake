@@ -12,7 +12,7 @@
 # limitations under the License.
 # ============================================================================
 #-----------------------------------npu_supported_ops_json-------------------------------------------
-set(HOST_DIR ${BUILD_DIR}/tik2)
+set(HOST_DIR ${BUILD_DIR}/ascendc)
 set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
 
 file(GLOB tf_plugin_srcs ${CANN_ROOT_DIR}/community/ops/**/framework/tf/*.cc

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "add_tik2_tiling.h"
+#include "add_custom_tiling.h"
 #include "register/op_def_registry.h"
 
 namespace optiling {
@@ -24,7 +24,7 @@ struct TilingCompileInfo {
 
 static ge::graphStatus TilingFunc(gert::TilingContext* context)
 {
-    AddTik2TilingData tiling;
+    AddCustomTilingData tiling;
     context->SetBlockDim(8);
     uint32_t totalLength = context->GetInputTensor(0)->GetShapeSize();
     tiling.set_blockDim(8);
@@ -74,9 +74,9 @@ ge::graphStatus InferDataType(gert::InferDataTypeContext* context)
 }
 
 namespace ops {
-class AddTik2 : public OpDef {
+class AddCustom : public OpDef {
 public:
-    explicit AddTik2(const char* name) : OpDef(name)
+    explicit AddCustom(const char* name) : OpDef(name)
     {
         this->Input("x")
             .ParamType(REQUIRED)
@@ -116,5 +116,5 @@ public:
     }
 };
 
-OP_ADD(AddTik2, optiling::TilingCompileInfo);
+OP_ADD(AddCustom, optiling::TilingCompileInfo);
 } // namespace ops

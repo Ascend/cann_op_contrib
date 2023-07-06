@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef COMMUNITY_COMMON_UTILS_TIK2_UT_UTIL_H_
-#define COMMUNITY_COMMON_UTILS_TIK2_UT_UTIL_H_
+#ifndef COMMUNITY_COMMON_UTILS_ASCENDC_UT_UTIL_H_
+#define COMMUNITY_COMMON_UTILS_ASCENDC_UT_UTIL_H_
 #include <fstream>
 #include <string>
 #include <fcntl.h>

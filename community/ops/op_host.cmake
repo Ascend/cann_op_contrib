@@ -12,15 +12,14 @@
 # limitations under the License.
 # ============================================================================
 
-set(HOST_DIR ${BUILD_DIR}/tik2)
+set(HOST_DIR ${BUILD_DIR}/ascendc)
 
 execute_process(COMMAND arch OUTPUT_VARIABLE CMAKE_SYSTEM_PROCESSOR OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 execute_process( COMMAND ${CMAKE_COMMAND} -E make_directory ${HOST_DIR})
 
 
-file(GLOB OP_HOST_SRC ${CANN_ROOT_DIR}/community/ops/**/ai_core/op_host/*.cpp
-)
+file(GLOB OP_HOST_SRC ${CANN_ROOT_DIR}/community/ops/**/ai_core/op_host/*.cpp)
 execute_process(COMMAND ${CMAKE_CXX_COMPILER} -g -fPIC -shared -std=c++11 ${OP_HOST_SRC} -D_GLIBCXX_USE_CXX11_ABI=0
                 -I  ${ASCEND_DIR}/include -L  ${ASCEND_DIR}/lib64 -lexe_graph -lregister
                 -o ${HOST_DIR}/libascend_all_ops.so

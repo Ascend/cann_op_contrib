@@ -18,7 +18,7 @@ export BASE_PATH=$(cd ${CURR_PATH}/..; pwd)
 export BUILD_PATH="${BASE_PATH}/build"
 
 build_dir="./build"
-ut_exe="./community/tests/tik2_ut"
+ut_exe="./community/tests/ascendc_ut"
 
 mk_dir() {
   local create_dir="$1"
@@ -45,14 +45,14 @@ build_ut() {
       product_type=$product_910
     fi
   fi
-  cd "${BUILD_PATH}" && cmake  .. -DAICPU_UT=False -DPROTO_UT=False -DTILING_UT=False -DTIK2_UT=True -Dproduct_type=${product_type}
+  cd "${BUILD_PATH}" && cmake  .. -DAICPU_UT=False -DPROTO_UT=False -DTILING_UT=False -DASCENDC_UT=True -Dproduct_type=${product_type}
   make clean
   make ${VERBOSE} -j $1
   if [ $? -ne 0 ];then
-    echo "CANN TIK2 UT faild"
+    echo "CANN Ascend C UT faild"
     exit 1
   else
-    echo "CANN TIK2 UT success!"
+    echo "CANN Ascend C UT success!"
   fi
 }
 
@@ -64,7 +64,7 @@ check_dir_exe(){
 }
 
 gen_data() {
-  python3 scripts/gen_test_data.py tik2
+  python3 scripts/gen_test_data.py ascendc
 }
 
 change_dir(){
@@ -74,10 +74,10 @@ change_dir(){
 run_ut(){
   ./$ut_exe
   if [ $? -ne 0 ];then
-    echo "RUN TIK2 UT FAILD"
+    echo "RUN Ascend C UT FAILD"
     exit 1
   else
-    echo "RUN TIK2 UT SUCCESS!"
+    echo "RUN Ascend C UT SUCCESS!"
   fi
 }
 
@@ -85,7 +85,7 @@ gen_cover(){
   lcov -d ./ -c -o init.info 
   lcov -a init.info -o total.info
   lcov --remove total.info '*/usr/include/*' "*/op_proto/*" "*/community/common/*" "*/build/proto/*" '*/Ascend/ascend-toolkit/*' '*/ascend_protobuf/include/*' '*/eigen/include/*' '*/usr/lib/*' '*/usr/lib64/*' '*/src/log/*' '*/tests/*' '*/usr/local/include/*' '*/usr/local/lib/*' '*/usr/local/lib64/*' '*/third/*' 'testa.cpp' -o final.info
-  genhtml -o cover_report_tik2 --legend --title "lcov"  --prefix=./ final.info
+  genhtml -o cover_report_ascendc --legend --title "lcov"  --prefix=./ final.info
 }
 
 main() {

@@ -15,10 +15,10 @@
  */
 #include <gtest/gtest.h>
 #include <vector>
-#include "tik2_ut_util.h"
+#include "ascendc_ut_util.h"
 #include "tikicpulib.h"
 
-extern "C" void add_tik2(uint8_t* x, uint8_t* y, uint8_t* z, uint8_t* tiling);
+extern "C" void add_custom(uint8_t* x, uint8_t* y, uint8_t* z, uint8_t* tiling);
 
 class AddTest : public testing::Test {
 protected:
@@ -34,7 +34,7 @@ protected:
 TEST_F(AddTest, add_test_case_1) {
     size_t tilingSize = 3 * sizeof(uint32_t);
     uint8_t* tiling = (uint8_t*)tik2::GmAlloc(tilingSize);
-    ReadFile(ktestcaseFilePath + "add_tik2/data/tiling.bin", tilingSize, tiling, tilingSize);
+    ReadFile(ktestcaseFilePath + "add_custom/data/tiling.bin", tilingSize, tiling, tilingSize);
 
     uint32_t blockDim = (*(const uint32_t*)(tiling));
     size_t inputByteSize = blockDim * 2048 * sizeof(uint16_t);
@@ -44,16 +44,16 @@ TEST_F(AddTest, add_test_case_1) {
     uint8_t* y = (uint8_t*)tik2::GmAlloc(inputByteSize);
     uint8_t* z = (uint8_t*)tik2::GmAlloc(outputByteSize);
 
-    ReadFile(ktestcaseFilePath + "add_tik2/data/input_x.bin", inputByteSize, x, inputByteSize);
-    ReadFile(ktestcaseFilePath + "add_tik2/data/input_y.bin", inputByteSize, y, inputByteSize);
+    ReadFile(ktestcaseFilePath + "add_custom/data/input_x.bin", inputByteSize, x, inputByteSize);
+    ReadFile(ktestcaseFilePath + "add_custom/data/input_y.bin", inputByteSize, y, inputByteSize);
 
-    ICPU_RUN_KF(add_tik2, blockDim, x, y, z, tiling);
+    ICPU_RUN_KF(add_custom, blockDim, x, y, z, tiling);
 
-    WriteFile(ktestcaseFilePath + "add_tik2/data/output_z.bin", z, outputByteSize);
+    WriteFile(ktestcaseFilePath + "add_custom/data/output_z.bin", z, outputByteSize);
 
     size_t elementsNum = blockDim * 2048 ;
     half* golden = new half[elementsNum];
-    auto goldenFilePath = ktestcaseFilePath + "add_tik2/data/golden.txt";
+    auto goldenFilePath = ktestcaseFilePath + "add_custom/data/golden.txt";
     ReadFile(goldenFilePath, golden, elementsNum);
     bool compare = CompareResult((half*)z, golden, elementsNum);
 

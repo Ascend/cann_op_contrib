@@ -46,11 +46,11 @@ input_x = np.random.uniform(-100, 100, [total_length_imm,]).astype(np.float16)
 input_y = np.random.uniform(-100, 100, [total_length_imm,]).astype(np.float16)
 golden = (input_x + input_y).astype(np.float16)
 
-write_file_txt("add_tik2/data/golden.txt", golden, fmt="%s")
-with open('add_tik2/data/tiling.bin', "wb") as f:
+write_file_txt("add_custom/data/golden.txt", golden, fmt="%s")
+with open('add_custom/data/tiling.bin', "wb") as f:
     f.write(tiling_data)
 
-input_x.tofile("add_tik2/data/input_x.bin")
-write_file_txt("add_tik2/data/input_x.txt", input_x, fmt="%s")
-input_y.tofile("add_tik2/data/input_y.bin")
-write_file_txt("add_tik2/data/input_y.txt", input_y, fmt="%s")
+input_x.tofile("add_custom/data/input_x.bin")
+write_file_txt("add_custom/data/input_x.txt", input_x, fmt="%s")
+input_y.tofile("add_custom/data/input_y.bin")
+write_file_txt("add_custom/data/input_y.txt", input_y, fmt="%s")

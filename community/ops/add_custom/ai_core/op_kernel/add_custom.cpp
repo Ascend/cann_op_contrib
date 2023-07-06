@@ -15,8 +15,8 @@
  */
 
 #include "kernel_operator.h"
-#ifdef TIK2_UT
-#include "../op_host/add_tik2_tiling.h"
+#ifdef ASCENDC_UT
+#include "../op_host/add_custom_tiling.h"
 #endif
 using namespace tik2;
 
@@ -86,7 +86,7 @@ private:
     uint32_t tileLength;
 };
 
-extern "C" __global__ __aicore__ void add_tik2(__gm__ uint8_t* x, __gm__ uint8_t* y, __gm__ uint8_t* z, __gm__ uint8_t* tiling)
+extern "C" __global__ __aicore__ void add_custom(__gm__ uint8_t* x, __gm__ uint8_t* y, __gm__ uint8_t* z, __gm__ uint8_t* tiling)
 {
     GET_TILING_DATA(tilingData, tiling);
     KernelAdd op;
@@ -95,8 +95,8 @@ extern "C" __global__ __aicore__ void add_tik2(__gm__ uint8_t* x, __gm__ uint8_t
 }
 
 #ifndef __CCE_KT_TEST__
-void add_tik2_do(uint32_t blockDim, void* l2ctrl, void* stream, uint8_t* x, uint8_t* y, uint8_t* z, uint8_t* tiling)
+void add_custom_do(uint32_t blockDim, void* l2ctrl, void* stream, uint8_t* x, uint8_t* y, uint8_t* z, uint8_t* tiling)
 {
-    add_tik2<<<blockDim, l2ctrl, stream>>>(x, y, z, tiling);
+    add_custom<<<blockDim, l2ctrl, stream>>>(x, y, z, tiling);
 }
 #endif

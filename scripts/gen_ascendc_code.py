@@ -38,7 +38,7 @@ def gen_op_code(ini_path, impl_path):
         custom_version = os.environ["OPP_CUSTOM_VENDOR"]
     except KeyError as e:
         custom_version = "community"
-    file_out_path = "./build/tik2/op_impl/ai_core/tbe/{}_impl".format(custom_version)
+    file_out_path = "./build/ascendc/op_impl/ai_core/tbe/{}_impl".format(custom_version)
     if not os.path.isdir(file_out_path):
         os.makedirs(file_out_path)
     rep_cfg = {}
@@ -61,7 +61,7 @@ def gen_op_code(ini_path, impl_path):
 
 def get_ini_list():
     ini_files = []
-    ini_base_path = "./build/tik2/"
+    ini_base_path = "./build/ascendc/"
     if not os.path.isdir(ini_base_path):
         os.makedirs(ini_base_path)
     all_file = os.listdir(ini_base_path)

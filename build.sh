@@ -16,7 +16,7 @@
 export BASE_PATH=$(cd "$(dirname $0)"; pwd)
 export BUILD_PATH="${BASE_PATH}/build"
 CMAKE_CANN_PATH="${BUILD_PATH}/cann"
-CMAKE_TIK2_PATH="${BUILD_PATH}/tik2"
+CMAKE_ASCENDC_PATH="${BUILD_PATH}/ascendc"
 TAR_DIR_PATH="${BASE_PATH}/CANN_OP_CONTRIB"
 THREAD_NUM=4
 BUILD_TYPE=""
@@ -37,7 +37,7 @@ build_cann_tbe() {
 
   mk_dir "${CMAKE_CANN_PATH}"
 
-  cd "${CMAKE_CANN_PATH}" && cmake  ../.. -D BUILD_AICPU=False -D BUILD_TIK2=False
+  cd "${CMAKE_CANN_PATH}" && cmake  ../.. -DBUILD_AICPU=False -DBUILD_ASCENDC=False
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
     echo "CANN build tbe faild."
@@ -49,7 +49,7 @@ build_cann_tbe() {
 
 build_cann_aicpu() {
   mk_dir "${CMAKE_CANN_PATH}"
-  cd "${CMAKE_CANN_PATH}" && cmake ../.. -D BUILD_AICPU=True -D BUILD_TIK2=False
+  cd "${CMAKE_CANN_PATH}" && cmake ../.. -DBUILD_AICPU=True -DBUILD_ASCENDC=False
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
     echo "CANN build aicpu faild."
@@ -87,10 +87,10 @@ change_dir()
     cp -r ${BUILD_PATH}/install/community/op_config ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe > /dev/null
     mv ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_config ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe/config
   fi
-  if [ -d $CMAKE_TIK2_PATH ];then
-    cp -r $CMAKE_TIK2_PATH/op_proto ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
-    cp -r $CMAKE_TIK2_PATH/op_impl ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
-    cp -r $CMAKE_TIK2_PATH/framework ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
+  if [ -d $CMAKE_ASCENDC_PATH ];then
+    cp -r $CMAKE_ASCENDC_PATH/op_proto ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
+    cp -r $CMAKE_ASCENDC_PATH/op_impl ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
+    cp -r $CMAKE_ASCENDC_PATH/framework ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR} > /dev/null
   fi
   
 }
@@ -105,29 +105,29 @@ change_dir_aicpu()
   fi
 }
 
-build_tik2(){
+build_ascendc(){
   mk_dir "${CMAKE_CANN_PATH}"
-  cd "${CMAKE_CANN_PATH}" && cmake ../.. -D BUILD_AICPU=False -D BUILD_TIK2=True
+  cd "${CMAKE_CANN_PATH}" && cmake ../.. -DBUILD_AICPU=False -DBUILD_ASCENDC=True
   make ${VERBOSE} -j${THREAD_NUM}
   if [ $? -ne 0 ];then
-    echo "CANN build tik2 faild."
+    echo "CANN build Ascend C faild."
     exit 1
   else
-    echo "CANN build tik2 success!"
+    echo "CANN build Ascend C success!"
   fi
   cd ${BASE_PATH} 
-  ini_file_list=$(find $CMAKE_TIK2_PATH -name *.ini)
+  ini_file_list=$(find $CMAKE_ASCENDC_PATH -name *.ini)
   for ini_file in $ini_file_list
   do
     file_name=${ini_file##*/}
     file_name_arr=(${file_name//-/ })
     dir_name=${file_name_arr[1]}
-    config_path=$CMAKE_TIK2_PATH/op_impl/ai_core/tbe/config/$dir_name
+    config_path=$CMAKE_ASCENDC_PATH/op_impl/ai_core/tbe/config/$dir_name
     mkdir -p $config_path
-    python3 ./scripts/ai_core_parse_ini.py $CMAKE_TIK2_PATH/*.ini $config_path/aic-$dir_name-ops-info.json
+    python3 ./scripts/ai_core_parse_ini.py $CMAKE_ASCENDC_PATH/*.ini $config_path/aic-$dir_name-ops-info.json
   done
   cd ${BASE_PATH} 
-  python3 ./scripts/gen_tik2_code.py
+  python3 ./scripts/gen_ascendc_code.py
 } 
 
 ut_tbe() {
@@ -154,13 +154,13 @@ ut_aicpu() {
   cd ${BASE_PATH}
 }
 
-ut_tik2() {
-  ./scripts/run_tik2_ut.sh $1 $2
+ut_ascendc() {
+  ./scripts/run_ascendc_ut.sh $1 $2
   if [ $? -ne 0 ];then
-    echo "CANN execute tik2 ut faild."
+    echo "CANN execute Ascend C ut faild."
     exit 1
   else
-    echo "CANN execute tik2 ut success!"
+    echo "CANN execute Ascend C ut success!"
   fi
   cd ${BASE_PATH}
 }
@@ -193,7 +193,7 @@ echo_help(){
   echo "eg: ./build.sh -u aicpu          run UT cases of aicpu"
   echo "eg: ./build.sh -u proto          run UT cases of op proto"
   echo "eg: ./build.sh -u tiling         run UT cases of tiling"
-  echo "eg: ./build.sh -u tik2           run UT cases of tik2"
+  echo "eg: ./build.sh -u ascendc       run UT cases of Ascend C"
   echo "eg: ./build.sh -c                clean up temporary files"
   echo "eg: ./build.sh -a                compile aicpu op"
   echo "eg: ./build.sh -t                compile tbe op"
@@ -223,14 +223,14 @@ run_ut_by_model(){
     ut_proto $THREAD_NUM
   elif [ "$BUILD_TYPE" == "tiling" ];then
     ut_tiling $THREAD_NUM
-  elif [ "$BUILD_TYPE" == "tik2" ];then
-    ut_tik2 $THREAD_NUM
+  elif [ "$BUILD_TYPE" == "ascendc" ];then
+    ut_ascendc $THREAD_NUM
   elif [ "$BUILD_TYPE" == "all" ];then
     ut_tbe
     ut_aicpu $THREAD_NUM "no_report"
     ut_proto $THREAD_NUM  "no_report"
     ut_tiling $THREAD_NUM "no_report"
-    ut_tik2 $THREAD_NUM "no_report"
+    ut_ascendc $THREAD_NUM "no_report"
     gen_cov_html
   elif [ "$BUILD_TYPE" == "help" ] || [ "$BUILD_TYPE" == "h" ];then
     echo_help
@@ -246,7 +246,7 @@ run_ut_by_type(){
     ut_aicpu $THREAD_NUM "no_report"
     ut_proto $THREAD_NUM  "no_report"
     ut_tiling $THREAD_NUM "no_report"
-    ut_tik2 $THREAD_NUM "no_report"
+    ut_ascendc $THREAD_NUM "no_report"
     gen_cov_html
   else
     echo "use ./build.sh h for get some help"
@@ -257,7 +257,7 @@ main() {
   if [ "$BUILD_TYPE" == "" ] && [ "$ENV_TYPE" == "" ];then
     # CANN build start
     build_cann_tbe
-    build_tik2
+    build_ascendc
     change_dir
     build_cann_aicpu
     change_dir_aicpu
@@ -284,7 +284,7 @@ while getopts atchj:u:e: OPTION;do
   a)build_cann_aicpu
   exit 0
   ;;
-  t)build_tik2
+  t)build_ascendc
   exit 0
   ;;
   h)echo_help

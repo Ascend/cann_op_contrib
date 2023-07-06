@@ -83,8 +83,23 @@ set(_cpu_kernels_src
 set(cpu_kernels_llt_src
   ${_cpu_context}
   ${_cpu_kernels_src}
-  ${_proto_cc}
+  # ${_proto_cc}
   ${_proto_h}
+)
+
+add_library(cpu_proto_llt SHARED
+  ${_proto_cc}
+)
+
+target_compile_options(cpu_proto_llt PUBLIC
+  -D_GLIBCXX_USE_CXX11_ABI=0
+  -g
+  -Dgoogle=ascend_private
+)
+
+target_link_libraries(cpu_proto_llt
+  PUBLIC
+    ascend_protobuf
 )
 
 add_library(cpu_kernels_llt STATIC
@@ -125,6 +140,7 @@ target_link_libraries(cpu_kernels_llt
     c_sec
     -ldl
     -Wl,--no-as-needed
+    cpu_proto_llt
     register
     Eigen3::Eigen
 )
@@ -153,6 +169,7 @@ target_link_libraries(cpu_kernels_ut
      cpu_kernels_llt
     -Wl,--no-whole-archive
     -Wl,--no-as-needed
+    register
     GTest::gtest
     GTest::gtest_main
 )

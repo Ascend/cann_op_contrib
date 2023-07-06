@@ -13,21 +13,21 @@
 # limitations under the License.
 # ============================================================================
 
-project(tik2_ut)
+project(ascendc_ut)
 
 set(CMAKE_CXX_STANDARD 17)
 
-file(GLOB TIK2_OPP_KERNEL_SRC ${CANN_ROOT_DIR}/community/ops/**/ai_core/op_kernel/*.cpp)
+file(GLOB ASCENDC_OPP_KERNEL_SRC ${CANN_ROOT_DIR}/community/ops/**/ai_core/op_kernel/*.cpp)
 
-add_library(tik2_llt STATIC
-  ${TIK2_OPP_KERNEL_SRC}
+add_library(ascendc_llt STATIC
+  ${ASCENDC_OPP_KERNEL_SRC}
 )
 
-target_include_directories(tik2_llt PUBLIC
+target_include_directories(ascendc_llt PUBLIC
   ${ASCEND_DIR}/compiler/tikcpp
 )
 
-target_compile_options(tik2_llt PUBLIC
+target_compile_options(ascendc_llt PUBLIC
   -D_GLIBCXX_USE_CXX11_ABI=0
   -g
   -Dgoogle=ascend_private
@@ -37,7 +37,7 @@ target_compile_options(tik2_llt PUBLIC
 list(APPEND CMAKE_PREFIX_PATH ${ASCEND_DIR}/tools/tikicpulib/lib/cmake)
 find_package(tikicpulib REQUIRED)
 
-target_link_libraries(tik2_llt
+target_link_libraries(ascendc_llt
   PRIVATE
     $<BUILD_INTERFACE:intf_llt_pub>
   PUBLIC
@@ -46,37 +46,37 @@ target_link_libraries(tik2_llt
     tikicpulib::${product_type}
 )
 
-file(GLOB UT_SRC_CC ${CANN_ROOT_DIR}/community/tests/**/ut/tik2/*.cc
+file(GLOB UT_SRC_CC ${CANN_ROOT_DIR}/community/tests/**/ut/ascendc/*.cc
 )
 
-set(_tik2_ut_files
+set(_ascendc_ut_files
   ${UT_SRC_CC}
-  ${CANN_ROOT_DIR}/community/common/utils/tik2_ut_util.cc
+  ${CANN_ROOT_DIR}/community/common/utils/ascendc_ut_util.cc
 )
 
-add_executable(tik2_ut
-  ${_tik2_ut_files}
+add_executable(ascendc_ut
+  ${_ascendc_ut_files}
 )
 
-add_definitions(-DTIK2_UT="TIK2_UT")
+add_definitions(-DASCENDC_UT="ASCENDC_UT")
 
-target_include_directories(tik2_ut PRIVATE
+target_include_directories(ascendc_ut PRIVATE
   ${CANN_ROOT_DIR}/community/common/utils
   ${ASCEND_DIR}/include
   ${ASCEND_DIR}/tools/tikicpulib/lib/include
 )
 
-target_link_libraries(tik2_ut
+target_link_libraries(ascendc_ut
   PRIVATE
     -Wl,--whole-archive
-     tik2_llt
+     ascendc_llt
     -Wl,--no-whole-archive
     -Wl,--no-as-needed
     GTest::gtest
     GTest::gtest_main
 )
 
-target_compile_definitions(tik2_ut PUBLIC
+target_compile_definitions(ascendc_ut PUBLIC
   D_GLIBCXX_USE_CXX11_ABI=0
   google=ascend_private
   RUN_TEST

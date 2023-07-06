@@ -57,7 +57,9 @@ for file in ${ini_files} ; do
     else
         isHeavy="false"
     fi
-    add_ops ${name} ${isHeavy} ${dest_file}
+    for op_name in ${name} ; do
+        add_ops ${op_name} ${isHeavy} ${dest_file}
+    done
 done
 echo "}" >> ${dest_file}
 file_count=$(cat ${dest_file} | wc -l)

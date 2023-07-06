@@ -29,7 +29,7 @@ mk_dir() {
 build_ut() {
   echo "Build OP TILING UT"
   mk_dir "${BUILD_PATH}"
-  cd "${BUILD_PATH}" && cmake  ..  -D AICPU_UT=False -D PROTO_UT=False -D TILING_UT=True -D TIK2_UT=False
+  cd "${BUILD_PATH}" && cmake  ..  -DAICPU_UT=False -DPROTO_UT=False -DTILING_UT=True -DASCENDC_UT=False
   make clean
   make ${VERBOSE} -j $1
   if [ $? -ne 0 ];then

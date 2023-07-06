@@ -19,4 +19,4 @@ fi
 export DDK_PATH=$ASCEND_CUSTOM_PATH
 export NPU_HOST_LIB=$ASCEND_CUSTOM_PATH/runtime/lib64/stub
 source $ASCEND_CUSTOM_PATH/../set_env.sh
-$ASCEND_CUSTOM_PATH/python/site-packages/bin/msopst run -i add_tik2.json -soc Ascend910A -out tik2_st/out/
+$ASCEND_CUSTOM_PATH/python/site-packages/bin/msopst run -i add_custom.json -soc Ascend910A -out ascendc_st/out/
