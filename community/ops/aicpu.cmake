@@ -13,16 +13,16 @@
 # limitations under the License.
 # ============================================================================
 # --------------------------------aicpu---------------------------------------
-set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
-set(METADEF_INCLUDE ${OPENSDK}/include/metadef)
-set(GRAPHENGINE_INCLUDE ${OPENSDK}/include/air)
+
+set(METADEF_INCLUDE ${OPENSDK_DIR}/include/metadef)
+set(GRAPHENGINE_INCLUDE ${OPENSDK_DIR}/include/air)
 
 if (MINRC)
     set(CMAKE_C_COMPILER /usr/bin/aarch64-linux-gnu-gcc)
     set(CMAKE_CXX_COMPILER /usr/bin/aarch64-linux-gnu-g++)
 else()
-    set(CMAKE_CXX_COMPILER $ENV{ASCEND_AICPU_PATH}/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-g++)
-    set(CMAKE_C_COMPILER   $ENV{ASCEND_AICPU_PATH}/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-gcc)
+    set(CMAKE_CXX_COMPILER ${ASCEND_DIR}/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-g++)
+    set(CMAKE_C_COMPILER   ${ASCEND_DIR}/toolkit/toolchain/hcc/bin/aarch64-target-linux-gnu-gcc)
 endif()
 
 
@@ -41,10 +41,10 @@ file(GLOB AICPU_SRC ${CANN_ROOT_DIR}/community/ops/**/aicpu/impl/*.cc
 )
 
 
-if(EXISTS $ENV{ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel)
-    set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/op_impl/built-in/aicpu/aicpu_kernel)
+if(EXISTS ${ASCEND_DIR}/opp/op_impl/built-in/aicpu/aicpu_kernel)
+    set(AICPU_OPP_ENV ${ASCEND_DIR}/opp/op_impl/built-in/aicpu/aicpu_kernel)
 else()
-    set(AICPU_OPP_ENV $ENV{ASCEND_AICPU_PATH}/opp/built-in/op_impl/aicpu/aicpu_kernel)
+    set(AICPU_OPP_ENV ${ASCEND_DIR}/opp/built-in/op_impl/aicpu/aicpu_kernel)
 endif()
 
 set(AICPU_INCLUDE ${AICPU_OPP_ENV}/inc)
@@ -52,9 +52,9 @@ set(AICPU_INC
     ${METADEF_INCLUDE}
     ${METADEF_INCLUDE}/external
     ${GRAPHENGINE_INCLUDE}
-    ${OPENSDK}/include
-    ${OPENSDK}/include/slog
-    ${OPENSDK}/c_sec/include
+    ${OPENSDK_DIR}/include
+    ${OPENSDK_DIR}/include/slog
+    ${OPENSDK_DIR}/c_sec/include
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
     ${AICPU_INCLUDE}

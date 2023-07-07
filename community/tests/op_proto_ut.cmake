@@ -13,9 +13,8 @@
 # limitations under the License.
 # ============================================================================
 set(CMAKE_COMMON_SOURCE_DIR ${CANN_ROOT_DIR}/community/common)
-set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
-set(METADEF_INCLUDE ${OPENSDK}/include/metadef)
-set(GRAPHENGINE_INCLUDE ${OPENSDK}/include/air)
+set(METADEF_INCLUDE ${OPENSDK_DIR}/include/metadef)
+set(GRAPHENGINE_INCLUDE ${OPENSDK_DIR}/include/air)
 set(UTILS_DIR ${CMAKE_COMMON_SOURCE_DIR}/utils)
 
 set(_op_proto_utils

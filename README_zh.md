@@ -187,7 +187,7 @@ export SOC_VERSION=Ascend910A
 算子开发指导请参见[算子开发指南](#https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/63RC1alpha001/operatordevelopment/opdevg/atlasopdev_10_0001.html)，完成所需交付件的实现，存放要求请参见[目录结构简介](#目录结构简介)
 
 命令行下执行编译打包脚本。       
-**注：环境需要配置ASCEND_AICPU_PATH环境变量，否则aicpu算子会编译失败。**
+**注：环境需要配置ASCEND_CUSTOM_PATH环境变量，一般配置为默认安装路径~/Ascend/ascend-toolkit/latest**
 ```
 ./pack.sh
 ```

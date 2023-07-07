@@ -13,7 +13,6 @@
 # ============================================================================
 #-----------------------------------npu_supported_ops_json-------------------------------------------
 set(HOST_DIR ${BUILD_DIR}/ascendc)
-set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
 
 file(GLOB tf_plugin_srcs ${CANN_ROOT_DIR}/community/ops/**/framework/tf/*.cc
 )
@@ -22,7 +21,7 @@ add_library(cust_tf_parsers SHARED
     ${tf_plugin_srcs}
 )
 target_include_directories(cust_tf_parsers PRIVATE
-    ${OPENSDK}/include/air
+    ${OPENSDK_DIR}/include/air
 )
 target_compile_definitions(cust_tf_parsers PRIVATE google=ascend_private)
 target_link_libraries(cust_tf_parsers PRIVATE intf_pub graph)

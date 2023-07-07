@@ -43,10 +43,10 @@ execute_process(COMMAND   ${ASCEND_DIR}/toolkit/tools/opbuild/op_build
 add_library(cust_op_proto SHARED ${OP_HOST_SRC} ${HOST_DIR}/op_proto.cc)
 target_compile_definitions(cust_op_proto PRIVATE OP_PROTO_LIB)
 target_link_libraries(cust_op_proto PRIVATE intf_pub exe_graph register)
-set(OPENSDK $ENV{ASCEND_CUSTOM_PATH}/opensdk/opensdk)
+
 target_include_directories(cust_op_proto PRIVATE
-    ${OPENSDK}/c_sec/include
-    ${OPENSDK}/include/air/external
+    ${OPENSDK_DIR}/c_sec/include
+    ${OPENSDK_DIR}/include/air/external
 )
 
 SET(LIBRARY_OUTPUT_PATH ${HOST_DIR})
@@ -73,8 +73,8 @@ add_library(cust_optiling SHARED ${OP_HOST_SRC})
 target_compile_definitions(cust_optiling PRIVATE OP_TILING_LIB)
 target_link_libraries(cust_optiling PRIVATE intf_pub graph register)
 target_include_directories(cust_optiling PRIVATE
-    ${OPENSDK}/c_sec/include
-    ${OPENSDK}/include/air/external
+    ${OPENSDK_DIR}/c_sec/include
+    ${OPENSDK_DIR}/include/air/external
 )
 set_target_properties(cust_optiling PROPERTIES OUTPUT_NAME
                       cust_opmaster_rt2.0

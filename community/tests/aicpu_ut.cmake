@@ -106,17 +106,16 @@ add_library(cpu_kernels_llt STATIC
   ${cpu_kernels_llt_src}
 )
 
-set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
-set(METADEF_INCLUDE ${OPENSDK}/include/metadef)
-set(GRAPHENGINE_INCLUDE ${OPENSDK}/include/air)
+set(METADEF_INCLUDE ${OPENSDK_DIR}/include/metadef)
+set(GRAPHENGINE_INCLUDE ${OPENSDK_DIR}/include/air)
 
 set(cpu_kernels_llt_include
-  ${OPENSDK}/include/air/framework/common
+  ${OPENSDK_DIR}/include/air/framework/common
   ${CMAKE_COMMON_SOURCE_DIR}
   ${CMAKE_COMMON_SOURCE_DIR}/inc
   ${AICPU_OPP_ENV}/inc
   ${_proto_include}
-  ${OPENSDK}/include/slog
+  ${OPENSDK_DIR}/include/slog
   ${GRAPHENGINE_INCLUDE}
   ${GRAPHENGINE_INCLUDE}/external
 )

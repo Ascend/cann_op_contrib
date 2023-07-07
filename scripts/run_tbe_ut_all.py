@@ -40,10 +40,10 @@ def run_case():
         soc_version = os.environ["SOC_VERSION"]
     except KeyError:
         soc_version = "Ascend910A"
-    simulator_lib_path = os.environ["ASCEND_AICPU_PATH"] + '/toolkit/tools/simulator'
+    simulator_lib_path = os.environ["ASCEND_CUSTOM_PATH"] + '/toolkit/tools/simulator'
     cov_report_path = "./cov_report_tbe"
     simulator_mode = "pv"
-    op_ut_run = os.environ["ASCEND_AICPU_PATH"] + "/toolkit/python/site-packages/bin/op_ut_run"
+    op_ut_run = os.environ["ASCEND_CUSTOM_PATH"] + "/toolkit/python/site-packages/bin/op_ut_run"
     cmd = "{} --case_files={} --cov_report={} --process_num={} --soc_version={} " \
           "--simulator_lib_path={} --simulator_mode={} --cov_report_path={}".format(
         op_ut_run, case_files, cov_report, process_num, soc_version, simulator_lib_path, simulator_mode,

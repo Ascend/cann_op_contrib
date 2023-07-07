@@ -11,11 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-set(OPENSDK ${ASCEND_DIR}/opensdk/opensdk)
-set(METADEF_INCLUDE ${OPENSDK}/include/metadef)
-set(GRAPHENGINE_INCLUDE ${OPENSDK}/include/air)
+set(METADEF_INCLUDE ${OPENSDK_DIR}/include/metadef)
+set(GRAPHENGINE_INCLUDE ${OPENSDK_DIR}/include/air)
 
-set(PROTO "${OPENSDK}/proto/insert_op.proto")
+set(PROTO "${OPENSDK_DIR}/proto/insert_op.proto")
 protobuf_generate(opp _proto_cc _proto_h ${PROTO})
 
 
@@ -49,8 +48,8 @@ set(PROTO_INC
     ${METADEF_INCLUDE}/external/graph
     ${GRAPHENGINE_INCLUDE}
     ${GRAPHENGINE_INCLUDE}/external
-    ${OPENSDK}/include/slog
-    ${OPENSDK}/c_sec/include
+    ${OPENSDK_DIR}/include/slog
+    ${OPENSDK_DIR}/c_sec/include
     ${CANN_ROOT_DIR}/community/common
     ${CANN_ROOT_DIR}/community/common/inc
     ${CANN_ROOT_DIR}/community/common/src
@@ -155,8 +154,8 @@ set(TILING_INC
     ${METADEF_INCLUDE}/exe_graph
     ${METADEF_INCLUDE}/external
     ${METADEF_INCLUDE}/external/graph
-    ${OPENSDK}/include/slog
-    ${OPENSDK}/c_sec/include
+    ${OPENSDK_DIR}/include/slog
+    ${OPENSDK_DIR}/c_sec/include
     ${GRAPHENGINE_INCLUDE}
     ${GRAPHENGINE_INCLUDE}/external
     ${CANN_ROOT_DIR}/community/common
@@ -261,17 +260,17 @@ add_custom_target(aic_910b_ops_info ALL
 
 # --------------------------- build tf_plugin --------------------------
 set(TF_PROTO
-    "${OPENSDK}/proto/tensorflow/versions.proto"
-    "${OPENSDK}/proto/tensorflow/resource_handle.proto"
-    "${OPENSDK}/proto/tensorflow/tensor_shape.proto"
-    "${OPENSDK}/proto/tensorflow/function.proto"
-    "${OPENSDK}/proto/tensorflow/node_def.proto"
-    "${OPENSDK}/proto/tensorflow/graph.proto"
-    "${OPENSDK}/proto/tensorflow/tensor.proto"
-    "${OPENSDK}/proto/tensorflow/attr_value.proto"
-    "${OPENSDK}/proto/tensorflow/graph_library.proto"
-    "${OPENSDK}/proto/tensorflow/types.proto"
-    "${OPENSDK}/proto/tensorflow/op_def.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/versions.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/resource_handle.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/tensor_shape.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/function.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/node_def.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/graph.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/tensor.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/attr_value.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/graph_library.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/types.proto"
+    "${OPENSDK_DIR}/proto/tensorflow/op_def.proto"
 )
 protobuf_generate(opp _proto_cc _proto_h ${TF_PROTO})
 file(GLOB TF_PLUGIN_SRC ${CANN_ROOT_DIR}/community/ops/**/framework/tf/*.cc)
@@ -325,7 +324,7 @@ cann_install(
 
 # --------------------------- build onnx_plugin --------------------------
 
-set(ONNX_PROTO "${OPENSDK}/proto/onnx/ge_onnx.proto")
+set(ONNX_PROTO "${OPENSDK_DIR}/proto/onnx/ge_onnx.proto")
 protobuf_generate(opp _proto_cc _proto_h ${ONNX_PROTO})
 
 file(GLOB ONNX_PLUGIN_SRC ${CANN_ROOT_DIR}/community/ops/**/framework/onnx/*.cc)
@@ -379,7 +378,7 @@ cann_install(
 
 # --------------------------- build caffe_plugin --------------------------
 set(_proto_srcs
-    "${OPENSDK}/proto/caffe/caffe.proto"
+    "${OPENSDK_DIR}/proto/caffe/caffe.proto"
   )
 
   protobuf_generate(opp _proto_cc _proto_h ${_proto_srcs})
