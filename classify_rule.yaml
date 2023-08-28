@@ -11,6 +11,7 @@ cann_op_contrib:
       - community/ops/add_custom/ai_core/op_host
       - community/ops/add_custom/framework
       - community/ops/add/framework
+      - community/ops/fft1d
   llt:
     ut_check:true
     st_check:false
