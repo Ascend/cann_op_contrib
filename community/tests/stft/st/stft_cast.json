@@ -1,0 +1,733 @@
+[
+	{
+        "case_name": "Test_stft_n2048_fft32_win32",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft32_win32",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2048_fft1024_win32",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft1024_win32",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2048_fft32_win32_centered_reflect",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft32_win32_centered_reflect",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2048_fft32_win32_centered_replicate",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft32_win32_centered_replicate",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2048_fft32_win32_centered_circular",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft32_win32_centered_circular",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2048_fft32_win32_normalized",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft32_win32_normalized",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2048_fft32_win32_onesided",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft32_win32_onesided",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2048_fft32_win32_centered_circular_normalized_onesided",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2048_fft32_win32_centered_circular_normalized_onesided",
+        "error_threshold":[1.0E-6, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n2000_fft400_win400",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n2000_fft400_win400",
+        "error_threshold":[1.0E0, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    },
+	{
+        "case_name": "Test_stft_n8192_fft8192_win8192",
+		"fuzz_impl": "stft_fuzz_impl.py:fuzz_branch_stft_n8192_fft8192_win8192",
+        "error_threshold":[1.0E0, 1.0E-4],
+        "op": "STFT",
+		"calc_expect_func_file":"stft_fuzz_impl.py:calc_expect_func",
+		"fuzz_case_num":1,
+        "input_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "x",
+				"value":"fuzz"
+            },
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "data_distribute":"uniform",
+				"value_range":[[0,1]],
+                "name": "window",
+				"value":"fuzz"
+            }
+        ],
+        "output_desc": [
+            {
+                "format":["ND"],
+                "type": "float32",
+                "shape": "fuzz",
+                "name": "y"
+            }
+        ],
+        "attr": [
+            {
+                "name": "n_fft",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "hop_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "win_length",
+                "type": "int",
+                "value": "fuzz"
+            },
+            {
+                "name": "center",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "pad_mode",
+                "type": "string",
+                "value": "fuzz"
+            },
+            {
+                "name": "normalized",
+                "type": "bool",
+                "value": "fuzz"
+            },
+            {
+                "name": "onesided",
+                "type": "bool",
+                "value": "fuzz"
+            }
+        ]
+    }
+]
+
