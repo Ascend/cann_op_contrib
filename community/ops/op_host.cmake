@@ -21,7 +21,7 @@ execute_process( COMMAND ${CMAKE_COMMAND} -E make_directory ${HOST_DIR})
 
 file(GLOB OP_HOST_SRC ${CANN_ROOT_DIR}/community/ops/**/ai_core/op_host/*.cpp)
 execute_process(COMMAND ${CMAKE_CXX_COMPILER} -g -fPIC -shared -std=c++11 ${OP_HOST_SRC} -D_GLIBCXX_USE_CXX11_ABI=0
-                -I  ${ASCEND_DIR}/include -L  ${ASCEND_DIR}/lib64 -lexe_graph -lregister
+                -I  ${ASCEND_DIR}/include -L  ${ASCEND_DIR}/lib64 -lexe_graph -lregister -ltiling_api
                 -o ${HOST_DIR}/libascend_all_ops.so
                 RESULT_VARIABLE EXEC_RESULT
                 OUTPUT_VARIABLE EXEC_INFO
@@ -68,27 +68,27 @@ execute_process( COMMAND cp
         ${HOST_DIR}/op_proto.h
         ${OP_INC_PATH})
 #---------------------------------tiling-------------------------------------------------------------
+if(EXISTS "${OP_HOST_SRC}")
+    add_library(cust_optiling SHARED ${OP_HOST_SRC})
+    target_compile_definitions(cust_optiling PRIVATE OP_TILING_LIB)
+    target_link_libraries(cust_optiling PRIVATE intf_pub graph register)
+    target_include_directories(cust_optiling PRIVATE
+        ${OPENSDK_DIR}/c_sec/include
+        ${OPENSDK_DIR}/include/air/external
+    )
+    set_target_properties(cust_optiling PROPERTIES OUTPUT_NAME
+                        cust_opmaster_rt2.0
+    )
 
-add_library(cust_optiling SHARED ${OP_HOST_SRC})
-target_compile_definitions(cust_optiling PRIVATE OP_TILING_LIB)
-target_link_libraries(cust_optiling PRIVATE intf_pub graph register)
-target_include_directories(cust_optiling PRIVATE
-    ${OPENSDK_DIR}/c_sec/include
-    ${OPENSDK_DIR}/include/air/external
-)
-set_target_properties(cust_optiling PROPERTIES OUTPUT_NAME
-                      cust_opmaster_rt2.0
-)
+    set(OPTILING_PATH ${HOST_DIR}/op_impl/ai_core/tbe/op_tiling/lib/linux/${CMAKE_SYSTEM_PROCESSOR})
+    cann_install(
+        TARGET      cust_optiling
+        FILES       $<TARGET_FILE:cust_optiling>
+        DESTINATION "${OPTILING_PATH}"
+    )
 
-set(OPTILING_PATH ${HOST_DIR}/op_impl/ai_core/tbe/op_tiling/lib/linux/${CMAKE_SYSTEM_PROCESSOR})
-cann_install(
-    TARGET      cust_optiling
-    FILES       $<TARGET_FILE:cust_optiling>
-    DESTINATION "${OPTILING_PATH}"
-)
-
-add_custom_target(optiling_compat ALL
-                  COMMAND ln -sf lib/linux/${CMAKE_SYSTEM_PROCESSOR}/$<TARGET_FILE_NAME:cust_optiling>
-                          ${HOST_DIR}/op_impl/ai_core/tbe/op_tiling/liboptiling.so
-)
-
+    add_custom_target(optiling_compat ALL
+                    COMMAND ln -sf lib/linux/${CMAKE_SYSTEM_PROCESSOR}/$<TARGET_FILE_NAME:cust_optiling>
+                            ${HOST_DIR}/op_impl/ai_core/tbe/op_tiling/liboptiling.so
+    )
+endif()

@@ -35,17 +35,6 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
     return ge::GRAPH_SUCCESS;
 }
 
-static ge::graphStatus TilingPrepare(gert::TilingParseContext* context)
-{
-    return ge::GRAPH_SUCCESS;
-}
-
-static int32_t CheckOpSupport(const ge::Operator &op, ge::AscendString &result)
-{
-    std::string res_json_str = "{\"ret_code\": \"0\",\"reason\": \"check_supported_stub\"}";
-    result = ge::AscendString(res_json_str.c_str());
-    return 1;
-}
 } // namespace optiling
 
 namespace ge {
@@ -99,20 +88,8 @@ public:
             .SetInferDataType(ge::InferDataType);
 
         this->AICore()
-            .SetTiling(optiling::TilingFunc)
-            .SetTilingParse(optiling::TilingPrepare)
-            .SetCheckSupport(optiling::CheckOpSupport);
-
-        OpAICoreConfig aicConfig;
-        aicConfig.AsyncFlag(true)
-            .DynamicCompileStaticFlag(true)
-            .DynamicFormatFlag(true)
-            .DynamicRankSupportFlag(true)
-            .DynamicShapeSupportFlag(true)
-            .NeedCheckSupportFlag(true)
-            .PrecisionReduceFlag(true)
-            .RangeLimitValue("limited");
-        this->AICore().AddConfig("ascend910", aicConfig);
+            .SetTiling(optiling::TilingFunc);
+        this->AICore().AddConfig("ascend910");
     }
 };
 

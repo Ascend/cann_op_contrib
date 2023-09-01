@@ -80,7 +80,7 @@ change_dir()
   fi
   if [ -d ${BUILD_PATH}/install/community/op_impl ];then
     cp -r ${BUILD_PATH}/install/community/op_impl ${TAR_DIR_PATH}/vendors/${OPP_CUSTOM_VENDOR}/op_impl/ai_core/tbe > /dev/null
-    cp ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/* ${AI_CORE_PATH}
+    cp -r ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl/* ${AI_CORE_PATH}
     rm -rf ${TAR_DIR_PATH}/vendors/community/op_impl/ai_core/tbe/op_impl
   fi
   if [ -d ${BUILD_PATH}/install/community/op_config ];then

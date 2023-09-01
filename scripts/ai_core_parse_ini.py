@@ -42,25 +42,26 @@ def parse_ini_to_obj(ini_file, tbe_ops_info):
     tbe_ops_info:ops_info
     ----------------
     """
-    with open(ini_file) as ini_file:
-        lines = ini_file.readlines()
-        op = {}
-        op_name = ""
-        for line in lines:
-            line = line.rstrip()
-            if line.startswith("["):
-                op_name = line[1:-1]
-                op = {}
-                tbe_ops_info[op_name] = op
-            else:
-                key1 = line[:line.index("=")]
-                key2 = line[line.index("=")+1:]
-                key1_0, key1_1 = key1.split(".")
-                if key1_0 not in op:
-                    op[key1_0] = {}
-                if key1_1 in op[key1_0]:
-                    raise RuntimeError("Op:" + op_name + " " + key1_0 + " " + key1_1 + " is repeated!")
-                op[key1_0][key1_1] = key2
+    if os.path.exists(ini_file):
+        with open(ini_file) as ini_file:
+            lines = ini_file.readlines()
+            op = {}
+            op_name = ""
+            for line in lines:
+                line = line.rstrip()
+                if line.startswith("["):
+                    op_name = line[1:-1]
+                    op = {}
+                    tbe_ops_info[op_name] = op
+                else:
+                    key1 = line[:line.index("=")]
+                    key2 = line[line.index("=")+1:]
+                    key1_0, key1_1 = key1.split(".")
+                    if key1_0 not in op:
+                        op[key1_0] = {}
+                    if key1_1 in op[key1_0]:
+                        raise RuntimeError("Op:" + op_name + " " + key1_0 + " " + key1_1 + " is repeated!")
+                    op[key1_0][key1_1] = key2
 
 
 def check_op_info(tbe_ops):

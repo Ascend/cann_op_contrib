@@ -199,11 +199,12 @@ class IniParser(object):
 def replace_file_char(file_path, obj_str, new_str):
     search_text = obj_str
     replace_text = new_str
-    with open(file_path, 'r', encoding='UTF-8') as file:
-        data = file.read()
-        data = data.replace(search_text, replace_text)
-    with open(file_path, 'w', encoding='UTF-8') as file:
-        file.write(data)
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='UTF-8') as file:
+            data = file.read()
+            data = data.replace(search_text, replace_text)
+        with open(file_path, 'w', encoding='UTF-8') as file:
+            file.write(data)
 
 
 def main():

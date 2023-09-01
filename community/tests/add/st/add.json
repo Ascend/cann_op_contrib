@@ -1,0 +1,44 @@
+[
+    {
+        "case_name": "Test_Add_001",      
+        "op": "Add",                      
+        "input_desc": [                   
+            {                              
+                "format": ["ND"],            
+                "type": ["int32"],
+                "shape": [1,64],
+                "data_distribute": [      
+                    "uniform"
+                ],
+                "value_range": [      
+                    [
+                        1.0,
+                        384.0
+                    ]
+                ]
+            },
+            {                             
+                "format": ["ND"],
+                "type": ["int32"],
+                "shape": [1,64],
+                "data_distribute": [
+                    "uniform"
+                ],
+                "value_range": [
+                    [
+                        1.0,
+                        384.0
+                    ]
+                ]
+            }
+
+        ],
+        "output_desc": [                  
+            {
+                "format": ["ND"],
+                "type": ["int32"],
+                "shape": [1,64]
+            }
+        ]
+    }
+]

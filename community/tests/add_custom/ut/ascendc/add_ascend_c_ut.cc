@@ -33,16 +33,16 @@ protected:
 
 TEST_F(AddTest, add_test_case_1) {
     size_t tilingSize = 3 * sizeof(uint32_t);
-    uint8_t* tiling = (uint8_t*)tik2::GmAlloc(tilingSize);
+    uint8_t* tiling = (uint8_t*)AscendC::GmAlloc(tilingSize);
     ReadFile(ktestcaseFilePath + "add_custom/data/tiling.bin", tilingSize, tiling, tilingSize);
 
     uint32_t blockDim = (*(const uint32_t*)(tiling));
     size_t inputByteSize = blockDim * 2048 * sizeof(uint16_t);
     size_t outputByteSize = blockDim * 2048 * sizeof(uint16_t);
 
-    uint8_t* x = (uint8_t*)tik2::GmAlloc(inputByteSize);
-    uint8_t* y = (uint8_t*)tik2::GmAlloc(inputByteSize);
-    uint8_t* z = (uint8_t*)tik2::GmAlloc(outputByteSize);
+    uint8_t* x = (uint8_t*)AscendC::GmAlloc(inputByteSize);
+    uint8_t* y = (uint8_t*)AscendC::GmAlloc(inputByteSize);
+    uint8_t* z = (uint8_t*)AscendC::GmAlloc(outputByteSize);
 
     ReadFile(ktestcaseFilePath + "add_custom/data/input_x.bin", inputByteSize, x, inputByteSize);
     ReadFile(ktestcaseFilePath + "add_custom/data/input_y.bin", inputByteSize, y, inputByteSize);
@@ -57,10 +57,10 @@ TEST_F(AddTest, add_test_case_1) {
     ReadFile(goldenFilePath, golden, elementsNum);
     bool compare = CompareResult((half*)z, golden, elementsNum);
 
-    tik2::GmFree((void*)x);
-    tik2::GmFree((void*)y);
-    tik2::GmFree((void*)z);
-    tik2::GmFree((void*)tiling);
+    AscendC::GmFree((void*)x);
+    AscendC::GmFree((void*)y);
+    AscendC::GmFree((void*)z);
+    AscendC::GmFree((void*)tiling);
 
     EXPECT_EQ(compare, true);
 }

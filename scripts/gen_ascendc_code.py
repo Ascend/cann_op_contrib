@@ -13,8 +13,8 @@
 # limitations under the License.
 # ============================================================================
 import os
-from op_gen.template.tik2.cmake.util import tik2_impl_build
-from op_gen.template.tik2.cmake.util import tik2_replay_build
+from op_gen.template.ascendc.cmake.util import ascendc_impl_build
+from op_gen.template.ascendc.cmake.util import ascendc_replay_build
 import const_var
 
 
@@ -47,8 +47,8 @@ def gen_op_code(ini_path, impl_path):
     rep_dir = {}
     rep_dir[const_var.CFG_IMPL_DIR] = impl_path
     rep_dir[const_var.CFG_OUT_DIR] = file_out_path
-    tik2_replay_build.gen_replay(ini_path, rep_cfg, rep_dir, soc_version)
-    tik2_impl_build.write_scripts(ini_path, rep_cfg, rep_dir)
+    ascendc_replay_build.gen_replay(ini_path, rep_cfg, rep_dir, soc_version)
+    ascendc_impl_build.write_scripts(ini_path, rep_cfg, rep_dir)
 
     for dirpath, dirnames, filenames in os.walk(file_out_path):
         for file_cpp in filenames:

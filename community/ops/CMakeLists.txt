@@ -275,52 +275,56 @@ set(TF_PROTO
 protobuf_generate(opp _proto_cc _proto_h ${TF_PROTO})
 file(GLOB TF_PLUGIN_SRC ${CANN_ROOT_DIR}/community/ops/**/framework/tf/*.cc)
 
-set(TF_PLUGIN_INC
-    ${METADEF_INCLUDE}/external
-    ${GRAPHENGINE_INCLUDE}
-)
+if(EXISTS "${TF_PLUGIN_SRC}")
+    set(TF_PLUGIN_INC
+        ${METADEF_INCLUDE}/external
+        ${GRAPHENGINE_INCLUDE}
+    )
 
-set(TF_PLUGIN_LINK_LIB
-    -Wl,--no-as-needed
-    #graph
-    #register
-    #alog
-    #error_manager
-    #te_fusion
-    #_caffe_parser
-    #ascend_protobuf
-    -Wl,--as-needed
-    #c_sec
-)
-add_library(tf_plugin SHARED
-    ${TF_PLUGIN_SRC}
-    ${_proto_h}
-)
+    set(TF_PLUGIN_LINK_LIB
+        -Wl,--no-as-needed
+        #graph
+        #register
+        #alog
+        #error_manager
+        #te_fusion
+        #_caffe_parser
+        #ascend_protobuf
+        -Wl,--as-needed
+        #c_sec
+    )
+    add_library(tf_plugin SHARED
+        ${TF_PLUGIN_SRC}
+        ${_proto_h}
+    )
 
-target_include_directories(tf_plugin PRIVATE
-    ${TF_PLUGIN_INC}
-)
+    target_include_directories(tf_plugin PRIVATE
+        ${TF_PLUGIN_INC}
+    )
 
-target_link_libraries(tf_plugin PRIVATE
-    $<BUILD_INTERFACE:intf_pub>
-    ${TF_PLUGIN_LINK_LIB}
-)
+    target_link_libraries(tf_plugin PRIVATE
+        $<BUILD_INTERFACE:intf_pub>
+        ${TF_PLUGIN_LINK_LIB}
+    )
 
-target_compile_options(tf_plugin PRIVATE
-    "-fno-common"
-    "-fno-strict-aliasing"
-    ${compile_opt_mode}
-    -Werror
-    -Wno-deprecated-declarations
-    -Dgoogle=ascend_private
-)
+    target_compile_options(tf_plugin PRIVATE
+        "-fno-common"
+        "-fno-strict-aliasing"
+        ${compile_opt_mode}
+        -Werror
+        -Wno-deprecated-declarations
+        -Dgoogle=ascend_private
+    )
 
-set(TF_PLUGIN_PATH "${INSTALL_DIR}/community/framework/tf")
-cann_install(
-    TARGET      tf_plugin
-    FILES       $<TARGET_FILE:tf_plugin>
-    DESTINATION "${TF_PLUGIN_PATH}"
-)
+    set(TF_PLUGIN_PATH "${INSTALL_DIR}/community/framework/tf")
+    cann_install(
+        TARGET      tf_plugin
+        FILES       $<TARGET_FILE:tf_plugin>
+        DESTINATION "${TF_PLUGIN_PATH}"
+    )
+endif()
+
+
 
 # --------------------------- build onnx_plugin --------------------------
 
@@ -333,48 +337,52 @@ set(ONNX_PLUGIN_INC
     ${METADEF_INCLUDE}/external
 )
 
-set(ONNX_PLUGIN_LINK_LIB
-    -Wl,--no-as-needed
-    #graph
-    #register
-    #alog
-    #error_manager
-    #te_fusion
-    #_caffe_parser
-    #ascend_protobuf
-    -Wl,--as-needed
-    #c_sec
-)
+if(EXISTS "${ONNX_PLUGIN_SRC}")
+    set(ONNX_PLUGIN_LINK_LIB
+        -Wl,--no-as-needed
+        #graph
+        #register
+        #alog
+        #error_manager
+        #te_fusion
+        #_caffe_parser
+        #ascend_protobuf
+        -Wl,--as-needed
+        #c_sec
+    )
 
-add_library(onnx_plugin SHARED
-    ${ONNX_PLUGIN_SRC}
-    ${_proto_h}
-)
+    add_library(onnx_plugin SHARED
+        ${ONNX_PLUGIN_SRC}
+        ${_proto_h}
+    )
 
-target_include_directories(onnx_plugin PRIVATE
-    ${ONNX_PLUGIN_INC}
-)
+    target_include_directories(onnx_plugin PRIVATE
+        ${ONNX_PLUGIN_INC}
+    )
 
-target_link_libraries(onnx_plugin PRIVATE
-    $<BUILD_INTERFACE:intf_pub>
-    ${ONNX_PLUGIN_LINK_LIB}
-)
+    target_link_libraries(onnx_plugin PRIVATE
+        $<BUILD_INTERFACE:intf_pub>
+        ${ONNX_PLUGIN_LINK_LIB}
+    )
 
-target_compile_options(onnx_plugin PRIVATE
-    "-fno-common"
-    "-fno-strict-aliasing"
-    ${compile_opt_mode}
-    -Werror
-    -Wno-deprecated-declarations
-    -Dgoogle=ascend_private
-)
+    target_compile_options(onnx_plugin PRIVATE
+        "-fno-common"
+        "-fno-strict-aliasing"
+        ${compile_opt_mode}
+        -Werror
+        -Wno-deprecated-declarations
+        -Dgoogle=ascend_private
+    )
 
-set(ONNX_PLUGIN_PATH "${INSTALL_DIR}/community/framework/onnx")
-cann_install(
-    TARGET      onnx_plugin
-    FILES       $<TARGET_FILE:onnx_plugin>
-    DESTINATION "${ONNX_PLUGIN_PATH}"
-)
+    set(ONNX_PLUGIN_PATH "${INSTALL_DIR}/community/framework/onnx")
+    cann_install(
+        TARGET      onnx_plugin
+        FILES       $<TARGET_FILE:onnx_plugin>
+        DESTINATION "${ONNX_PLUGIN_PATH}"
+    )
+endif()
+
+
 
 # --------------------------- build caffe_plugin --------------------------
 set(_proto_srcs
@@ -385,48 +393,50 @@ set(_proto_srcs
 
   file(GLOB CAFFE_PLUGIN_SRC ${CANN_ROOT_DIR}/community/ops/**/framework/caffe/*.cc)
 
-  add_library(caffe_plugin SHARED
-    ${CAFFE_PLUGIN_SRC}
-    ${_proto_h}
-  )
-    set(CAFFE_PLUGIN_INC
-        ${METADEF_INCLUDE}
-        ${METADEF_INCLUDE}/external
-        ${GRAPHENGINE_INCLUDE}
+if(EXISTS "${CAFFE_PLUGIN_SRC}")
+    add_library(caffe_plugin SHARED
+        ${CAFFE_PLUGIN_SRC}
+        ${_proto_h}
+    )
+        set(CAFFE_PLUGIN_INC
+            ${METADEF_INCLUDE}
+            ${METADEF_INCLUDE}/external
+            ${GRAPHENGINE_INCLUDE}
+        )
+
+    target_include_directories(caffe_plugin PRIVATE
+        ${CAFFE_PLUGIN_INC}
+
     )
 
-  target_include_directories(caffe_plugin PRIVATE
-    ${CAFFE_PLUGIN_INC}
+    target_compile_options(caffe_plugin PRIVATE
+        "-fno-common"
+        "-fno-strict-aliasing"
+        -O2
+        -Werror
+        -Wno-deprecated-declarations
+        -Dgoogle=ascend_private
+    )
 
-  )
+    target_link_libraries(caffe_plugin PRIVATE
+        $<BUILD_INTERFACE:intf_pub>
+        $<$<NOT:$<BOOL:${BUILD_OPEN_PROJECT}>>:$<BUILD_INTERFACE:slog_headers>>
+        -Wl,--no-as-needed
+        graph
+        register
+        alog
+        error_manager
+        te_fusion
+        _caffe_parser
+        ascend_protobuf
+        -Wl,--as-needed
+        c_sec
+    )
 
-  target_compile_options(caffe_plugin PRIVATE
-    "-fno-common"
-    "-fno-strict-aliasing"
-    -O2
-    -Werror
-    -Wno-deprecated-declarations
-    -Dgoogle=ascend_private
-  )
-
-  target_link_libraries(caffe_plugin PRIVATE
-    $<BUILD_INTERFACE:intf_pub>
-    $<$<NOT:$<BOOL:${BUILD_OPEN_PROJECT}>>:$<BUILD_INTERFACE:slog_headers>>
-    -Wl,--no-as-needed
-      graph
-      register
-      alog
-      error_manager
-      te_fusion
-      _caffe_parser
-      ascend_protobuf
-    -Wl,--as-needed
-      c_sec
-  )
-
-set(CAFFE_PLUGIN_PATH "${INSTALL_DIR}/community/framework/caffe")
-cann_install(
-    TARGET      caffe_plugin
-    FILES       $<TARGET_FILE:caffe_plugin>
-    DESTINATION "${CAFFE_PLUGIN_PATH}"
-)
+    set(CAFFE_PLUGIN_PATH "${INSTALL_DIR}/community/framework/caffe")
+    cann_install(
+        TARGET      caffe_plugin
+        FILES       $<TARGET_FILE:caffe_plugin>
+        DESTINATION "${CAFFE_PLUGIN_PATH}"
+    )
+endif()

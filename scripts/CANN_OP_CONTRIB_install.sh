@@ -198,7 +198,7 @@ function install_process() {
     fi
     # 检查是否存在config.ini文件，如果不存在，则退出
     if [ ! -f ${operate_path}/vendors/config.ini ] ; then
-        chmod 750 -R ${operate_path}/../..
+        chmod 750 -R ${operate_path}/vendors
         touch ${operate_path}/vendors/config.ini
         chmod 777 ${operate_path}/vendors/config.ini
         if [ -z $OPP_CUSTOM_VENDOR ];then
